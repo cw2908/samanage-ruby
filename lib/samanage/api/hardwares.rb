@@ -1,0 +1,47 @@
+module Samanage
+	class Api
+		def get_hardwares(path: PATHS[:hardware], options: {})
+			url = Samanage::UrlBuilder.new(path: path, options: options).url
+			api_call = self.execute(path: url)
+			api_call
+		end
+
+		def collect_hardwares
+			page = 1
+			hardwares = Array.new
+			total_pages = self.get_hardwares[:total_pages]
+			# puts api_call
+			while page <= total_pages
+				api_call = self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")
+				hardwares += api_call[:data]
+				page += 1
+			end
+			hardwares
+		end
+
+		def create_hardware(payload: , options: {})
+			api_call = self.execute(path: PATHS[:hardware], http_method: 'post', payload: payload)
+			api_call
+		end
+
+		def find_hardware(id: )
+			path = "hardwares/#{id}.json"
+			api_call = self.execute(path: path)
+			api_call
+		end
+
+		def check_hardware(options: {})
+			url = Samanage::UrlBuilder.new(path: PATHS[:hardware], options: options).url
+			puts "Url: #{url}"
+			api_call = self.execute(path: url)
+			api_call
+		end
+
+
+		def update_hardware(payload:, id:, options: {})
+			path = "hardwares/#{id}.json"
+			api_call = self.execute(path: path, http_method: 'put', payload: payload)
+			api_call
+		end
+	end
+end
