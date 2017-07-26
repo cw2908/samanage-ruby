@@ -14,7 +14,7 @@ module Samanage
 			other_assets = []
 			while page <= total_pages
 				api_call = self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")
-				other_assets << api_call[:data]
+				other_assets += api_call[:data]
 				page += 1
 			end
 			other_assets.uniq

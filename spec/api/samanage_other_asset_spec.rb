@@ -47,11 +47,16 @@ describe Samanage::Api do
 				json[:other_asset].delete(json[:other_asset].keys.sample) # Delete random sample from the examples above
 				expect{@controller.create_other_asset(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
 			end
+
 			it 'find_other_asset: returns an other_asset card by known id' do
 				other_assets = @controller.collect_other_assets
+				puts "Found ##{other_assets.size} other assets"
+				puts ".sample ##{other_assets.sample}"
+				puts ".sample['id'] ##{other_assets.sample['id']}"
 				sample_id = other_assets.sample['id']
 
 				other_asset = @controller.find_other_asset(id: sample_id)
+
 				expect(other_asset[:data]['id']).to eq(sample_id)  # id should match found other_asset
 				expect(other_asset[:data]).to have_key('name')
 				expect(other_asset[:data]).to have_key('serial_number')
