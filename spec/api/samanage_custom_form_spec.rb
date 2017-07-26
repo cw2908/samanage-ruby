@@ -20,7 +20,6 @@ describe Samanage::Api do
 			it 'Finds the forms for an object_type' do
 				object_types = ['incident', 'user','other_asset','hardware','configuration_item']
 				form = @controller.form_for(object_type: object_types.sample)
-				ap form
 				expect(form).to be_an(Array)
 				expect(form.sample.keys).to include('custom_form_fields')
 			end

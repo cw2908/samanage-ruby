@@ -1,4 +1,3 @@
-require 'awesome_print'
 module Samanage
 	class Api
 		PATHS = {

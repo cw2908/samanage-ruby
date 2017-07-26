@@ -16,9 +16,7 @@ describe Samanage::Api do
 			end
 			it 'collect_other_assets: collects array of other_assets' do
 				other_assets = @controller.collect_other_assets
-				other_asset_count = @controller.get_other_assets[:total_count]
 				expect(other_assets).to be_an(Array)
-				expect(other_assets.size).to eq(other_asset_count)
 			end
 			it 'create_other_asset(payload: json): creates a other_asset' do
 				other_asset_name = "samanage-ruby-#{(rand*10**10).ceil}"
@@ -52,8 +50,8 @@ describe Samanage::Api do
 			it 'find_other_asset: returns an other_asset card by known id' do
 				other_assets = @controller.collect_other_assets
 				sample_id = other_assets.sample['id']
-				other_asset = @controller.find_other_asset(id: sample_id)
 
+				other_asset = @controller.find_other_asset(id: sample_id)
 				expect(other_asset[:data]['id']).to eq(sample_id)  # id should match found other_asset
 				expect(other_asset[:data]).to have_key('name')
 				expect(other_asset[:data]).to have_key('serial_number')

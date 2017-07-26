@@ -11,12 +11,13 @@ module Samanage
 			other_assets = Array.new
 			total_pages = self.get_other_assets[:total_pages]
 			# puts api_call
+			other_assets = []
 			while page <= total_pages
 				api_call = self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")
-				other_assets += api_call[:data]
+				other_assets << api_call[:data]
 				page += 1
 			end
-			other_assets
+			other_assets.uniq
 		end
 
 		def create_other_asset(payload: , options: {})
