@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'samanage'
-  s.version     = '1.1'
+  s.version     = '1.1b'
   s.date        = '2017-01-01'
   s.summary     = "Samanage Ruby Gem"
   s.description = "Connect to Samanage using Ruby!"
