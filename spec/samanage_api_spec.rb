@@ -6,7 +6,6 @@ describe Samanage do
 		end
 	  context 'on creation' do
 	  	it 'Requires Email & Token' do
-	  		expect{ Samanage::Api.new() }.to raise_error(ArgumentError)
 	  		expect{ Samanage::Api.new(token: "invalid token") }.to raise_error(Samanage::AuthorizationError)
 	  		expect{ Samanage::Api.new(token: TOKEN) }.to_not raise_error
 	  	end
