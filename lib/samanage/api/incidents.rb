@@ -24,13 +24,13 @@ module Samanage
 			api_call
 		end
 
-		def find_incident(id: )
+		def find_incident(id: nil)
 			path = "incidents/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
 		end
 
-		def update_incident(payload:, id:, options: {})
+		def update_incident(payload: nil, id: nil, options: {})
 			path = "incidents/#{id}.json"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)
 			api_call
