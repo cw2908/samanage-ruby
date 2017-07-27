@@ -27,8 +27,13 @@ Returns query returns a hash with keys:
 
 ### Function examples
 #### Return all Samanage Users
+```ruby
 users = api_controller.collect_users
+users.each{|user| puts "Email: #{user['email']}"}
+```
 
 #### Update hardware
+```ruby
 hardware = {'hardware':{'name':'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
+```
