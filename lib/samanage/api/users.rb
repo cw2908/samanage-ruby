@@ -21,24 +21,24 @@ module Samanage
 			users
 		end
 
-		def create_user(payload: , options: {})
+		def create_user(payload: nil, options: {})
 			api_call = self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
 			api_call
 		end
 
-		def find_user(id: )
+		def find_user(id: nil)
 			path = "users/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
 		end
 
-		def check_user(field: 'email', value: )
+		def check_user(field: 'email', value: nil)
 			url = "users.json?#{field}=#{value}"
 			api_call = self.execute(path: url)
 			api_call
 		end
 
-		def update_user(payload:, id:)
+		def update_user(payload: nil, id: nil)
 			path = "users/#{id}.json"
 			puts "Path: #{path}"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)

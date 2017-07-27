@@ -9,7 +9,7 @@ module Samanage
 			custom_forms: 'custom_forms.json',
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms
-		def initialize(token: , dacenter: '', development_mode: false)
+		def initialize(token: nil, dacenter: '', development_mode: false)
 			self.token = token
 			self.datacenter = nil || datacenter
 			self.base_url = "https://api#{datacenter}.samanage.com/"
@@ -22,11 +22,15 @@ module Samanage
 		end
 
 		def authorize
-			 self.execute(path: 'api.json')
+			self.execute(path: 'api.json')
+			rescue OpenSSL::SSL::SSLError => e
+				puts "Raised: #{e} #{e.class}"
+				puts 'Disabling Local SSL Verification'
+				self.execute(path: 'api.json', ssl_fix: true)
 		end
 
 		# Defaults to GET
-		def execute(http_method: 'get', path: , payload: nil, verbose: nil)
+		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false)
 			unless verbose.nil?
 				verbose = '?layout=long'
 			end
@@ -36,7 +40,11 @@ module Samanage
 				'Content-type'  => "application/#{self.content_type}",
 				'X-Samanage-Authorization' => 'Bearer ' + self.token
 			)
-			api_call = api_call.public_send(http_method.to_sym, self.base_url + Addressable::URI.encode_component(path, Addressable::URI::CharacterClasses::QUERY).gsub('+',"%2B"), :body => payload)
+			ctx = OpenSSL::SSL::SSLContext.new
+			if ssl_fix
+				ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+			end
+			api_call = api_call.public_send(http_method.to_sym, self.base_url + Addressable::URI.encode_component(path, Addressable::URI::CharacterClasses::QUERY).gsub('+',"%2B"), :body => payload, ssl_context: ctx)
 			response = Hash.new
 			response[:code] = api_call.code.to_i
 			response[:json] = api_call.body
