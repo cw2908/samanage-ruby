@@ -19,12 +19,12 @@ module Samanage
 			hardwares
 		end
 
-		def create_hardware(payload: , options: {})
+		def create_hardware(payload: nil, options: {})
 			api_call = self.execute(path: PATHS[:hardware], http_method: 'post', payload: payload)
 			api_call
 		end
 
-		def find_hardware(id: )
+		def find_hardware(id: nil)
 			path = "hardwares/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
@@ -38,7 +38,7 @@ module Samanage
 		end
 
 
-		def update_hardware(payload:, id:, options: {})
+		def update_hardware(payload: nil, id:, options: {})
 			path = "hardwares/#{id}.json"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)
 			api_call

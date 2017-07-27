@@ -25,13 +25,13 @@ module Samanage
 			api_call
 		end
 
-		def find_other_asset(id: )
+		def find_other_asset(id: nil)
 			path = "other_assets/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
 		end
 
-		def update_other_asset(payload:, id:, options: {})
+		def update_other_asset(payload: nil, id: nil, options: {})
 			path = "other_assets/#{id}.json"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)
 			api_call
