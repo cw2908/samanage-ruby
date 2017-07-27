@@ -16,14 +16,14 @@ gem install samanage
     query = api_controller.execute(http_method: 'get',
      path: 'users.json')
 ```
-Returns query returns a hash with keys:
+Returns query returns a Hash with keys:
 - `:response`*:* unparsed `http` response
 - `:code`*:* http status code
 - `:json`*:* Samanage API json response
-- `:headers`*:* `http` response.headers
-- `:total_pages`*:* total pages
-- `:total_count`*:* total count of records
-- `:data`*:* `Hash` of response body
+- `:headers`*:* Response headers
+- `:total_pages`*:* Total pages
+- `:total_count`*:* Total count of records
+- `:data`*:* Hash containing response body
 
 ### Function examples
 #### Return all Samanage Users
