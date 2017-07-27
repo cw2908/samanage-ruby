@@ -9,7 +9,7 @@ module Samanage
 			custom_forms: 'custom_forms.json',
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms
-		def initialize(token: nil, dacenter: '', development_mode: false)
+		def initialize(token: '', dacenter: '', development_mode: false)
 			self.token = token
 			self.datacenter = nil || datacenter
 			self.base_url = "https://api#{datacenter}.samanage.com/"
@@ -66,22 +66,18 @@ module Samanage
 			when 401
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 401: #{error}"
 				raise Samanage::AuthorizationError.new(error: error,response: response)
 			when 404
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 404: #{error}"
 				raise Samanage::NotFound.new(error: error, response: response)
 			when 422
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 422: #{error}"
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			else
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned #{response[:code]}: #{error}"
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
 		# Always return response hash
