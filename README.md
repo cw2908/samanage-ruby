@@ -29,5 +29,6 @@ Returns query returns a hash with keys:
 #### Return all Samanage Users
 users = api_controller.collect_users
 
-#### Update a computer
-result = api_controller.update_hardware(id: 123, payload: {'hardware':{'name':'My Computer'}})
+#### Update hardware
+hardware = {'hardware':{'name':'My Computer'}}
+result = api_controller.update_hardware(id: 123, payload: hardware)
