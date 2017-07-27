@@ -46,7 +46,6 @@ module Samanage
 			response[:total_pages] = 1 if response[:total_pages] == 0
 			response[:total_count] = api_call.headers['X-Total-Count'].to_i
 			response[:total_count] = 1 if response[:total_count] == 0
-			response[:data] = {}
 
 			# puts "Body Class: #{api_call.body.class}"
 			# puts "#{api_call.body}"
@@ -57,16 +56,24 @@ module Samanage
 				response[:data] = JSON.parse(api_call.body)
 				response
 			when 401
+				response[:data] = api_call.body
 				error = response[:response]
 				puts "Returned 401: #{error}"
 				raise Samanage::AuthorizationError.new(error: error,response: response)
 			when 404
+				response[:data] = api_call.body
 				error = response[:response]
 				puts "Returned 404: #{error}"
 				raise Samanage::NotFound.new(error: error, response: response)
 			when 422
+				response[:data] = api_call.body
 				error = response[:response]
 				puts "Returned 422: #{error}"
+				raise Samanage::InvalidRequest.new(error: error, response: response)
+			else
+				response[:data] = api_call.body
+				error = response[:response]
+				puts "Returned #{response[:code]}: #{error}"
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
 		# Always return response hash
