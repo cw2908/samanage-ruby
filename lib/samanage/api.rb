@@ -30,6 +30,7 @@ module Samanage
 			unless verbose.nil?
 				verbose = '?layout=long'
 			end
+
 			api_call = HTTP.headers(
 				'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
 				'Content-type'  => "application/#{self.content_type}",
@@ -45,36 +46,31 @@ module Samanage
 			response[:total_pages] = 1 if response[:total_pages] == 0
 			response[:total_count] = api_call.headers['X-Total-Count'].to_i
 			response[:total_count] = 1 if response[:total_count] == 0
-			response[:data] = JSON.parse(api_call.body)
+			response[:data] = {}
+
+			# puts "Body Class: #{api_call.body.class}"
+			# puts "#{api_call.body}"
 			# Raise error if not Authentication or 200,201  == Success,Okay
-			if response[:code] > 201
-				raise
-			end
-			return response
-
-
 			# Error cases
-			rescue
-				if response.nil?
-					raise Samanage::InvalidRequest.new(error: "Invalid Request")
-				end
-
-				case response[:code]
-				when 401
-					error = response[:response]
-					raise Samanage::AuthorizationError.new(error: error,response: response)
-				when 404
-					puts "Path not found: #{path}"
-					error = response[:response]
-					raise Samanage::NotFound.new(error: error, response: response)
-				when 422
-					error = response[:response]
-					raise Samanage::InvalidRequest.new(error: error, response: response)
-				end
-			# Always return response hash
-			ensure
+			case response[:code]
+			when 200..201
+				response[:data] = JSON.parse(api_call.body)
 				response
-
+			when 401
+				error = response[:response]
+				puts "Returned 401: #{error}"
+				raise Samanage::AuthorizationError.new(error: error,response: response)
+			when 404
+				error = response[:response]
+				puts "Returned 404: #{error}"
+				raise Samanage::NotFound.new(error: error, response: response)
+			when 422
+				error = response[:response]
+				puts "Returned 422: #{error}"
+				raise Samanage::InvalidRequest.new(error: error, response: response)
+			end
+		# Always return response hash
+		response
 		end
 	end
 end
