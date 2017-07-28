@@ -8,17 +8,23 @@ module Samanage
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 		}
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms
-		def initialize(token: nil, dacenter: '', development_mode: false)
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized
+		def initialize(token: '', dacenter: '', development_mode: false)
 			self.token = token
 			self.datacenter = nil || datacenter
 			self.base_url = "https://api#{datacenter}.samanage.com/"
 			# self.content_type = content_type || 'json'
 			self.content_type = 'json'
-			self.authorize
+			if self.authorized != true
+				self.authorize
+			end
 			if development_mode
 				self.custom_forms = self.organize_forms
 			end
+		end
+
+		def authorized?
+			self.authorized
 		end
 
 		def authorize
@@ -27,6 +33,7 @@ module Samanage
 				puts "Raised: #{e} #{e.class}"
 				puts 'Disabling Local SSL Verification'
 				self.execute(path: 'api.json', ssl_fix: true)
+			self.authorized = true
 		end
 
 		# Defaults to GET
@@ -53,7 +60,6 @@ module Samanage
 			response[:total_pages] = api_call.headers['X-Total-Pages'].to_i
 			response[:total_pages] = 1 if response[:total_pages] == 0
 			response[:total_count] = api_call.headers['X-Total-Count'].to_i
-			response[:total_count] = 1 if response[:total_count] == 0
 
 			# puts "Body Class: #{api_call.body.class}"
 			# puts "#{api_call.body}"
@@ -66,22 +72,19 @@ module Samanage
 			when 401
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 401: #{error}"
+				self.authorized =false
 				raise Samanage::AuthorizationError.new(error: error,response: response)
 			when 404
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 404: #{error}"
 				raise Samanage::NotFound.new(error: error, response: response)
 			when 422
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned 422: #{error}"
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			else
 				response[:data] = api_call.body
 				error = response[:response]
-				puts "Returned #{response[:code]}: #{error}"
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
 		# Always return response hash
