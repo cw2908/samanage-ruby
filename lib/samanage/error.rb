@@ -5,7 +5,7 @@ module Samanage
 			self.status_code = response[:code]
 			self.response = response[:data] ||= response[:response]
 			self.error = error
-			puts "Response: #{self.status_code}: #{self.response}"
+			puts "[Error] #{self.status_code}: #{self.response}"
 		end
 
 	end
