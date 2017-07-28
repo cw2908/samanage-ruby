@@ -51,9 +51,7 @@ module Samanage
 			response[:response] = api_call
 			response[:headers] = api_call.headers
 			response[:total_pages] = api_call.headers['X-Total-Pages'].to_i
-			response[:total_pages] = 1 if response[:total_pages] == 0
 			response[:total_count] = api_call.headers['X-Total-Count'].to_i
-			response[:total_count] = 1 if response[:total_count] == 0
 
 			# puts "Body Class: #{api_call.body.class}"
 			# puts "#{api_call.body}"
