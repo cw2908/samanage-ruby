@@ -8,7 +8,7 @@ module Samanage
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 		}
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized
 		def initialize(token: '', dacenter: '', development_mode: false)
 			self.token = token
 			self.datacenter = nil || datacenter
@@ -21,6 +21,10 @@ module Samanage
 			if development_mode
 				self.custom_forms = self.organize_forms
 			end
+		end
+
+		def authorized?
+			self.authorized
 		end
 
 		def authorize
