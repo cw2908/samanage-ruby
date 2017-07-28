@@ -15,7 +15,9 @@ module Samanage
 			self.base_url = "https://api#{datacenter}.samanage.com/"
 			# self.content_type = content_type || 'json'
 			self.content_type = 'json'
-			self.authorize
+			if self.authorized != true
+				self.authorize
+			end
 			if development_mode
 				self.custom_forms = self.organize_forms
 			end
@@ -27,6 +29,7 @@ module Samanage
 				puts "Raised: #{e} #{e.class}"
 				puts 'Disabling Local SSL Verification'
 				self.execute(path: 'api.json', ssl_fix: true)
+			self.authorized = true
 		end
 
 		# Defaults to GET
@@ -65,6 +68,7 @@ module Samanage
 			when 401
 				response[:data] = api_call.body
 				error = response[:response]
+				self.authorized =false
 				raise Samanage::AuthorizationError.new(error: error,response: response)
 			when 404
 				response[:data] = api_call.body
