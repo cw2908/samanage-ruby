@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary     = "Samanage Ruby Gem"
   s.description = "Connect to Samanage using Ruby!"
   s.authors     = ["Chris Walls"]
-  s.email       = 'chris.walls@samanage.com'
+  s.email       = 'cwalls2908@gmail.com'
   s.files       = `git ls-files`.split("\n")
   s.require_paths = ["lib"]
   s.add_development_dependency 'http', ['~> 2.2']

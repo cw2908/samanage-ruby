@@ -1,5 +1,5 @@
 module Samanage
-	class Error < StandardError
+	class SamanageError < StandardError
 		attr_accessor :status_code, :response, :error
 		def initialize(error: nil, response: {})
 			self.status_code = response[:code]
@@ -10,12 +10,12 @@ module Samanage
 
 	end
 
-	class AuthorizationError < Error
+	class AuthorizationError < SamanageError
 	end
 
-	class InvalidRequest < Error
+	class InvalidRequest < SamanageError
 	end
 
-	class NotFound < Error
+	class NotFound < SamanageError
 	end
 end
