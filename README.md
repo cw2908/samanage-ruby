@@ -1,4 +1,4 @@
-# samanage-ruby
+# Samanage Ruby Gem
 
 ## Requirements
 - Ruby >= 2.3.1
