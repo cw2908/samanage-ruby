@@ -6,7 +6,7 @@
 ## Installation
 `gem install samanage`
 #### Linux (CentOS)
-- `sudo yum gcc-c++"`
+- `sudo yum install gcc-c++"`
 - `sudo yum install ruby-devel`
 - `sudo gem install`
 
