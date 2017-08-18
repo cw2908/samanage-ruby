@@ -1,10 +1,15 @@
-# samanage-ruby
+# Samanage Ruby Gem
 
 ## Requirements
-- Ruby >= 2.3.1
+- Ruby >= 2.0
 
 ## Installation
-gem install samanage
+`gem install samanage`
+#### Linux (CentOS)
+- `sudo yum install gcc-c++"`
+- `sudo yum install ruby-devel`
+- `sudo gem install`
+
 
 
 
@@ -13,11 +18,11 @@ gem install samanage
 
 ```ruby
     api_controller = Samanage::Api.new(token: api_token)
-    query = api_controller.execute(http_method: 'get',
+    user_query = api_controller.execute(http_method: 'get',
      path: 'users.json')
 ```
 Returns query returns a Hash with keys:
-- `:response`*:* unparsed `http` response
+- `:response`*:* unparsed http response
 - `:code`*:* http status code
 - `:json`*:* Samanage API json response
 - `:headers`*:* Response headers

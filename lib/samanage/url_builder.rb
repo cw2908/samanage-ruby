@@ -3,15 +3,15 @@ module Samanage
 		attr_accessor :url
 		@url = ''
 		def initialize(path: nil,options: nil)
-			self.url =  map_path(path, options)
+			self.url =  map_path(path: path, options: options)
 			return url
 		end
 
 
-		def map_path(path, options)
+		def map_path(path: nil, options: nil)
 			url = String.new
 			parameters = String.new
-			case path.to_s
+			case path
 			when /user/
 				url += 'users'
 			when /hardware/
