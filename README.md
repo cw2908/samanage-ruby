@@ -41,3 +41,10 @@ users = api_controller.collect_users
 hardware = {'hardware':{'name':'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
+
+
+
+
+
+[![Gem Version](https://badge.fury.io/rb/samanage.svg)](https://badge.fury.io/rb/samanage)
+**=======================================================**
