@@ -1,5 +1,6 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'http'
+
 require 'samanage/api'
 require 'samanage/api/users'
 require 'samanage/api/requester'

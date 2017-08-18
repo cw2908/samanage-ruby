@@ -3,7 +3,7 @@ module Samanage
 		attr_accessor :url
 		@url = ''
 		def initialize(path: nil,options: nil)
-			self.url =  map_path(path, options)
+			self.url =  map_path(path: path, options: options)
 			return url
 		end
 
