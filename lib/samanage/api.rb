@@ -87,6 +87,10 @@ module Samanage
 				error = response[:response]
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
+			rescue HTTP::ConnectionError => e
+				error = e.class
+				response = e
+				raise Samanage::Error.new(error: error, response: response)
 		# Always return response hash
 		response
 		end
