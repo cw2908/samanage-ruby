@@ -20,7 +20,7 @@ module Samanage
 			other_assets.uniq
 		end
 
-		def create_other_asset(payload: , options: {})
+		def create_other_asset(payload: nil, options: {})
 			api_call = self.execute(path: PATHS[:other_asset], http_method: 'post', payload: payload)
 			api_call
 		end

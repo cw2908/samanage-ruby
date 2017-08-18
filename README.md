@@ -1,7 +1,7 @@
 # Samanage Ruby Gem
 
 ## Requirements
-- Ruby >= 2.3.1
+- Ruby >= 2.0
 
 ## Installation
 `gem install samanage`

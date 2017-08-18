@@ -19,7 +19,7 @@ module Samanage
 			incidents
 		end
 
-		def create_incident(payload: , options: {})
+		def create_incident(payload: nil, options: {})
 			api_call = self.execute(path: PATHS[:incident], http_method: 'post', payload: payload)
 			api_call
 		end

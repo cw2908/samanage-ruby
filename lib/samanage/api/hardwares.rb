@@ -38,7 +38,7 @@ module Samanage
 		end
 
 
-		def update_hardware(payload: nil, id:, options: {})
+		def update_hardware(payload: nil, id: nil, options: {})
 			path = "hardwares/#{id}.json"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)
 			api_call

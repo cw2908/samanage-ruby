@@ -8,10 +8,10 @@ module Samanage
 		end
 
 
-		def map_path(path, options)
+		def map_path(path: nil, options: nil)
 			url = String.new
 			parameters = String.new
-			case path.to_s
+			case path
 			when /user/
 				url += 'users'
 			when /hardware/
