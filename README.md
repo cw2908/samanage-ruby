@@ -1,5 +1,5 @@
 # Samanage Ruby Gem
-
+[![Gem Version](https://badge.fury.io/rb/samanage.svg)](https://badge.fury.io/rb/samanage)
 ## Requirements
 - Ruby >= 2.0
 
@@ -42,9 +42,3 @@ hardware = {'hardware':{'name':'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 
-
-
-
-
-[![Gem Version](https://badge.fury.io/rb/samanage.svg)](https://badge.fury.io/rb/samanage)
-**=======================================================**
