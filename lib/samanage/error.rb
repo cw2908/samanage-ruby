@@ -1,5 +1,6 @@
 module Samanage
-	class SamanageError < StandardError
+	# Errors in gem
+	class Error < StandardError
 		attr_accessor :status_code, :response, :error
 		def initialize(error: nil, response: {})
 			self.status_code = response[:code]
@@ -10,6 +11,10 @@ module Samanage
 
 	end
 
+	# API Errors
+	class SamanageError < Error
+	end
+
 	class AuthorizationError < SamanageError
 	end
 
@@ -18,4 +23,5 @@ module Samanage
 
 	class NotFound < SamanageError
 	end
+
 end
