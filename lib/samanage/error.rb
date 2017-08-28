@@ -3,7 +3,7 @@ module Samanage
 	class Error < StandardError
 		attr_accessor :status_code, :response, :error
 		def initialize(error: nil, response: {})
-			self.status_code = response[:code]
+			self.status_code = response.nil? ? nil : response[:code]
 			self.response = response[:data] ||= response[:response]
 			self.error = error
 			puts "[Error] #{self.status_code}: #{self.response}"
