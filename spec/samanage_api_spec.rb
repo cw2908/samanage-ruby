@@ -6,7 +6,10 @@ describe Samanage do
 		end
 	  context 'on creation' do
 	  	it 'Requires Email & Token' do
-	  		expect{ Samanage::Api.new(token: "invalid token") }.to raise_error(Samanage::AuthorizationError)
+	  		expect{ 
+	  			api_controller = Samanage::Api.new(token: "invalid token")
+	  			api_controller.authorize
+	  		}.to raise_error(Samanage::AuthorizationError)
 	  		expect{ Samanage::Api.new(token: TOKEN) }.to_not raise_error
 	  	end
 
@@ -14,8 +17,10 @@ describe Samanage do
 	  		# Valid Credentials
 	  		expect(Samanage::Api.new(token: TOKEN)).to be_an_instance_of(Samanage::Api)
 	  		# Invalid / Reversed Credentials
-				expect{Samanage::Api.new(token: 'invalid')}.to raise_error(Samanage::AuthorizationError)
-				expect(Samanage::Api.new(token: TOKEN).custom_forms).to be(nil)
+				expect{
+					api_controller = Samanage::Api.new(token: 'invalid')
+					api_controller.authorize
+				}.to raise_error(Samanage::AuthorizationError)
   		end
 
   		it 'Finds all custom forms in development mode' do
@@ -23,6 +28,9 @@ describe Samanage do
   			expect(api_controller).to be_an_instance_of(Samanage::Api)
   			expect(api_controller.custom_forms).not_to be(nil)
   			expect(api_controller.custom_forms).to be_a(Hash)
+  		end
+  		it 'Fails with invalid token in development mode' do
+  			expect{ Samanage::Api.new(token: 'Invalid Token', development_mode: true)}.to raise_error(Samanage::AuthorizationError)
   		end
 	  end
 	end
