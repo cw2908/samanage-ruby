@@ -8,18 +8,20 @@ module Samanage
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 		}
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized
-		def initialize(token: '', dacenter: '', development_mode: false)
-			self.token = token
-			self.datacenter = nil || datacenter
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
+		def initialize(token: nil, dacenter: nil, development_mode: false)
+			self.token = token if token
+			self.datacenter = datacenter if datacenter
 			self.base_url = "https://api#{datacenter}.samanage.com/"
-			# self.content_type = content_type || 'json'
 			self.content_type = 'json'
-			if self.authorized != true
-				self.authorize
-			end
+			self.admins = []
+			# Development mode forzes authorization & prepopulates custom forms/fields and admins
 			if development_mode
+				if self.authorized? != true
+					self.authorize
+				end
 				self.custom_forms = self.organize_forms
+				self.admins = self.list_admins
 			end
 		end
 
@@ -37,7 +39,8 @@ module Samanage
 		end
 
 		# Defaults to GET
-		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false)
+		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false, token: nil)
+			token = token ||= self.token
 			unless verbose.nil?
 				verbose = '?layout=long'
 			end
@@ -45,7 +48,7 @@ module Samanage
 			api_call = HTTP.headers(
 				'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
 				'Content-type'  => "application/#{self.content_type}",
-				'X-Samanage-Authorization' => 'Bearer ' + self.token
+				'X-Samanage-Authorization' => 'Bearer ' + token
 			)
 			ctx = OpenSSL::SSL::SSLContext.new
 			if ssl_fix
@@ -93,6 +96,13 @@ module Samanage
 				raise Samanage::Error.new(error: error, response: response)
 		# Always return response hash
 		response
+		end
+
+		def list_admins
+			admin_role_id = self.execute(path: 'roles.json').select{|role| role['name'] == 'Administrator'}['id']
+			self.admins.push(
+				self.execute(path: "users.json?role=#{admin_role_id}")[:data].map{|u| u['email']}
+			).flatten
 		end
 	end
 end
