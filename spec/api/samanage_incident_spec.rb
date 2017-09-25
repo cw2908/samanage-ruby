@@ -1,5 +1,4 @@
 require 'samanage'
-
 describe Samanage::Api do
 	context 'Incidents' do
 		describe 'API Functions' do
