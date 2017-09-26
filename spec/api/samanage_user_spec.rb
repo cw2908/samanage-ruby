@@ -36,10 +36,10 @@ describe Samanage::Api do
 				expect(user_create[:code]).to eq(200).or(201)
 			end
 			it 'create_user: fails if no email' do
-				user_name = "samanage-ruby-#{(rand*10**10).ceil}"
+				user_name = "samanage-ruby-#{(rand*10**(rand(10))).ceil}"
 				json = {
 					:user => {
-						:name => user_name,
+            :name => user_name,
 					}
 				}
 				expect{@controller.create_user(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
