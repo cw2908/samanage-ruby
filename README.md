@@ -45,7 +45,7 @@ result = api_controller.update_hardware(id: 123, payload: hardware)
 
 
 
-Returns query returns a Hash with keys:
+Executing an api query will return a Hash with the following keys:
 - `:response`*:* unparsed http response
 - `:code`*:* http status code
 - `:json`*:* Samanage API json response
