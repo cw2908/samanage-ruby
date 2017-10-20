@@ -18,11 +18,20 @@
 ## Usage
 ### Basic Queries
 
-```ruby
-    api_controller = Samanage::Api.new(token: api_token)
-    user_query = api_controller.execute(http_method: 'get', path: 'users.json')
+Initialize API controller
+```
+    api_controller = Samanage::Api.new(token: 'abc123')
 ```
 
+
+
+Find a user by email
+```ruby
+    user_query = api_controller.execute(http_method: 'get', path: 'users.json?email=example@gmail.com')
+```
+
+
+Update incident by ID
 ```ruby
     incident_data = {incident: { priority: 'Critical' }}.to_json
     incident_update = api_controller.execute(http_method: 'put', path: 'incidents/123.json', payload: incident_data)

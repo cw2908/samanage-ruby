@@ -31,7 +31,7 @@ module Samanage
 					}
 				}
 		end
-		def form_for(object_type: nil)
+		def form_for(*args)
 			if self.custom_forms == nil
 				self.custom_forms = self.organize_forms
 			end
