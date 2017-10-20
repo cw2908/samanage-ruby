@@ -1,3 +1,7 @@
 tmp/*
 ./test.rb
 *.gem
+.gitignore
+.DS_STORE
+*.DS_STORE
+*/**.DS_STORE
