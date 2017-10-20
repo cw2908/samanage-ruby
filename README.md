@@ -18,14 +18,27 @@
 ## Usage
 ### Basic Queries
 
+Initialize API controller
 ```ruby
-    api_controller = Samanage::Api.new(token: api_token)
-    user_query = api_controller.execute(http_method: 'get', path: 'users.json')
+    api_controller = Samanage::Api.new(token: 'abc123')
 ```
 
+- Find a user by email
+```ruby
+    user_query = api_controller.execute(http_method: 'get', path: 'users.json?email=example@gmail.com')
+```
+
+
+- Update incident by ID
 ```ruby
     incident_data = {incident: { priority: 'Critical' }}.to_json
     incident_update = api_controller.execute(http_method: 'put', path: 'incidents/123.json', payload: incident_data)
+```
+
+- Update hardware
+```ruby
+hardware = {'hardware':{'name':'My Computer'}}
+result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 
 
@@ -43,15 +56,4 @@ Returns query returns a Hash with keys:
 
 
 
-### Function examples
-#### Return all Samanage Users
-```ruby
-users = api_controller.collect_users
-```
-
-#### Update hardware
-```ruby
-hardware = {'hardware':{'name':'My Computer'}}
-result = api_controller.update_hardware(id: 123, payload: hardware)
-```
 
