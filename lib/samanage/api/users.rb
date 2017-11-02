@@ -35,7 +35,7 @@ module Samanage
 		# Email is unique so compare first for exact match only. Return [nil..id]
 		def find_user_id_by_email(email: nil)
 			api_call = self.check_user(value: email)
-			api_call.dig(:email).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:email).first.dig('id') : nil
+			api_call.dig(:data).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:data).first.dig('id') : nil
 		end
 
     # Check for user by field (ex: users.json?field=value)

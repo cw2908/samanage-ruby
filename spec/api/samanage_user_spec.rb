@@ -63,10 +63,10 @@ describe Samanage::Api do
 				users = @controller.collect_users
 				sample_user = users.sample
 				sample_email = sample_user['email']
-				sample_email = sample_user['id']
+				sample_id = sample_user['id']
 				found_id = @controller.find_user_id_by_email(email: sample_email)
-				expect(sample_email).to not_be(nil)
-				expect(sample_email).to eq(found_id)
+				expect(sample_email).not_to be(nil)
+				expect(sample_id).to eq(found_id)
 			end
 
 			it 'update_user: update_user by id' do
