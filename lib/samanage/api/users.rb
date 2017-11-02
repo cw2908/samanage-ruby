@@ -48,7 +48,6 @@ module Samanage
     # Update user by id
 		def update_user(payload: nil, id: nil)
 			path = "users/#{id}.json"
-			puts "Path: #{path}"
 			api_call = self.execute(path: path, http_method: 'put', payload: payload)
 			api_call
 		end
