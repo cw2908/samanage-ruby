@@ -6,7 +6,7 @@ module Samanage
     api_call = self.execute(path: url)
     api_call
   end
-  
+
   # Returns all users in the account
 		def collect_users
 			page = 1
@@ -24,12 +24,18 @@ module Samanage
 			api_call = self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
 			api_call
     end
-    
+
     # Find user by id
     def find_user(id: nil)
 			path = "users/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
+		end
+
+		# Email is unique so compare first for exact match only. Return [nil..id]
+		def find_user_id_by_email(email: nil)
+			api_call = self.check_user(value: email)
+			api_call.dig(:data).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:data).first.dig('id') : nil
 		end
 
     # Check for user by field (ex: users.json?field=value)

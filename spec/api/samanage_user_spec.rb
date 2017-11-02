@@ -52,10 +52,23 @@ describe Samanage::Api do
 				expect(user[:data]).to have_key('email')
 				expect(user[:data]).to have_key('name')
 			end
+
+
 			it 'find_user: returns nothing for an invalid id' do
 				sample_id = (0..10).entries.sample
 				expect{@controller.find_user(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found user
 			end
+
+			it 'finds_user_id_by_email' do
+				users = @controller.collect_users
+				sample_user = users.sample
+				sample_email = sample_user['email']
+				sample_id = sample_user['id']
+				found_id = @controller.find_user_id_by_email(email: sample_email)
+				expect(sample_email).not_to be(nil)
+				expect(sample_id).to eq(found_id)
+			end
+
 			it 'update_user: update_user by id' do
 				users = @controller.collect_users
 				sample_id = users.sample['id']

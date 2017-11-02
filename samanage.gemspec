@@ -1,15 +1,16 @@
 Gem::Specification.new do |s|
-  s.name        = 'samanage'
-  s.version     = '1.6.2'
-  s.date        =  Date.today.strftime("%Y-%m-%d")
-  s.summary     = "Samanage Ruby Gem"
-  s.description = "Connect to Samanage using Ruby!"
-  s.authors     = ["Chris Walls"]
-  s.email       = 'cwalls2908@gmail.com'
-  s.files       = `git ls-files`.split("\n")
-  s.require_paths = ["lib"]
-  s.add_development_dependency 'http', ['~> 2.2']
-  s.add_runtime_dependency 'http', ["~> 2.2"]
-  s.homepage    = 'https://github.com/cw2908/samanage-ruby'
-  s.license     = 'MIT'
+  s.name                    = 'samanage'
+  s.version                 = '1.6.3'
+  s.date                    =  Date.today.strftime("%Y-%m-%d")
+  s.summary                 = "Samanage Ruby Gem"
+  s.description             = "Connect to Samanage using Ruby!"
+  s.authors                 = ["Chris Walls"]
+  s.email                   = 'cwalls2908@gmail.com'
+  s.files                   = `git ls-files`.split("\n")
+  s.homepage                = 'https://github.com/cw2908/samanage-ruby'
+  s.license                 = 'MIT'
+  s.require_paths           = ["lib"]
+  s.required_ruby_version   = '>= 2.3'
+  s.add_development_dependency 'http', ['~> 2.3']
+  s.add_runtime_dependency 'http', ["~> 2.3"]
 end
