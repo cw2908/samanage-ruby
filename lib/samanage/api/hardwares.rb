@@ -31,7 +31,7 @@ module Samanage
 		end
 
 		def find_hardwares_by_serial(serial_number: serial_number)
-			path = "hardwares.json?serial_number=#{serial_number}"
+			path = "hardwares.json?serial_number[]=#{serial_number}"
 			api_call = self.execute(path: path)
 			api_call
 		end
