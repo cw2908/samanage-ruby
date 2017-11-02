@@ -64,7 +64,7 @@ describe Samanage::Api do
 				sample_hardware = hardwares.sample
 				sample_serial_number = sample_hardware['serial_number']
 				sample_id = sample_hardware['id']
-				found_assets = @controller.find_hardware_id_by_email(serial_number: sample_serial_number)
+				found_assets = @controller.find_hardwares_id_by_email(serial_number: sample_serial_number)
 				found_sample = found_assets.sample
 				expect(found_sample['serial_number']).to eq(sample_serial_number)
 				# expect(sample_serial_number).not_to be(nil)
