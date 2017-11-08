@@ -58,6 +58,19 @@ describe Samanage::Api do
 				sample_id = (0..10).entries.sample
 				expect{@controller.find_hardware(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found hardware
 			end
+
+			it 'finds_hardwares_by_serial' do
+				hardwares = @controller.collect_hardwares
+				sample_hardware = hardwares.sample
+				sample_serial_number = sample_hardware['serial_number']
+				sample_id = sample_hardware['id']
+				found_assets = @controller.find_hardwares_by_serial(serial_number: sample_serial_number)
+				found_sample = found_assets[:data].sample
+				expect(sample_serial_number).not_to be(nil)
+				expect(found_sample['serial_number']).not_to be(nil)
+				expect(found_sample['serial_number']).to eq(sample_serial_number)
+				# expect(sample_id).to eq(found_assets[:data].first.dig('id'))
+			end
 			it 'update_hardware: update_hardware by id' do
 				hardwares = @controller.collect_hardwares
 				sample_id = hardwares.sample['id']

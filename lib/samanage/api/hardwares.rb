@@ -30,6 +30,12 @@ module Samanage
 			api_call
 		end
 
+		def find_hardwares_by_serial(serial_number: nil)
+			path = "hardwares.json?serial_number[]=#{serial_number}"
+			api_call = self.execute(path: path)
+			api_call
+		end
+
 		def check_hardware(options: {})
 			url = Samanage::UrlBuilder.new(path: PATHS[:hardware], options: options).url
 			puts "Url: #{url}"
