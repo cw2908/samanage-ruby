@@ -30,8 +30,9 @@ describe Samanage::Api do
 				incident_id = 19394209
 				comments_api = @controller.get_comments(incident_id: incident_id)
 				comments_found = @controller.collect_comments(incident_id: incident_id)
-				puts "comments api size: #{comments_api.inspect}"
-				puts "Found Comments: #{comments_found.size}"
+				# puts "comments api size: #{comments_api.inspect}"
+				# puts "Found Comments: #{comments_found.size}"
+
 				# Total count bug
 				# expect(comments_api[:total_count]).to eq(comments_found.size)
 			end
