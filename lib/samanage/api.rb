@@ -9,13 +9,18 @@ module Samanage
 			custom_forms: 'custom_forms.json',
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
-		def initialize(token: nil, dacenter: nil, development_mode: false)
+
+		# Development mode forzes authorization & prepopulates custom forms/fields and admins
+		# datacenter should equal 'eu' or blank
+		def initialize(token: nil, datacenter: nil, development_mode: false)
 			self.token = token if token
+			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
+				datacenter = nil
+			end
 			self.datacenter = datacenter if datacenter
 			self.base_url = "https://api#{datacenter}.samanage.com/"
 			self.content_type = 'json'
 			self.admins = []
-			# Development mode forzes authorization & prepopulates custom forms/fields and admins
 			if development_mode
 				if self.authorized? != true
 					self.authorize
@@ -29,6 +34,7 @@ module Samanage
 			self.authorized
 		end
 
+		# Check token against api.json
 		def authorize
 			self.execute(path: 'api.json')
 			rescue OpenSSL::SSL::SSLError => e
@@ -38,7 +44,7 @@ module Samanage
 			self.authorized = true
 		end
 
-		# Defaults to GET
+		# Calling execute without a method defaults to GET
 		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false, token: nil)
 			token = token ||= self.token
 			unless verbose.nil?
@@ -98,6 +104,8 @@ module Samanage
 		response
 		end
 
+
+		# Return all admins in the account
 		def list_admins
 			admin_role_id = self.execute(path: 'roles.json').select{|role| role['name'] == 'Administrator'}['id']
 			self.admins.push(

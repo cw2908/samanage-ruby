@@ -1,6 +1,8 @@
 module Samanage
 	class Api
 
+
+	# Get users, using URL builder
 	def get_users(path: PATHS[:user], options: {})
     url = Samanage::UrlBuilder.new(path: path, options: options).url
     api_call = self.execute(path: url)
@@ -20,19 +22,20 @@ module Samanage
 			users
 		end
 
+		# Create user given JSON
 		def create_user(payload: nil, options: {})
 			api_call = self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
 			api_call
     end
 
-    # Find user by id
+    # Return user by ID
     def find_user(id: nil)
 			path = "users/#{id}.json"
 			api_call = self.execute(path: path)
 			api_call
 		end
 
-		# Email is unique so compare first for exact match only. Return [nil..id]
+		# Email is unique so compare first for exact match only. Returns nil or the id
 		def find_user_id_by_email(email: nil)
 			api_call = self.check_user(value: email)
 			api_call.dig(:data).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:data).first.dig('id') : nil
