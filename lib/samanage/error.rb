@@ -12,16 +12,12 @@ module Samanage
 	end
 
 	# API Errors
-	class SamanageError < Error
-	end
+	class SamanageError < Error; end
 
-	class AuthorizationError < SamanageError
-	end
+	class AuthorizationError < SamanageError; end
 
-	class InvalidRequest < SamanageError
-	end
+	class InvalidRequest < SamanageError; end
 
-	class NotFound < SamanageError
-	end
+	class NotFound < SamanageError; end
 
 end
