@@ -1,6 +1,7 @@
+$:.push File.expand_path("../lib", __FILE__)
 Gem::Specification.new do |s|
   s.name                    = 'samanage'
-  s.version                 = '1.6.6'
+  s.version                 = '1.6.7'
   s.date                    =  Date.today.strftime("%Y-%m-%d")
   s.summary                 = "Samanage Ruby Gem"
   s.description             = "Connect to Samanage using Ruby!"
