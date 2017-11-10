@@ -64,12 +64,12 @@ describe Samanage::Api do
 				incidents = @controller.collect_incidents
 				sample_id = incidents.sample['id']
 				new_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
-				json = {
+				incident_json = {
 					:incident => {
 						:name => new_name
 					}
 				}
-				incident_update = @controller.update_incident(payload: json.to_json, id: sample_id)
+				incident_update = @controller.update_incident(payload: incident_json.to_json, id: sample_id)
 				expect(incident_update[:data]["name"]).to eq(new_name)
 				expect(incident_update[:code]).to eq(200).or(201)
 			end
