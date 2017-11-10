@@ -1,10 +1,14 @@
 module Samanage
 	class Api
+
+		# Get custom fields default url
 		def get_custom_fields(path: PATHS[:custom_fields], options:{})
 			url = Samanage::UrlBuilder.new(path: path, options: options).url
 			api_call = self.execute(path: url)
 			api_call
 		end
+
+		# Gets all custom fields
 		def collect_custom_fields
 			page = 1
 			custom_fields = Array.new

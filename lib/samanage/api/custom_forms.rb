@@ -1,11 +1,13 @@
 module Samanage
 	class Api
+		# Get custom forms path
 		def get_custom_forms(path: PATHS[:custom_forms], options: {})
 			url = Samanage::UrlBuilder.new(path: path, options: options).url
 			api_call = self.execute(path: url)
 			api_call
 		end
 
+		# Get all custom forms
 		def collect_custom_forms
 			page = 1
 			custom_forms = Array.new
@@ -19,6 +21,7 @@ module Samanage
 			custom_forms
 		end
 
+		# Set forms by type and map fields
 		def organize_forms
 			custom_forms = self.collect_custom_forms
 			custom_forms.map{|form| form.delete_if{|k, v| v.nil?}}
@@ -31,6 +34,8 @@ module Samanage
 					}
 				}
 		end
+
+		# Get form for a specific object type
 		def form_for(object_type: nil)
 			if self.custom_forms == nil
 				self.custom_forms = self.organize_forms

@@ -2,6 +2,7 @@ module Samanage
 	class UrlBuilder
 		attr_accessor :url
 		@url = ''
+
 		def initialize(path: nil,options: nil)
 			self.url =  map_path(path: path, options: options)
 			return url
