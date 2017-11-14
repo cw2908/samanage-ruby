@@ -59,19 +59,6 @@ describe Samanage::Api do
 				sample_id = (0..10).entries.sample
 				expect{@controller.find_mobile(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found mobile
 			end
-
-			it 'finds_mobiles_by_serial' do
-				mobiles = @controller.collect_mobiles
-				sample_mobile = mobiles.sample
-				sample_serial_number = sample_mobile['serial_number']
-				sample_id = sample_mobile['id']
-				found_assets = @controller.find_mobiles_by_serial(serial_number: sample_serial_number)
-				found_sample = found_assets[:data].sample
-				expect(sample_serial_number).not_to be(nil)
-				expect(found_sample['serial_number']).not_to be(nil)
-				expect(found_sample['serial_number']).to eq(sample_serial_number)
-				# expect(sample_id).to eq(found_assets[:data].first.dig('id'))
-			end
 			it 'update_mobile: update_mobile by id' do
 				mobiles = @controller.collect_mobiles
 				sample_id = mobiles.sample['id']
