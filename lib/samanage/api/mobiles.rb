@@ -29,14 +29,7 @@ module Samanage
 			path = "mobiles/#{id}.json"
 			self.execute(path: path)
 		end
-
-		# Find mobile given a serial number
-		def find_mobiles_by_serial(serial_number: nil)
-			path = "mobiles.json?serial_number[]=#{serial_number}"
-			self.execute(path: path)
-		end
-
-
+		
 		# Check for mobile using URL builder
 		def check_mobile(options: {})
 			url = Samanage::UrlBuilder.new(path: PATHS[:mobile], options: options).url
