@@ -101,8 +101,8 @@ module Samanage
 				error = e.class
 				response = nil
 				raise Samanage::Error.new(error: error, response: response)
-		# Always return response hash
-		response
+			# Always return response hash
+			response
 		end
 
 

@@ -1,4 +1,5 @@
 require 'samanage'
+
 describe Samanage::Api do
 	context 'Mobile' do
 		describe 'API Functions' do
@@ -8,7 +9,6 @@ describe Samanage::Api do
 			end
 			it 'get_mobiles: it returns API call of mobiles' do
 				api_call = @controller.get_mobiles
-				sleep 100
 				expect(api_call).to be_a(Hash)
 				expect(api_call[:total_count]).to be_an(Integer)
 				expect(api_call).to have_key(:response)
@@ -25,21 +25,22 @@ describe Samanage::Api do
 				serial_number = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
 				json = {
 					:mobile => {
-						:name => mobile_name,
-						:serial_number => serial_number,
+						model: 'test',
+						manufacturer: mobile_name,
+						serial_number:  serial_number,
 					}
 				}
 				mobile_create = @controller.create_mobile(payload: json.to_json)
 
 				expect(mobile_create[:data]['id']).to be_an(Integer)
-				expect(mobile_create[:data]['name']).to eq(mobile_name)
-				expect(mobile_create[:code]).to eq(201).or(200)
+				expect(mobile_create[:data]['manufacturer']).to eq(mobile_name)
 			end
 			it 'create_mobile: fails if no serial' do
 				mobile_name = "samanage-ruby-#{(rand*10**10).ceil}"
 				json = {
 					:mobile => {
-						:name => mobile_name,
+						model: 'test',
+						manufacturer: mobile_name,
 					}
 				}
 				expect{@controller.create_mobile(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
@@ -50,7 +51,7 @@ describe Samanage::Api do
 				mobile = @controller.find_mobile(id: sample_id)
 
 				expect(mobile[:data]['id']).to eq(sample_id)  # id should match found mobile
-				expect(mobile[:data]).to have_key('name')
+				expect(mobile[:data]).to have_key('manufacturer')
 				expect(mobile[:data]).to have_key('serial_number')
 				expect(mobile[:data]).to have_key('id')
 			end
@@ -77,11 +78,11 @@ describe Samanage::Api do
 				new_name = (0...50).map {('a'..'z').to_a[rand(26)] }.join
 				json = {
 					:mobile => {
-						:name => new_name
+						:manufacturer => new_name
 					}
 				}
 				mobile_update = @controller.update_mobile(payload: json.to_json, id: sample_id)
-				expect(mobile_update[:data]["name"]).to eq(new_name)
+				expect(mobile_update[:data]["manufacturer"]).to eq(new_name)
 				expect(mobile_update[:code]).to eq(200).or(201)
 			end
 		end
