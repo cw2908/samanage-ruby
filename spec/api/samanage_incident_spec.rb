@@ -21,7 +21,6 @@ describe Samanage::Api do
 			end
 			it 'create_incident(payload: json): creates a incident' do
 				users_email = @controller.collect_users.sample['email']
-				serial_number = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
 				incident_name = "Samanage Ruby Incident"
 				json = {
 					:incident => {
@@ -62,7 +61,9 @@ describe Samanage::Api do
 			end
 			it 'update_incident: update_incident by id' do
 				incidents = @controller.collect_incidents
-				sample_id = incidents.sample['id']
+				sample_incident = incidents.reject{|i| ['Closed','Resolved'].include? i['State']}.sample
+				puts "sample_incident: #{sample_incident.inspect}"
+				sample_id = sample_incident['id']
 				description = (0...500).map { ('a'..'z').to_a[rand(26)] }.join
 				incident_json = {
 					:incident => {
