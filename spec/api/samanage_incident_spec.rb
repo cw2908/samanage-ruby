@@ -62,7 +62,6 @@ describe Samanage::Api do
 			it 'update_incident: update_incident by id' do
 				incidents = @controller.collect_incidents
 				sample_incident = incidents.reject{|i| ['Closed','Resolved'].include? i['state']}.sample
-				puts "sample_incident: #{sample_incident.inspect}"
 				sample_id = sample_incident['id']
 				description = (0...500).map { ('a'..'z').to_a[rand(26)] }.join
 				incident_json = {
