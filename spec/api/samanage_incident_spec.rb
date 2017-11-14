@@ -70,7 +70,7 @@ describe Samanage::Api do
 					}
 				}
 				incident_update = @controller.update_incident(payload: incident_json.to_json, id: sample_id)
-				expect(incident_update[:data]['description']).to eq(new_name)
+				expect(incident_update[:data]['description']).to eq(description)
 				expect(incident_update[:code]).to eq(200).or(201)
 			end
 		end
