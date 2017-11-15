@@ -12,7 +12,6 @@ module Samanage
 			page = 1
 			other_assets = Array.new
 			total_pages = self.get_other_assets[:total_pages]
-			# puts api_call
 			other_assets = []
 			while page <= total_pages
 				other_assets += self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")[:data]

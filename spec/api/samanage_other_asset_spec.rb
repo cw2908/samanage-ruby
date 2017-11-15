@@ -50,9 +50,6 @@ describe Samanage::Api do
 
 			it 'find_other_asset: returns an other_asset card by known id' do
 				other_assets = @controller.collect_other_assets
-				puts "Found ##{other_assets.size} other assets"
-				puts ".sample ##{other_assets.sample}"
-				puts ".sample['id'] ##{other_assets.sample['id']}"
 				sample_id = other_assets.sample['id']
 
 				other_asset = @controller.find_other_asset(id: sample_id)
