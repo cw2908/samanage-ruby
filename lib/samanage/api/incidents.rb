@@ -13,7 +13,6 @@ module Samanage
 			page = 1
 			incidents = Array.new
 			total_pages = self.get_incidents[:total_pages]
-			# puts api_call
 			while page <= total_pages
 				incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}")[:data]
 				page += 1
