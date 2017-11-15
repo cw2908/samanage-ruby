@@ -5,6 +5,7 @@ module Samanage
 			user: 'users.json',
 			incident: 'incidents.json',
 			other_asset: 'other_assets.json',
+			mobile: 'mobiles.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 		}
@@ -100,8 +101,8 @@ module Samanage
 				error = e.class
 				response = nil
 				raise Samanage::Error.new(error: error, response: response)
-		# Always return response hash
-		response
+			# Always return response hash
+			response
 		end
 
 

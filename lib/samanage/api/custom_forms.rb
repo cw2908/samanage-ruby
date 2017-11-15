@@ -3,8 +3,7 @@ module Samanage
 		# Get custom forms path
 		def get_custom_forms(path: PATHS[:custom_forms], options: {})
 			url = Samanage::UrlBuilder.new(path: path, options: options).url
-			api_call = self.execute(path: url)
-			api_call
+			self.execute(path: url)
 		end
 
 		# Get all custom forms
@@ -12,10 +11,8 @@ module Samanage
 			page = 1
 			custom_forms = Array.new
 			total_pages = self.get_custom_forms[:total_pages]
-			# puts api_call
 			while page <= total_pages
-				api_call = self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")
-				custom_forms += api_call[:data]
+				custom_forms += self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data]
 				page += 1
 			end
 			custom_forms

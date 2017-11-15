@@ -5,9 +5,8 @@ module Samanage
 	# Get users, using URL builder
 	def get_users(path: PATHS[:user], options: {})
     url = Samanage::UrlBuilder.new(path: path, options: options).url
-    api_call = self.execute(path: url)
-    api_call
-  end
+    self.execute(path: url)
+   end
 
   # Returns all users in the account
 		def collect_users
@@ -15,8 +14,7 @@ module Samanage
 			users = Array.new
 			total_pages = self.get_users[:total_pages]
 			while page <= total_pages
-				api_call = self.execute(http_method: 'get', path: "users.json?page=#{page}")
-				users += api_call[:data]
+				users += self.execute(http_method: 'get', path: "users.json?page=#{page}")[:data]
 				page += 1
 			end
 			users
@@ -24,15 +22,13 @@ module Samanage
 
 		# Create user given JSON
 		def create_user(payload: nil, options: {})
-			api_call = self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
-			api_call
-    end
+			self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
+		end
 
     # Return user by ID
     def find_user(id: nil)
 			path = "users/#{id}.json"
-			api_call = self.execute(path: path)
-			api_call
+			self.execute(path: path)
 		end
 
 		# Email is unique so compare first for exact match only. Returns nil or the id
@@ -44,15 +40,13 @@ module Samanage
     # Check for user by field (ex: users.json?field=value)
 		def check_user(field: 'email', value: nil)
 			url = "users.json?#{field}=#{value}"
-			api_call = self.execute(path: url)
-			api_call
+			self.execute(path: url)
 		end
 
     # Update user by id
 		def update_user(payload: nil, id: nil)
 			path = "users/#{id}.json"
-			api_call = self.execute(path: path, http_method: 'put', payload: payload)
-			api_call
+			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 	end
 end

@@ -27,6 +27,8 @@ module Samanage
 				url += 'custom_fields'
 			when /custom_form/
 				url += 'custom_forms'
+			when /mobile/
+				url += 'mobiles'
 			end
 
 			if path.match(/(\d)+/)
