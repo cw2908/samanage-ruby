@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem 'rspec'
 
-gem 'http'
+gem 'httparty'
 
 group :development do
 	gem 'guard-rspec', require: false

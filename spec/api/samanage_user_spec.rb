@@ -29,7 +29,7 @@ describe Samanage::Api do
 						:email => email,
 					}
 				}
-				user_create = @controller.create_user(payload: json.to_json)
+				user_create = @controller.create_user(payload: json)
 				expect(user_create[:data]['email']).to eq(email)
 				expect(user_create[:data]['id']).to be_an(Integer)
 				expect(user_create[:data]['name']).to eq(user_name)
@@ -42,7 +42,7 @@ describe Samanage::Api do
             :name => user_name,
 					}
 				}
-				expect{@controller.create_user(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@controller.create_user(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_user: returns a user card by known id' do
 				users = @controller.collect_users
@@ -78,7 +78,7 @@ describe Samanage::Api do
 						:name => new_name
 					}
 				}
-				user_update = @controller.update_user(payload: json.to_json, id: sample_id)
+				user_update = @controller.update_user(payload: json, id: sample_id)
 				expect(user_update[:data]["name"]).to eq(new_name)
 				expect(user_update[:code]).to eq(200).or(201)
 			end

@@ -19,7 +19,7 @@ describe Samanage::Api do
 					comment: {
 						body: rand_text,
 					}
-				}.to_json
+				}
 				api_call = @controller.create_comment(incident_id: incident_id, comment: comment)
 
 				expect(api_call.dig(:data,'body')).to eq(rand_text)

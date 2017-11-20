@@ -1,5 +1,4 @@
 require 'samanage'
-
 describe Samanage::Api do
 	context 'Hardware' do
 		describe 'API Functions' do
@@ -20,16 +19,16 @@ describe Samanage::Api do
 				expect(hardwares).to be_an(Array)
 				expect(hardwares.size).to eq(hardware_count)
 			end
-			it 'create_hardware(payload: json): creates a hardware' do
+			it 'create_hardware(payload: payload): creates a hardware' do
 				hardware_name = "samanage-ruby-#{(rand*10**10).ceil}"
 				serial_number = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
-				json = {
+				payload = {
 					:hardware => {
 						:name => hardware_name,
 						:bio => {:ssn => serial_number},
 					}
 				}
-				hardware_create = @controller.create_hardware(payload: json.to_json)
+				hardware_create = @controller.create_hardware(payload: payload)
 
 				expect(hardware_create[:data]['id']).to be_an(Integer)
 				expect(hardware_create[:data]['name']).to eq(hardware_name)
@@ -37,12 +36,12 @@ describe Samanage::Api do
 			end
 			it 'create_hardware: fails if no serial' do
 				hardware_name = "samanage-ruby-#{(rand*10**10).ceil}"
-				json = {
+				payload = {
 					:hardware => {
 						:name => hardware_name,
 					}
 				}
-				expect{@controller.create_hardware(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@controller.create_hardware(payload: payload)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_hardware: returns a hardware card by known id' do
 				hardwares = @controller.collect_hardwares
@@ -75,12 +74,12 @@ describe Samanage::Api do
 				hardwares = @controller.collect_hardwares
 				sample_id = hardwares.sample['id']
 				new_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
-				json = {
+				payload = {
 					:hardware => {
 						:name => new_name
 					}
 				}
-				hardware_update = @controller.update_hardware(payload: json.to_json, id: sample_id)
+				hardware_update = @controller.update_hardware(payload: payload, id: sample_id)
 				expect(hardware_update[:data]["name"]).to eq(new_name)
 				expect(hardware_update[:code]).to eq(200).or(201)
 			end

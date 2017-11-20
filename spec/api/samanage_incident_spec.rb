@@ -29,7 +29,7 @@ describe Samanage::Api do
 						:description => "Description"
 					}
 				}
-				incident_create = @controller.create_incident(payload: json.to_json)
+				incident_create = @controller.create_incident(payload: json)
 
 				expect(incident_create[:data]['id']).to be_an(Integer)
 				expect(incident_create[:data]['name']).to eq(incident_name)
@@ -43,7 +43,7 @@ describe Samanage::Api do
 						:description => "Description"
 					}
 				}
-				expect{@controller.create_incident(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@controller.create_incident(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_incident: returns a incident card by known id' do
 				incidents = @controller.collect_incidents
@@ -69,7 +69,7 @@ describe Samanage::Api do
 						:description => description
 					}
 				}
-				incident_update = @controller.update_incident(payload: incident_json.to_json, id: sample_id)
+				incident_update = @controller.update_incident(payload: incident_json, id: sample_id)
 				expect(incident_update[:data]['description']).to eq(description)
 				expect(incident_update[:code]).to eq(200).or(201)
 			end
