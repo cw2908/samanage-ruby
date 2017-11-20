@@ -1,6 +1,9 @@
 module Samanage
 	class Api
 		include HTTParty
+		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
+
+
 		PATHS = {
 			hardware: 'hardwares.json',
 			user: 'users.json',
