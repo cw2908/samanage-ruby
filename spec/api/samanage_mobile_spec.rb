@@ -30,7 +30,7 @@ describe Samanage::Api do
 						serial_number:  serial_number,
 					}
 				}
-				mobile_create = @controller.create_mobile(payload: json.to_json)
+				mobile_create = @controller.create_mobile(payload: json)
 
 				expect(mobile_create[:data]['id']).to be_an(Integer)
 				expect(mobile_create[:data]['manufacturer']).to eq(mobile_name)
@@ -43,7 +43,7 @@ describe Samanage::Api do
 						manufacturer: mobile_name,
 					}
 				}
-				expect{@controller.create_mobile(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@controller.create_mobile(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_mobile: returns a mobile card by known id' do
 				mobiles = @controller.collect_mobiles
@@ -68,7 +68,7 @@ describe Samanage::Api do
 						:manufacturer => new_name
 					}
 				}
-				mobile_update = @controller.update_mobile(payload: json.to_json, id: sample_id)
+				mobile_update = @controller.update_mobile(payload: json, id: sample_id)
 				expect(mobile_update[:data]["manufacturer"]).to eq(new_name)
 				expect(mobile_update[:code]).to eq(200).or(201)
 			end

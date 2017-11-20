@@ -32,13 +32,13 @@ Initialize API controller
 
 - Update incident by ID
 ```ruby
-    incident_data = {incident: { priority: 'Critical' }}.to_json
+    incident_data = {incident: { priority: 'Critical' }}
     incident_update = api_controller.execute(http_method: 'put', path: 'incidents/123.json', payload: incident_data)
 ```
 
 - Update hardware
 ```ruby
-hardware = {'hardware':{'name':'My Computer'}}.to_json
+hardware = {'hardware':{'name':'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 

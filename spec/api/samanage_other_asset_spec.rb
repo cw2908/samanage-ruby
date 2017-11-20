@@ -29,7 +29,7 @@ describe Samanage::Api do
 					}
 				}
 
-				other_asset_create = @controller.create_other_asset(payload: json.to_json)
+				other_asset_create = @controller.create_other_asset(payload: json)
 				expect(other_asset_create[:data]['id']).to be_an(Integer)
 				expect(other_asset_create[:data]['name']).to eq(other_asset_name)
 				expect(other_asset_create[:code]).to eq(200).or(201)
@@ -45,7 +45,7 @@ describe Samanage::Api do
 					}
 				}
 				json[:other_asset].delete(json[:other_asset].keys.sample) # Delete random sample from the examples above
-				expect{@controller.create_other_asset(payload: json.to_json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@controller.create_other_asset(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 
 			it 'find_other_asset: returns an other_asset card by known id' do
@@ -72,7 +72,7 @@ describe Samanage::Api do
 						:name => new_name
 					}
 				}
-				other_asset_update = @controller.update_other_asset(payload: json.to_json, id: sample_id)
+				other_asset_update = @controller.update_other_asset(payload: json, id: sample_id)
 				expect(other_asset_update[:data]["name"]).to eq(new_name)
 				expect(other_asset_update[:code]).to eq(200).or(201)
 			end
