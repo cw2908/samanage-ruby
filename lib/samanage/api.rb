@@ -111,7 +111,10 @@ module Samanage
 				error = response[:response]
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
-			response
+			rescue Errno::ECONNREFUSED => e
+				error = e
+				response = {}
+				raise Samanage::InvalidRequest.new(error: error, response: response)
 		end
 
 
