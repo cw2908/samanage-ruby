@@ -113,7 +113,7 @@ module Samanage
 			end
 			rescue Errno::ECONNREFUSED => e
 				error = e
-				response = {}
+				response = e.class
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 		end
 
