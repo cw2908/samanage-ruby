@@ -1,3 +1,6 @@
+#1.7.4
+- Solving admin listing issue
+
 #1.7.2
 - Catching refused connections as Samanage::Error
 
