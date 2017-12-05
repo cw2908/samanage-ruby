@@ -32,6 +32,13 @@ describe Samanage do
   		it 'Fails with invalid token in development mode' do
   			expect{ Samanage::Api.new(token: 'Invalid Token', development_mode: true)}.to raise_error(Samanage::AuthorizationError)
   		end
+  		it 'Finds Admins' do
+  			api_controller = Samanage::Api.new(token: TOKEN, development_mode: true)
+  			admins = api_controller.list_admins
+  			admin = admins.sample
+  			samanage_admin = api_controller.execute(path: "users.json?#{admin}")
+  			expect (samanage_admin[:data].first['role']['name']).to eq('Administrator')
+  		end
 	  end
 	end
 end

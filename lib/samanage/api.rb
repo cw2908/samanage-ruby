@@ -120,7 +120,7 @@ module Samanage
 
 		# Return all admins in the account
 		def list_admins
-			admin_role_id = self.execute(path: 'roles.json').select{|role| role['name'] == 'Administrator'}['id']
+			admin_role_id = self.execute(path: 'roles.json').select{|role| role['name'] == 'Administrator'}.first['id']
 			self.admins.push(
 				self.execute(path: "users.json?role=#{admin_role_id}")[:data].map{|u| u['email']}
 			).flatten
