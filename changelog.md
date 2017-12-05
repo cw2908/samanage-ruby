@@ -1,6 +1,3 @@
-#2.0.0
-- Refactoring collection methods (Samanage::Api.collect_users => Samanage::Api.users)
-
 #1.7.4
 - Solving admin listing issue
 
