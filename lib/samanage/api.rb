@@ -12,6 +12,9 @@ module Samanage
 			mobile: 'mobiles.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
+			site: 'sites.json',
+			department: 'departments.json',
+			group: 'groups.json'
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
 
@@ -111,13 +114,16 @@ module Samanage
 				error = response[:response]
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
-			response
+			rescue Errno::ECONNREFUSED => e
+				error = e
+				response = e.class
+				raise Samanage::InvalidRequest.new(error: error, response: response)
 		end
 
 
 		# Return all admins in the account
 		def list_admins
-			admin_role_id = self.execute(path: 'roles.json').select{|role| role['name'] == 'Administrator'}['id']
+			admin_role_id = self.execute(path: 'roles.json')[:data].select{|role| role['name'] == 'Administrator'}.first['id']
 			self.admins.push(
 				self.execute(path: "users.json?role=#{admin_role_id}")[:data].map{|u| u['email']}
 			).flatten

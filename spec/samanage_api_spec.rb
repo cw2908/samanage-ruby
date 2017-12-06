@@ -6,7 +6,7 @@ describe Samanage do
 		end
 	  context 'on creation' do
 	  	it 'Requires Email & Token' do
-	  		expect{ 
+	  		expect{
 	  			api_controller = Samanage::Api.new(token: "invalid token")
 	  			api_controller.authorize
 	  		}.to raise_error(Samanage::AuthorizationError)
@@ -31,6 +31,15 @@ describe Samanage do
   		end
   		it 'Fails with invalid token in development mode' do
   			expect{ Samanage::Api.new(token: 'Invalid Token', development_mode: true)}.to raise_error(Samanage::AuthorizationError)
+  		end
+
+  		# Search random Samanage::Api.list_admins user and verifiy role is admin
+  		it 'Finds Admins' do
+  			api_controller = Samanage::Api.new(token: TOKEN, development_mode: true)
+  			admins = api_controller.list_admins
+  			admin_email = admins.sample.gsub('+',"%2B")
+  			samanage_admin = api_controller.execute(path: "users.json?email=#{admin_email}")
+  			expect(samanage_admin[:data].first['role']['name']).to eq('Administrator')
   		end
 	  end
 	end
