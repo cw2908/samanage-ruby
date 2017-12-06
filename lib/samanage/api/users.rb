@@ -6,7 +6,7 @@ module Samanage
 	def get_users(path: PATHS[:user], options: {})
     url = Samanage::UrlBuilder.new(path: path, options: options).url
     self.execute(path: url)
-   end
+	end
 
   # Returns all users in the account
 		def collect_users
