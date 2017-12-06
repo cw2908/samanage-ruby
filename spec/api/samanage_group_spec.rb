@@ -19,8 +19,15 @@ describe Samanage::Api do
 			expect(groups).to be_an(Array)
 			expect(groups.size).to eq(group_count)
 		end
+		it 'find_group: returns a group card by known id' do
+			groups = @controller.collect_groups
+			sample_id = groups.sample['id']
+			group = @controller.find_group(id: sample_id)
+			expect(group[:data]['id']).to eq(sample_id)  # id should match found group
+			expect(group[:data]).to have_key('name')
+		end
 		it 'creates a group' do
-			group_name = "Group Name ##{(rand*10**4).ceil}"
+			group_name = "Group Name #{(rand*10**4).ceil}"
 			group_description = "Description #{(rand*10**4).ceil}"
 			payload = {
 				group: {
@@ -33,6 +40,15 @@ describe Samanage::Api do
 			expect(group_create[:data]['id']).to be_an(Integer)
 			expect(group_create[:data]['name']).to eq(group_name)
 			expect(group_create[:code]).to eq(200).or(201)
+		end
+
+		it 'finds a group by name' do
+			group = @controller.collect_groups.sample
+			group_name = group['name']
+			group_id = group['id']
+			found_group_id = @controller.find_group_id_by_name(group: group_name)
+
+			expect(group_id).to eq(found_group_id)
 		end
 		it 'adds member to group' do
 			random_group_id = @controller.collect_groups.sample['id']

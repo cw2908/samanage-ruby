@@ -37,8 +37,24 @@ module Samanage
 			api_call.dig(:data).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:data).first.dig('id') : nil
 		end
 
+		# Returns nil if no matching group_id
+		def find_user_group_id_by_email(email: nil)
+			user = self.check_user(value: email)
+			group_ids = user[:data].select{|u| u['email'] == email}.first['group_ids']
+			group_ids.each do |group_id|
+				group = self.find_group(id: group_id)
+				if group[:data]['is_user'] && email == group[:data]['email']
+					return group_id
+				end
+			end
+			return
+		end
+
     # Check for user by field (ex: users.json?field=value)
 		def check_user(field: 'email', value: nil)
+			if field.to_s.downcase == 'email'
+				value = value.gsub("+",'%2B')
+			end
 			url = "users.json?#{field}=#{value}"
 			self.execute(path: url)
 		end

@@ -29,7 +29,6 @@ describe Samanage::Api do
 					description: site_description
 				}
 			}
-			puts "Payload: #{payload.inspect}"
 			site_create = @controller.create_site(payload: payload)
 
 			expect(site_create[:data]['id']).to be_an(Integer)
