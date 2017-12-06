@@ -85,7 +85,6 @@ describe Samanage::Api do
 
 				expect(function_id).to eq(found_id)
 			end
-
 			it 'update_user: update_user by id' do
 				users = @controller.collect_users
 				sample_id = users.sample['id']

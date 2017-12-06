@@ -39,7 +39,8 @@ module Samanage
 
 		# Returns nil if no matching group_id
 		def find_user_group_id_by_email(email: nil)
-			group_ids = self.check_user(value: email)[:data].select{|u| u['email'] == email}.first['group_ids']
+			user = self.check_user(value: email)
+			group_ids = user[:data].select{|u| u['email'] == email}.first['group_ids']
 			group_ids.each do |group_id|
 				group = self.find_group(id: group_id)
 				if group[:data]['is_user'] && email == group[:data]['email']
