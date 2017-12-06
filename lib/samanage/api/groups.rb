@@ -21,6 +21,13 @@ module Samanage
 			self.execute(path: PATHS[:group], http_method: 'post', payload: payload)
 		end
 
+		def find_group_id_by_name(group: nil)
+			group_api = self.execute(path: "groups.json?name=#{group}")
+			if group_api[:data].size == 1 && group.to_s.downcase == group_api[:data].first['name'].to_s.downcase
+				return group_api[:data].first['id']
+			end
+		end
+
 		def find_group(id: nil)
 			path = "groups/#{id}.json"
 			self.execute(path: path)

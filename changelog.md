@@ -1,3 +1,6 @@
+#1.7.6
+- Adding group_id find methods for group name and user email
+
 #1.7.5
 - Adding site, department, group creation
 
