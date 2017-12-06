@@ -12,6 +12,9 @@ module Samanage
 			mobile: 'mobiles.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
+			site: 'sites.json',
+			department: 'departments.json',
+			group: 'groups.json'
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
 

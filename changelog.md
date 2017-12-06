@@ -1,3 +1,6 @@
+#1.7.5
+- Adding site, department, group creation
+
 #1.7.4
 - Solving admin listing issue
 
