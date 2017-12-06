@@ -29,6 +29,12 @@ module Samanage
 				url += 'custom_forms'
 			when /mobile/
 				url += 'mobiles'
+			when /site/
+				url += 'sites'
+			when /department/
+				url += 'departments'
+			when /group/
+				url += 'groups'
 			end
 
 			if path.match(/(\d)+/)
