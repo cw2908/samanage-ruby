@@ -69,6 +69,27 @@ describe Samanage::Api do
 				expect(sample_id).to eq(found_id)
 			end
 
+			it 'finds group_id for user' do
+				users = @controller.collect_users
+				sample_user = users.select{|u| u['role']['name'] == 'Administrator'}.sample
+				sample_user_email = sample_user['email']
+				group_ids = sample_user['group_ids']
+				found_id = nil
+				puts "Sampled User: #{sample_user.inspect}"
+				puts "Group IDs: #{group_ids.inspect}"
+				group_ids.each do |group_id|
+					group = @controller.find_group(id: group_id)
+					puts "Group: #{group.inspect}\n\n\n\n"
+					if group[:data]['is_user'] && sample_user_email == group[:data]['email']
+						found_id ||= group_id
+					end
+				end
+				function_id = @controller.find_user_group_id_by_email(email: sample_user_email)
+				puts "Found ID: #{found_id}"
+				puts "Function ID: #{function_id}"
+				expect(function_id).to eq(found_id)
+			end
+
 			it 'update_user: update_user by id' do
 				users = @controller.collect_users
 				sample_id = users.sample['id']

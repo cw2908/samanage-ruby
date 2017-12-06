@@ -21,6 +21,11 @@ module Samanage
 			self.execute(path: PATHS[:group], http_method: 'post', payload: payload)
 		end
 
+		def find_group(id: nil)
+			path = "groups/#{id}.json"
+			self.execute(path: path)
+		end
+
 		def add_member_to_group(email: nil, group_id: nil)
 			user_id = self.find_user_id_by_email(email: email)
 			member_path = "memberships.json?group_id=#{group_id}.json&user_ids=#{user_id}"
