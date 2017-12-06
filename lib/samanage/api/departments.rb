@@ -1,8 +1,8 @@
 module Samanage
 	class Api
 		def get_departments(path: PATHS[:department], options: {})
-  	  url = Samanage::UrlBuilder.new(path: path, options: options).url
-  	  self.execute(path: url)
+			url = Samanage::UrlBuilder.new(path: path, options: options).url
+			self.execute(path: url)
 		end
 
 		def collect_departments
