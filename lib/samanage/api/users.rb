@@ -52,6 +52,9 @@ module Samanage
 
     # Check for user by field (ex: users.json?field=value)
 		def check_user(field: 'email', value: nil)
+			if field.to_s.downcase == 'email'
+				value = value.gsub("+",'%2B')
+			end
 			url = "users.json?#{field}=#{value}"
 			self.execute(path: url)
 		end

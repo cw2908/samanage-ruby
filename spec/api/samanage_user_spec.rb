@@ -75,6 +75,7 @@ describe Samanage::Api do
 				sample_user_email = sample_user['email']
 				group_ids = sample_user['group_ids']
 				found_id = nil
+
 				group_ids.each do |group_id|
 					group = @controller.find_group(id: group_id)
 					if group[:data]['is_user'] && sample_user_email == group[:data]['email']
