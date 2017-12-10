@@ -6,7 +6,7 @@ module Samanage
 	def get_users(path: PATHS[:user], options: {})
     url = Samanage::UrlBuilder.new(path: path, options: options).url
     self.execute(path: url)
-   end
+	end
 
   # Returns all users in the account
 		def collect_users
@@ -26,21 +26,21 @@ module Samanage
 		end
 
     # Return user by ID
-    def find_user(id: nil)
+		def find_user(id: nil)
 			path = "users/#{id}.json"
 			self.execute(path: path)
 		end
 
 		# Email is unique so compare first for exact match only. Returns nil or the id
-		def find_user_id_by_email(email: nil)
+		def find_user_id_by_email(email: )
 			api_call = self.check_user(value: email)
-			api_call.dig(:data).first.to_h.dig('email').to_s.downcase == email.to_s.downcase ? api_call.dig(:data).first.dig('id') : nil
+			api_call.dig(:data).select{|u| u['email'].to_s.downcase == email.to_s.downcase}.to_h['id']
 		end
 
 		# Returns nil if no matching group_id
-		def find_user_group_id_by_email(email: nil)
+		def find_user_group_id_by_email(email: )
 			user = self.check_user(value: email)
-			group_ids = user[:data].select{|u| u['email'] == email}.first['group_ids']
+			group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.to_h['group_ids']
 			group_ids.each do |group_id|
 				group = self.find_group(id: group_id)
 				if group[:data]['is_user'] && email == group[:data]['email']
