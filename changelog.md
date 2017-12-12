@@ -1,3 +1,6 @@
+#1.7.8
+- Fixing nil condition in user_id methods
+
 #1.7.6
 - Adding group_id find methods for group name and user email
 
