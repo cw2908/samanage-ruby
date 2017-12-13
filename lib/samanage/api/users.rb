@@ -1,7 +1,6 @@
 module Samanage
 	class Api
 
-
 	# Get users, using URL builder
 	def get_users(path: PATHS[:user], options: {})
     url = Samanage::UrlBuilder.new(path: path, options: options).url
@@ -34,13 +33,13 @@ module Samanage
 		# Email is unique so compare first for exact match only. Returns nil or the id
 		def find_user_id_by_email(email: )
 			api_call = self.check_user(value: email)
-			api_call.dig(:data).select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first['id']
+			api_call[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['id']
 		end
 
 		# Returns nil if no matching group_id
 		def find_user_group_id_by_email(email: )
 			user = self.check_user(value: email)
-			group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first['group_ids']
+			group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['group_ids']
 			group_ids.each do |group_id|
 				group = self.find_group(id: group_id)
 				if group[:data]['is_user'] && email == group[:data]['email']
