@@ -25,8 +25,8 @@ module Samanage
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
 				self.datacenter = nil
 			end
-			self.base_url =  "https://api#{self.datacenter}.samanage.com/"
-			self.datacenter = datacenter if datacenter
+			self.datacenter ||= datacenter
+			self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
 			self.content_type = 'json'
 			self.admins = []
 			if development_mode
