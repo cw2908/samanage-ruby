@@ -86,6 +86,25 @@ describe Samanage::Api do
 
 				expect(function_id).to eq(found_id)
 			end
+
+
+			it 'returns nil for invalid find_user_group_id_by_email' do
+				invalid_user_email = 'abc@123.gov'
+				function_id = @controller.find_user_group_id_by_email(email: invalid_user_email)
+
+				expect(function_id).to be(nil)
+			end
+
+			it 'returns nil for invalid find_user_id_by_email' do
+				invalid_user_email = 'abc@123.gov'
+				function_id = @controller.find_user_id_by_email(email: invalid_user_email)
+
+				expect(function_id).to be(nil)
+			end
+
+
+
+
 			it 'update_user: update_user by id' do
 				users = @controller.collect_users
 				sample_id = users.sample['id']

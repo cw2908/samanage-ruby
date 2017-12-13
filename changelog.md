@@ -1,3 +1,6 @@
+#1.8.0
+- Adding coverage for invalid api requests
+
 #1.7.9
 - Solving eu datacenter support against base_url
 #1.7.8

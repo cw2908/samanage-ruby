@@ -39,14 +39,14 @@ module Samanage
 		# Returns nil if no matching group_id
 		def find_user_group_id_by_email(email: )
 			user = self.check_user(value: email)
-			group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['group_ids']
+			group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['group_ids'].to_a
 			group_ids.each do |group_id|
 				group = self.find_group(id: group_id)
 				if group[:data]['is_user'] && email == group[:data]['email']
 					return group_id
 				end
 			end
-			return
+			return nil
 		end
 
     # Check for user by field (ex: users.json?field=value)

@@ -1,6 +1,5 @@
 module Samanage
 	class Api
-
 		def get_groups(path: PATHS[:group], options: {})
 			url = Samanage::UrlBuilder.new(path: path, options: options).url
 			self.execute(path: url)

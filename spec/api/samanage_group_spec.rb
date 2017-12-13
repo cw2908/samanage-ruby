@@ -1,5 +1,4 @@
 require 'samanage'
-
 describe Samanage::Api do
 	context 'group' do
 		before(:each) do
@@ -49,6 +48,11 @@ describe Samanage::Api do
 			found_group_id = @controller.find_group_id_by_name(group: group_name)
 
 			expect(group_id).to eq(found_group_id)
+		end
+		it 'returns nil for finding invalid group by name' do
+			group_name = "Invalid-#{rand(100)*100}"
+			found_group_id = @controller.find_group_id_by_name(group: group_name)
+			expect(found_group_id).to be(nil)
 		end
 		it 'adds member to group' do
 			random_group_id = @controller.collect_groups.sample['id']
