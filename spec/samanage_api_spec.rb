@@ -41,6 +41,16 @@ describe Samanage do
   			samanage_admin = api_controller.execute(path: "users.json?email=#{admin_email}")
   			expect(samanage_admin[:data].first['role']['name']).to eq('Administrator')
   		end
+
+  		it 'sets eu datacenter' do
+  			api_controller = Samanage::Api.new(token: 'token', datacenter: 'eu')
+  			expect(api_controller.base_url).to eq('https://appeu.samanage.com')
+  		end
+
+  		it 'does not set non/eu datacenter' do
+  			api_controller = Samanage::Api.new(token: 'token', datacenter: 'invalid')
+  			expect(api_controller.base_url).to eq('https://app.samanage.com')
+  		end
 	  end
 	end
 end

@@ -18,5 +18,8 @@ module Samanage
 			end
 			custom_fields
 		end
+
+
+		alias_method :custom_fields, :collect_custom_fields
 	end
 end

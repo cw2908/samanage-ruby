@@ -39,5 +39,7 @@ module Samanage
 			end
 			self.custom_forms[object_type]
 		end
+
+	alias_method :custom_forms, :collect_custom_forms
 	end
 end

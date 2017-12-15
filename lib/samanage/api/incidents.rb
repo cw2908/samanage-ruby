@@ -37,5 +37,8 @@ module Samanage
 			path = "incidents/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
+
+
+	alias_method :incidents, :collect_incidents
 	end
 end
