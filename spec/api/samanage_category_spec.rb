@@ -27,16 +27,5 @@ describe Samanage::Api do
 			expect(category_create[:data]['name']).to eq(category_name)
 			expect(category_create[:code]).to eq(201).or(200)
 		end
-		it 'sorts subcategories properly' do
-			unstacked_categories = @controller.categories
-			stacked_categories = @controller.categories(stack_subcategories: true)
-			3.times do |n|
-				sample_category_id = categories.reject!{|c| c['parent_id']}.sample['id']
-				sample_subcategories = categories.select!{|c| c['parent_id'] == sample_category_id}
-				sample_stacked_categories = stacked_categories.select{|c| c['id'] == sample_category_id }
-
-				expect(sample_subcategories.size).to eq(sample_stacked_categories.size)
-			end
-		end
 	end
 end
