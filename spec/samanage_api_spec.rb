@@ -44,12 +44,12 @@ describe Samanage do
 
   		it 'sets eu datacenter' do
   			api_controller = Samanage::Api.new(token: 'token', datacenter: 'eu')
-  			expect(api_controller.base_url).to eq('https://apieu.samanage.com')
+  			expect(api_controller.base_url).to eq('https://apieu.samanage.com/')
   		end
 
   		it 'does not set non/eu datacenter' do
   			api_controller = Samanage::Api.new(token: 'token', datacenter: 'invalid')
-  			expect(api_controller.base_url).to eq('https://api.samanage.com')
+  			expect(api_controller.base_url).to eq('https://api.samanage.com/')
   		end
 	  end
 	end
