@@ -9,7 +9,7 @@ describe Samanage::UrlBuilder do
 				{:email => 'abc', :name => 'Joe Doe'},
 				{:site => 0001, :id => 1234}
 			]
-			25.times {
+			5.times {
 				url = Samanage::UrlBuilder.new(path: path.sample, options: options.sample).url
 				expect(url).to be_a(String)
 			}

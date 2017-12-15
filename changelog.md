@@ -1,3 +1,10 @@
+# 1.8.2
+- Adding Category support
+
+#1.8.1
+- More flexible membership adding
+- Collection method aliasing for simpler api (old methods will be removed in v2.0)
+
 #1.8.0
 - Adding coverage for invalid api requests
 

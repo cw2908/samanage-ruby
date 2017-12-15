@@ -104,7 +104,6 @@ describe Samanage::Api do
 
 
 
-
 			it 'update_user: update_user by id' do
 				users = @controller.collect_users
 				sample_id = users.sample['id']

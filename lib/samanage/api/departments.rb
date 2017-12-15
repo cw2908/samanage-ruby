@@ -19,5 +19,8 @@ module Samanage
 		def create_department(payload: nil, options: {})
 			self.execute(path: PATHS[:department], http_method: 'post', payload: payload)
 		end
+
+
+		alias_method :departments, :collect_departments
 	end
 end
