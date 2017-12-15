@@ -23,7 +23,7 @@ describe Samanage::Api do
 
 			expect(category_create[:data]['id']).to be_an(Integer)
 			expect(category_create[:data]['name']).to eq(category_name)
-			expect(category_create[:code]).to be(201).or(200)
+			expect(category_create[:code]).to eq(201).or(200)
 		end
 	end
 end
