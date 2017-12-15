@@ -8,13 +8,9 @@ module Samanage
 
 		# Samanage categories are not paginated
 		# - to break into subcategories, add
-		def collect_categories(stack_subcategories: false)
+		def collect_categories
 			categories = Array.new
 			categories += self.execute(http_method: 'get', path: "categories.json")[:data]
-			# Reject base level categories with a subcategory
-			if stack_subcategories
-				categories.reject!{|c| c['parent_id']}
-			end
 		end
 
 		def create_category(payload: nil, options: {})

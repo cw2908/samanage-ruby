@@ -5,16 +5,17 @@ module Samanage
 
 
 		PATHS = {
-			hardware: 'hardwares.json',
-			user: 'users.json',
-			incident: 'incidents.json',
-			other_asset: 'other_assets.json',
-			mobile: 'mobiles.json',
+			category: 'categories.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
-			site: 'sites.json',
 			department: 'departments.json',
-			group: 'groups.json'
+			group: 'groups.json',
+			hardware: 'hardwares.json',
+			incident: 'incidents.json',
+			mobile: 'mobiles.json',
+			other_asset: 'other_assets.json',
+			site: 'sites.json',
+			user: 'users.json',
 		}
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
 
