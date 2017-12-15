@@ -23,9 +23,9 @@ module Samanage
 		def initialize(token: nil, datacenter: nil, development_mode: false)
 			self.token = token if token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
-				self.datacenter = nil
+				datacenter = nil
 			end
-			self.datacenter ||= datacenter
+			self.datacenter ||= datacenter.to_s.downcase
 			self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
 			self.content_type = 'json'
 			self.admins = []

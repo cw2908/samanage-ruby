@@ -1,3 +1,5 @@
+# 1.8.2
+- Adding Category support
 
 #1.8.1
 - More flexible membership adding

@@ -27,7 +27,7 @@ describe Samanage do
   			api_controller = Samanage::Api.new(token: TOKEN, development_mode: true)
   			expect(api_controller).to be_an_instance_of(Samanage::Api)
   			expect(api_controller.custom_forms).not_to be(nil)
-  			expect(api_controller.custom_forms).to be_a(Hash)
+  			expect(api_controller.custom_forms).to be_a(Array)
   		end
   		it 'Fails with invalid token in development mode' do
   			expect{ Samanage::Api.new(token: 'Invalid Token', development_mode: true)}.to raise_error(Samanage::AuthorizationError)
@@ -44,12 +44,12 @@ describe Samanage do
 
   		it 'sets eu datacenter' do
   			api_controller = Samanage::Api.new(token: 'token', datacenter: 'eu')
-  			expect(api_controller.base_url).to eq('https://appeu.samanage.com')
+  			expect(api_controller.base_url).to eq('https://apieu.samanage.com')
   		end
 
   		it 'does not set non/eu datacenter' do
   			api_controller = Samanage::Api.new(token: 'token', datacenter: 'invalid')
-  			expect(api_controller.base_url).to eq('https://app.samanage.com')
+  			expect(api_controller.base_url).to eq('https://api.samanage.com')
   		end
 	  end
 	end
