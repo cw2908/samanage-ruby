@@ -6,7 +6,6 @@ describe Samanage::Api do
 			@controller = Samanage::Api.new(token: TOKEN)
 		end
 		it 'collects all categories' do
-			puts "Category methods: #{@controller.methods}"
 			categories = @controller.collect_categories
 			expect(categories).to be_an(Array)
 		end
