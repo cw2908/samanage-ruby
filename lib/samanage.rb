@@ -17,7 +17,8 @@ require 'samanage/api/sites'
 require 'samanage/api/users'
 require 'samanage/error'
 require 'samanage/url_builder'
+require 'samanage/version'
 
 module Samanage
-	VERSION = '1.8.2'
+	
 end
