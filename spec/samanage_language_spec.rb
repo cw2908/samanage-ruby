@@ -2,7 +2,7 @@ require 'spec_helper'
 describe Samanage do
   describe 'Language' do
     context 'when looking up language' do
-      it 'should find valid language codes' do
+      it 'should find case-insensitive valid language codes' do
         valid_lang = 'Czech'
         valid_lang_code = 'cs'
         expect(Samanage.lookup_language(valid_lang)).to eq(valid_lang_code)
