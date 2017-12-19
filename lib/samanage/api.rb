@@ -1,9 +1,7 @@
 module Samanage
 	class Api
 		include HTTParty
-		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
-
-
+		MAX_RETRIES = 3
 		PATHS = {
 			category: 'categories.json',
 			custom_fields: 'custom_fields.json',
@@ -17,11 +15,13 @@ module Samanage
 			site: 'sites.json',
 			user: 'users.json',
 		}
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
+		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :retries
 
 		# Development mode forzes authorization & prepopulates custom forms/fields and admins
 		# datacenter should equal 'eu' or blank
-		def initialize(token: nil, datacenter: nil, development_mode: false)
+		def initialize(token: nil, datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
+			self.retries = 0
 			self.token = token if token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
 				datacenter = nil
@@ -73,14 +73,28 @@ module Samanage
 				'Content-type'  => "application/#{self.content_type}",
 				'X-Samanage-Authorization' => 'Bearer ' + self.token
 			}
+			@options = {
+				headers: headers,
+				payload: payload
+			}
 			full_path = self.base_url + path
-			case http_method.to_s.downcase
-			when 'get'
-				api_call = HTTParty.get(full_path, headers: headers)
-			when 'post'
-				api_call = HTTParty.post(full_path, query: payload, headers: headers)
-			when 'put'
-				api_call = HTTParty.put(full_path, query: payload, headers: headers)
+			begin
+				case http_method.to_s.downcase
+				when 'get'
+					api_call = self.class.get(full_path, headers: headers)
+				when 'post'
+					api_call = self.class.post(full_path, query: payload, headers: headers)
+				when 'put'
+					api_call = self.class.put(full_path, query: payload, headers: headers)
+				end
+			rescue Errno::ECONNREFUSED => e
+				puts "#{e} - #{e.class}"
+				puts "Retry: #{self.retries}/#{self.max_retries}"
+				self.retries += 1
+				retry if self.retries < self.max_retries
+				error = e
+				response = e.class
+				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
 
 			response = Hash.new
@@ -115,10 +129,6 @@ module Samanage
 				error = response[:response]
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
-			rescue Errno::ECONNREFUSED => e
-				error = e
-				response = e.class
-				raise Samanage::InvalidRequest.new(error: error, response: response)
 		end
 
 
