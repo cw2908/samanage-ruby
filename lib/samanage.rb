@@ -16,6 +16,7 @@ require 'samanage/api/requester'
 require 'samanage/api/sites'
 require 'samanage/api/users'
 require 'samanage/error'
+require 'samanage/language'
 require 'samanage/url_builder'
 require 'samanage/version'
 
