@@ -24,21 +24,28 @@ Initialize API controller
     api_controller = Samanage::Api.new(token: 'abc123')
 ```
 
+- Create a user
+```ruby
+    user = {user: { name: 'John Doe', email: 'john.doe@example.com'}}
+    api_controller.create_user(payload: user)
+```
+
+
 - Find a user by email
 ```ruby
-    user_query = api_controller.execute(http_method: 'get', path: 'users.json?email=example@gmail.com')
+    my_user = api_controller.find_user_by_email(email: 'user@example.com')
 ```
 
 
 - Update incident by ID
 ```ruby
     incident_data = {incident: { priority: 'Critical' }}
-    incident_update = api_controller.execute(http_method: 'put', path: 'incidents/123.json', payload: incident_data)
+    incident_update = api_controller.update_incident(id: 123, payload: incident_data)
 ```
 
 - Update hardware
 ```ruby
-hardware = {'hardware':{'name':'My Computer'}}
+hardware = {hardware: {name: 'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 

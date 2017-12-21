@@ -87,7 +87,7 @@ module Samanage
 				when 'put'
 					api_call = self.class.put(full_path, query: payload, headers: headers)
 				end
-			rescue Errno::ECONNREFUSED => e
+			rescue Errno::ECONNREFUSED, Net::OpenTimeout => e
 				puts "#{e} - #{e.class}"
 				puts "Retry: #{self.retries}/#{self.max_retries}"
 				self.retries += 1
@@ -109,7 +109,13 @@ module Samanage
 			# Error cases
 			case response[:code]
 			when 200..201
-				response[:data] = JSON.parse(api_call.body)
+				begin
+					response[:data] = JSON.parse(api_call.body)
+				rescue JSON::ParserError => e
+					response[:data] = api_call.body
+					puts "** Warning **#{e.class}"
+					puts e
+				end
 				response
 			when 401
 				response[:data] = api_call.body
