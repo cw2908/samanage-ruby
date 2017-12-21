@@ -87,7 +87,7 @@ module Samanage
 				when 'put'
 					api_call = self.class.put(full_path, query: payload, headers: headers)
 				end
-			rescue Errno::ECONNREFUSED => e
+			rescue Errno::ECONNREFUSED, Net::OpenTimeout => e
 				puts "#{e} - #{e.class}"
 				puts "Retry: #{self.retries}/#{self.max_retries}"
 				self.retries += 1
