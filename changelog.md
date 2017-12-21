@@ -1,5 +1,6 @@
 # 1.8.3 
 - Additional Request Timeout retry support
+- Support for non-parsed response
 - Moving non object specific methods to samanage/api/utils
 - Added activation emails
 
