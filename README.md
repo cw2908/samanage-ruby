@@ -26,13 +26,7 @@ Initialize API controller
 
 - Create a user
 ```ruby
-    user = {
-        user: {
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            role: {name: 'Administrator'},
-        }
-    }
+    user = {user: { name: 'John Doe', email: 'john.doe@example.com'}}
     api_controller.create_user(payload: user)
 ```
 
@@ -51,7 +45,7 @@ Initialize API controller
 
 - Update hardware
 ```ruby
-hardware = {'hardware':{'name':'My Computer'}}
+hardware = {hardware: {name: 'My Computer'}}
 result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 
