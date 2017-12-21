@@ -33,6 +33,7 @@ Initialize API controller
             role: {name: 'Administrator'},
         }
     }
+    api_controller.create_user(payload: user)
 ```
 
 
