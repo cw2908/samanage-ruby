@@ -73,6 +73,11 @@ describe Samanage::Api do
 				expect(incident_update[:data]['description']).to eq(description)
 				expect(incident_update[:code]).to eq(200).or(201)
 			end
+			it 'finds more data for option[:layout] = "long"' do
+				basic_incident_keys = @controller.incidents.sample.keys
+				full_incident_keys = @controller.incidents(options: {layout: 'long'}).sample.keys
+				expect(basic_incident_keys.size).to be < full_incident_keys.size
+			end
 		end
 	end
 end
