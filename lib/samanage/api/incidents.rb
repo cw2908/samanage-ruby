@@ -15,9 +15,7 @@ module Samanage
 			total_pages = self.get_incidents[:total_pages]
 			layout = options[:layout] == 'long' ? '&layout=long' : nil
 			while page <= total_pages
-				path = "incidents.json?page=#{page}#{layout}"
-				puts "Path was #{path.inspect}"
-				incidents += self.execute(http_method: 'get', path: path)[:data]
+				incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
 				page += 1
 			end
 			incidents
