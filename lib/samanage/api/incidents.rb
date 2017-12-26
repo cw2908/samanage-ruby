@@ -9,12 +9,13 @@ module Samanage
 
 
 		# Returns all incidents
-		def collect_incidents
+		def collect_incidents(options: {})
 			page = 1
 			incidents = Array.new
 			total_pages = self.get_incidents[:total_pages]
+			layout = options[:layout] == 'long' ? '&layout=long' : nil
 			while page <= total_pages
-				incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}")[:data]
+				incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
 				page += 1
 			end
 			incidents

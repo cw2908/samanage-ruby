@@ -1,3 +1,6 @@
+# 1.8.5
+- Adding option for incidents layout=long
+
 # 1.8.3 
 - Additional Request Timeout retry support
 - Support for non-parsed response
