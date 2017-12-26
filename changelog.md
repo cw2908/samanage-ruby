@@ -1,9 +1,12 @@
+# 1.8.6
+- Removing layout=long verbosity
+
 # 1.8.5
 - Adding option for incidents layout=long
 
 # 1.8.3 
 - Additional Request Timeout retry support
-- Support for non-parsed response
+- Support for non-parsed responseq
 - Moving non object specific methods to samanage/api/utils
 - Added activation emails
 
