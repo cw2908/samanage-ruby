@@ -21,7 +21,7 @@ module Samanage
 		# Development mode forzes authorization & prepopulates custom forms/fields and admins
 		# datacenter should equal 'eu' or blank
 		def initialize(token: nil, datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
-			self.max_retries = 0
+			self.max_retries = max_retries
 			self.token = token if token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
 				datacenter = nil
