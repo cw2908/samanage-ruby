@@ -16,12 +16,12 @@ module Samanage
 			user: 'users.json',
 		}
 		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :retries
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
 		# Development mode forzes authorization & prepopulates custom forms/fields and admins
 		# datacenter should equal 'eu' or blank
 		def initialize(token: nil, datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
-			self.retries = 0
+			self.max_retries = 0
 			self.token = token if token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
 				datacenter = nil
@@ -78,6 +78,7 @@ module Samanage
 				payload: payload
 			}
 			full_path = self.base_url + path
+			retries = 0
 			begin
 				case http_method.to_s.downcase
 				when 'get'
@@ -89,9 +90,9 @@ module Samanage
 				end
 			rescue Errno::ECONNREFUSED, Net::OpenTimeout => e
 				puts "#{e} - #{e.class}"
-				puts "Retry: #{self.retries}/#{self.max_retries}"
-				self.retries += 1
-				retry if self.retries < self.max_retries
+				puts "Retry: #{retries}/#{self.max_retries}"
+				retries += 1
+				retry if retries < self.max_retries
 				error = e
 				response = e.class
 				raise Samanage::InvalidRequest.new(error: error, response: response)
