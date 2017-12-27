@@ -1,3 +1,6 @@
+# 1.8.7
+- Fixing retry bug
+
 # 1.8.6
 - Removing layout=long verbosity
 
