@@ -1,3 +1,7 @@
+# 1.8.8
+- Base level .execute delete functionality
+- + Error message for invalid http methods
+
 # 1.8.7
 - Fixing retry bug
 

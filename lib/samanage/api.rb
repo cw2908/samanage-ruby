@@ -87,6 +87,10 @@ module Samanage
 					api_call = self.class.post(full_path, query: payload, headers: headers)
 				when 'put'
 					api_call = self.class.put(full_path, query: payload, headers: headers)
+				when 'delete'
+					api_call = self.class.put(full_path, query: payload, headers: headers)
+				else
+					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
 				end
 			rescue Errno::ECONNREFUSED, Net::OpenTimeout => e
 				puts "#{e} - #{e.class}"
