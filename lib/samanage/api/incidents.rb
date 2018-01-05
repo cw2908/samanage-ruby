@@ -16,7 +16,14 @@ module Samanage
 			layout = options[:layout] == 'long' ? '&layout=long' : nil
 			archives = options[:audit_archives] ? '&audit_archives=true' : nil
 			while page <= total_pages
-				incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}#{archives}")[:data]
+				if archives
+					paginated_incidents = self.execute(path: 'incidents.json?page=#{page}')[:data]
+					paginated_incidents.map do |incident|
+						incidents += self.execute(path: "incidents/#{incident['id']}.json?#{layout}#{archives}")
+					end
+				else
+					incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
+				end
 				page += 1
 			end
 			incidents
