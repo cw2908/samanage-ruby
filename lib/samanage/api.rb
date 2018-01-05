@@ -20,9 +20,8 @@ module Samanage
 
 		# Development mode forzes authorization & prepopulates custom forms/fields and admins
 		# datacenter should equal 'eu' or blank
-		def initialize(token: nil, datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
-			self.max_retries = max_retries
-			self.token = token if token
+		def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
+			self.token = token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
 				datacenter = nil
 			end
@@ -30,6 +29,7 @@ module Samanage
 			self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
 			self.content_type = 'json'
 			self.admins = []
+			self.max_retries = max_retries
 			if development_mode
 				if self.authorized? != true
 					self.authorize
@@ -87,8 +87,12 @@ module Samanage
 					api_call = self.class.post(full_path, query: payload, headers: headers)
 				when 'put'
 					api_call = self.class.put(full_path, query: payload, headers: headers)
+				when 'delete'
+					api_call = self.class.put(full_path, query: payload, headers: headers)
+				else
+					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
 				end
-			rescue Errno::ECONNREFUSED, Net::OpenTimeout => e
+			rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT => e
 				puts "#{e} - #{e.class}"
 				puts "Retry: #{retries}/#{self.max_retries}"
 				retries += 1

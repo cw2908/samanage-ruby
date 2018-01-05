@@ -1,3 +1,8 @@
+# 1.8.8
+- Base level .execute delete functionality
+- Error message for invalid http methods
+- Added audit_archive to incident options
+
 # 1.8.7
 - Fixing retry bug
 
