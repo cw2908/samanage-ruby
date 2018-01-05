@@ -8,23 +8,25 @@ module Samanage
 		end
 
 
-		# Returns all incidents
+		# Returns all incidents. 
+		# Options: 
+		#   - audit_archives: true
+		#   - layout: 'long'
 		def collect_incidents(options: {})
-			page = 1
 			incidents = Array.new
 			total_pages = self.get_incidents[:total_pages]
-			layout = options[:layout] == 'long' ? '&layout=long' : nil
-			while page <= total_pages
+			1.upto(total_pages) do |page|
 				if options[:audit_archives]
-					archives = '&audit_archives=true'
+					archives = 'layout=long&audit_archive=true'
 					paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]
 					paginated_incidents.map do |incident|
-						incidents << self.execute(path: "incidents/#{incident['id']}.json?#{layout}#{archives}")[:data]
+						archive_path = "incidents/#{incident['id']}.json?#{archives}"
+						incidents << self.execute(path: archive_path)[:data]
 					end
 				else
+					layout = options[:layout] == 'long' ? '&layout=long' : nil
 					incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
 				end
-				page += 1
 			end
 			incidents
 		end
