@@ -17,9 +17,9 @@ module Samanage
 			archives = options[:audit_archives] ? '&audit_archives=true' : nil
 			while page <= total_pages
 				if archives
-					paginated_incidents = self.execute(path: 'incidents.json?page=#{page}')[:data]
+					paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]
 					paginated_incidents.map do |incident|
-						incidents += self.execute(path: "incidents/#{incident['id']}.json?#{layout}#{archives}")
+						incidents << self.execute(path: "incidents/#{incident['id']}.json?#{layout}#{archives}")[:data]
 					end
 				else
 					incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]

@@ -78,12 +78,12 @@ describe Samanage::Api do
 				basic_incident_keys = @controller.incidents.sample.keys
 				expect(basic_incident_keys.size).to be < full_incident_keys.size
 			end
-			it 'finds more audit archives for option[:layout] = "long"' do
+			it 'finds more audit archives for option[:audit_archives] = true' do
 				full_incident_keys = @controller.incidents(options: {audit_archives: 'true'}).sample.keys
 				expect(full_incident_keys).to include('audits')
 			end
-			it 'finds more audit archives for option[:layout] = "long"' do
-				full_incident_keys = @controller.incidents(options: {audit_archives: 'true', layout: 'long'}).sample.keys
+			it 'finds more audit archives for options: {audit_archives: true, layout: "long"}' do
+				full_incident_keys = @controller.incidents(options: {audit_archives: true, layout: 'long'}).sample.keys
 				basic_incident_keys = @controller.incidents.sample.keys
 				expect(basic_incident_keys.size).to be < full_incident_keys.size
 				expect(full_incident_keys).to include('audits')
