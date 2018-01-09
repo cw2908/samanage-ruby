@@ -8,13 +8,13 @@ module Samanage
 		end
 
 		# Get all hardwares
-		def collect_hardwares
+		def collect_hardwares(options: {})
 			page = 1
 			hardwares = Array.new
 			total_pages = self.get_hardwares[:total_pages]
-			while page <= total_pages
+			1.upto(total_pages) do |page|
+				puts "Collecting Hardwares page: #{page}/#{total_pages}" if options[:verbose]
 				hardwares += self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")[:data]
-				page += 1
 			end
 			hardwares
 		end

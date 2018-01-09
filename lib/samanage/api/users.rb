@@ -8,13 +8,13 @@ module Samanage
 	end
 
   # Returns all users in the account
-		def collect_users
+		def collect_users(options: {})
 			page = 1
 			users = Array.new
 			total_pages = self.get_users[:total_pages]
-			while page <= total_pages
+			1.upto(total_pages) do |page|
+				puts "Collecting Users page: #{page}/#{total_pages}" if options[:verbose]
 				users += self.execute(http_method: 'get', path: "users.json?page=#{page}")[:data]
-				page += 1
 			end
 			users
 		end

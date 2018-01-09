@@ -5,13 +5,13 @@ module Samanage
 			self.execute(path: url)
 		end
 
-		def collect_sites
+		def collect_sites(options: {})
 			page = 1
 			sites = Array.new
 			total_pages = self.get_sites[:total_pages]
-			while page <= total_pages
+			1.upto(total_pages) do |page|
+				puts "Collecting Sites page: #{page}/#{total_pages}" if options[:verbose]
 				sites += self.execute(http_method: 'get', path: "sites.json?page=#{page}")[:data]
-				page += 1
 			end
 			sites
 		end

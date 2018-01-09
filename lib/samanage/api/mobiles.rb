@@ -8,13 +8,13 @@ module Samanage
 		end
 
 		# Get all mobiles
-		def collect_mobiles
+		def collect_mobiles(options: {})
 			page = 1
 			mobiles = Array.new
 			total_pages = self.get_mobiles[:total_pages]
-			while page <= total_pages
+			1.upto(total_pages) do |page|
+				puts "Collecting Mobiles page: #{page}/#{total_pages}" if options[:verbose]
 				mobiles += self.execute(http_method: 'get', path: "mobiles.json?page=#{page}")[:data]
-				page += 1
 			end
 			mobiles
 		end

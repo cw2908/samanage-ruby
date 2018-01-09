@@ -1,13 +1,13 @@
 require 'samanage'
 describe Samanage::Api do
 	context 'category' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-			@controller = Samanage::Api.new(token: TOKEN)
+			@samanage = Samanage::Api.new(token: TOKEN)
+			@categories = @samanage.categories
 		end
 		it 'collects all categories' do
-			categories = @controller.collect_categories
-			expect(categories).to be_an(Array)
+			expect(@categories).to be_an(Array)
 		end
 
 		it 'creates a category' do
@@ -19,7 +19,7 @@ describe Samanage::Api do
 					description: category_description
 				}
 			}
-			category_create = @controller.create_category(payload: payload)
+			category_create = @samanage.create_category(payload: payload)
 
 			expect(category_create[:data]['id']).to be_an(Integer)
 			expect(category_create[:data]['name']).to eq(category_name)
