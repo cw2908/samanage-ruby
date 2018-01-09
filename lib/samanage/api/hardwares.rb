@@ -8,7 +8,7 @@ module Samanage
 		end
 
 		# Get all hardwares
-		def collect_hardwares
+		def collect_hardwares(options: {})
 			page = 1
 			hardwares = Array.new
 			total_pages = self.get_hardwares[:total_pages]

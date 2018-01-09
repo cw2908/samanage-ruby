@@ -18,6 +18,7 @@ describe Samanage::Api do
 			end
 			it 'collect_incidents: collects array of incidents' do
 				incident_count = @samanage.get_incidents[:total_count]
+				@incidents = @samanage.incidents
 				expect(@incidents).to be_an(Array)
 				expect(@incidents.size).to eq(incident_count)
 			end

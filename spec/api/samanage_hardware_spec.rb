@@ -16,6 +16,7 @@ describe Samanage::Api do
 			end
 			it 'collect_hardwares: collects array of hardwares' do
 				hardware_count = @samanage.get_hardwares[:total_count]
+				@hardwares = @samanage.hardwares
 				expect(@hardwares).to be_an(Array)
 				expect(@hardwares.size).to eq(hardware_count)
 			end
