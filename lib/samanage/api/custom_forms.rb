@@ -14,7 +14,6 @@ module Samanage
 			1.upto(total_pages) do |page|
 				puts "Collecting Custom Forms page: #{page}/#{total_pages}" if options[:verbose]
 				custom_forms += self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data]
-				page += 1
 			end
 			custom_forms
 		end
