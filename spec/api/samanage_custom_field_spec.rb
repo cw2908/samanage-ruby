@@ -5,8 +5,8 @@ describe Samanage::Api do
 		describe 'API Functions' do
 			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-				@controller = Samanage::Api.new(token: TOKEN)
-				@custom_fields = @controller.custom_fields
+				@samanage = Samanage::Api.new(token: TOKEN)
+				@custom_fields = @samanage.custom_fields
 			end
 			it 'collects all custom fields' do
 				expect(@custom_fields).to be_a(Array)

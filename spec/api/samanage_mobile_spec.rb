@@ -5,18 +5,18 @@ describe Samanage::Api do
 		describe 'API Functions' do
 			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-				@controller = Samanage::Api.new(token: TOKEN)
-				@mobiles = @controller.mobiles
+				@samanage = Samanage::Api.new(token: TOKEN)
+				@mobiles = @samanage.mobiles
 			end
 			it 'get_mobiles: it returns API call of mobiles' do
-				api_call = @controller.get_mobiles
+				api_call = @samanage.get_mobiles
 				expect(api_call).to be_a(Hash)
 				expect(api_call[:total_count]).to be_an(Integer)
 				expect(api_call).to have_key(:response)
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_mobiles: collects array of mobiles' do
-				mobile_count = @controller.get_mobiles[:total_count]
+				mobile_count = @samanage.get_mobiles[:total_count]
 				expect(@mobiles).to be_an(Array)
 				expect(@mobiles.size).to eq(mobile_count)
 			end
@@ -30,7 +30,7 @@ describe Samanage::Api do
 						serial_number:  serial_number,
 					}
 				}
-				mobile_create = @controller.create_mobile(payload: json)
+				mobile_create = @samanage.create_mobile(payload: json)
 
 				expect(mobile_create[:data]['id']).to be_an(Integer)
 				expect(mobile_create[:data]['manufacturer']).to eq(mobile_name)
@@ -43,11 +43,11 @@ describe Samanage::Api do
 						manufacturer: mobile_name,
 					}
 				}
-				expect{@controller.create_mobile(payload: json)}.to raise_error(Samanage::InvalidRequest)
+				expect{@samanage.create_mobile(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_mobile: returns a mobile card by known id' do
 				sample_id = @mobiles.sample['id']
-				mobile = @controller.find_mobile(id: sample_id)
+				mobile = @samanage.find_mobile(id: sample_id)
 
 				expect(mobile[:data]['id']).to eq(sample_id)  # id should match found mobile
 				expect(mobile[:data]).to have_key('manufacturer')
@@ -56,7 +56,7 @@ describe Samanage::Api do
 			end
 			it 'find_mobile: returns nothing for an invalid id' do
 				sample_id = (0..10).entries.sample
-				expect{@controller.find_mobile(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found mobile
+				expect{@samanage.find_mobile(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found mobile
 			end
 			it 'update_mobile: update_mobile by id' do
 				sample_id = @mobiles.sample['id']
@@ -66,7 +66,7 @@ describe Samanage::Api do
 						:manufacturer => new_name
 					}
 				}
-				mobile_update = @controller.update_mobile(payload: json, id: sample_id)
+				mobile_update = @samanage.update_mobile(payload: json, id: sample_id)
 				expect(mobile_update[:data]["manufacturer"]).to eq(new_name)
 				expect(mobile_update[:code]).to eq(200).or(201)
 			end

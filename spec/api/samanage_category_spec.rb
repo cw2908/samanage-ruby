@@ -3,8 +3,8 @@ describe Samanage::Api do
 	context 'category' do
 		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-			@controller = Samanage::Api.new(token: TOKEN)
-			@categories = @controller.categories
+			@samanage = Samanage::Api.new(token: TOKEN)
+			@categories = @samanage.categories
 		end
 		it 'collects all categories' do
 			expect(@categories).to be_an(Array)
@@ -19,7 +19,7 @@ describe Samanage::Api do
 					description: category_description
 				}
 			}
-			category_create = @controller.create_category(payload: payload)
+			category_create = @samanage.create_category(payload: payload)
 
 			expect(category_create[:data]['id']).to be_an(Integer)
 			expect(category_create[:data]['name']).to eq(category_name)

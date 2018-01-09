@@ -4,18 +4,18 @@ describe Samanage::Api do
 		describe 'API Functions' do
 			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-				@controller = Samanage::Api.new(token: TOKEN)
-				@hardwares = @controller.hardwares
+				@samanage = Samanage::Api.new(token: TOKEN)
+				@hardwares = @samanage.hardwares
 			end
 			it 'get_hardwares: it returns API call of hardwares' do
-				api_call = @controller.get_hardwares
+				api_call = @samanage.get_hardwares
 				expect(api_call).to be_a(Hash)
 				expect(api_call[:total_count]).to be_an(Integer)
 				expect(api_call).to have_key(:response)
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_hardwares: collects array of hardwares' do
-				hardware_count = @controller.get_hardwares[:total_count]
+				hardware_count = @samanage.get_hardwares[:total_count]
 				expect(@hardwares).to be_an(Array)
 				expect(@hardwares.size).to eq(hardware_count)
 			end
@@ -28,7 +28,7 @@ describe Samanage::Api do
 						:bio => {:ssn => serial_number},
 					}
 				}
-				hardware_create = @controller.create_hardware(payload: payload)
+				hardware_create = @samanage.create_hardware(payload: payload)
 
 				expect(hardware_create[:data]['id']).to be_an(Integer)
 				expect(hardware_create[:data]['name']).to eq(hardware_name)
@@ -41,11 +41,11 @@ describe Samanage::Api do
 						:name => hardware_name,
 					}
 				}
-				expect{@controller.create_hardware(payload: payload)}.to raise_error(Samanage::InvalidRequest)
+				expect{@samanage.create_hardware(payload: payload)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_hardware: returns a hardware card by known id' do
 				sample_id = @hardwares.sample['id']
-				hardware = @controller.find_hardware(id: sample_id)
+				hardware = @samanage.find_hardware(id: sample_id)
 
 				expect(hardware[:data]['id']).to eq(sample_id)  # id should match found hardware
 				expect(hardware[:data]).to have_key('name')
@@ -54,14 +54,14 @@ describe Samanage::Api do
 			end
 			it 'find_hardware: returns nothing for an invalid id' do
 				sample_id = (0..10).entries.sample
-				expect{@controller.find_hardware(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found hardware
+				expect{@samanage.find_hardware(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found hardware
 			end
 
 			it 'finds_hardwares_by_serial' do
 				sample_hardware = @hardwares.sample
 				sample_serial_number = sample_hardware['serial_number']
 				sample_id = sample_hardware['id']
-				found_assets = @controller.find_hardwares_by_serial(serial_number: sample_serial_number)
+				found_assets = @samanage.find_hardwares_by_serial(serial_number: sample_serial_number)
 				found_sample = found_assets[:data].sample
 				expect(sample_serial_number).not_to be(nil)
 				expect(found_sample['serial_number']).not_to be(nil)
@@ -76,7 +76,7 @@ describe Samanage::Api do
 						:name => new_name
 					}
 				}
-				hardware_update = @controller.update_hardware(payload: payload, id: sample_id)
+				hardware_update = @samanage.update_hardware(payload: payload, id: sample_id)
 				expect(hardware_update[:data]["name"]).to eq(new_name)
 				expect(hardware_update[:code]).to eq(200).or(201)
 			end
