@@ -1,3 +1,6 @@
+# 1.8.9
+- Adding output verbosity for collection methods
+
 # 1.8.8
 - Base level .execute delete functionality
 - Error message for invalid http methods

@@ -2,9 +2,10 @@ require 'samanage'
 
 describe Samanage::Api do
 	context 'Users' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@users = @controller.users
 		end
 		describe 'API Functions' do
 			it 'get_users: it returns API call of users' do
@@ -15,10 +16,9 @@ describe Samanage::Api do
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_users: collects array of users' do
-				users = @controller.collect_users
 				user_count = @controller.get_users[:total_count]
-				expect(users).to be_an(Array)
-				expect(users.size).to eq(user_count)
+				expect(@users).to be_an(Array)
+				expect(@users.size).to eq(user_count)
 			end
 			it 'create_user(payload: json): creates a user' do
 				user_name = "samanage-ruby-#{(rand*10**10).ceil}"
@@ -45,8 +45,7 @@ describe Samanage::Api do
 				expect{@controller.create_user(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_user: returns a user card by known id' do
-				users = @controller.collect_users
-				sample_id = users.sample['id']
+				sample_id = @users.sample['id']
 				user = @controller.find_user(id: sample_id)
 				expect(user[:data]['id']).to eq(sample_id)  # id should match found user
 				expect(user[:data]).to have_key('email')
@@ -60,8 +59,7 @@ describe Samanage::Api do
 			end
 
 			it 'finds_user_id_by_email' do
-				users = @controller.collect_users
-				sample_user = users.sample
+				sample_user = @users.sample
 				sample_email = sample_user['email']
 				sample_id = sample_user['id']
 				found_id = @controller.find_user_id_by_email(email: sample_email)
@@ -70,8 +68,7 @@ describe Samanage::Api do
 			end
 
 			it 'finds group_id for user' do
-				users = @controller.collect_users
-				sample_user = users.select{|u| u['role']['name'] == 'Administrator'}.sample
+				sample_user = @users.select{|u| u['role']['name'] == 'Administrator'}.sample
 				sample_user_email = sample_user['email']
 				group_ids = sample_user['group_ids']
 				found_id = nil
@@ -105,8 +102,7 @@ describe Samanage::Api do
 
 
 			it 'update_user: update_user by id' do
-				users = @controller.collect_users
-				sample_id = users.sample['id']
+				sample_id = @users.sample['id']
 				new_name = (0...25).map { ('a'..'z').to_a[rand(26)] }.join
 				json = {
 					:user => {

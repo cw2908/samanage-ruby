@@ -3,9 +3,10 @@ require 'samanage'
 describe Samanage::Api do
 	context 'Other Assets' do
 		describe 'API Functions' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@other_assets = @controller.other_assets
 		end
 			it 'get_other_assets: it returns API call of other_assets' do
 				api_call = @controller.get_other_assets
@@ -15,8 +16,7 @@ describe Samanage::Api do
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_other_assets: collects array of other_assets' do
-				other_assets = @controller.collect_other_assets
-				expect(other_assets).to be_an(Array)
+				expect(@other_assets).to be_an(Array)
 			end
 			it 'create_other_asset(payload: json): creates a other_asset' do
 				other_asset_name = "samanage-ruby-#{(rand*10**10).ceil}"
@@ -49,8 +49,7 @@ describe Samanage::Api do
 			end
 
 			it 'find_other_asset: returns an other_asset card by known id' do
-				other_assets = @controller.collect_other_assets
-				sample_id = other_assets.sample['id']
+				sample_id = @other_assets.sample['id']
 
 				other_asset = @controller.find_other_asset(id: sample_id)
 
@@ -64,8 +63,7 @@ describe Samanage::Api do
 				expect{@controller.find_other_asset(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found other_asset
 			end
 			it 'update_other_asset: update_other_asset by id' do
-				other_assets = @controller.collect_other_assets
-				sample_id = other_assets.sample['id']
+				sample_id = @other_assets.sample['id']
 				new_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
 				json = {
 					:other_asset => {

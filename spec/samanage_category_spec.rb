@@ -4,11 +4,11 @@ describe Samanage::Api do
 		before(:each) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@categories = @controller.collect_categories
 		end
 		it 'collects all categories' do
-			categories = @controller.collect_categories
 			category_count = @controller.execute(path: 'categories.json')
-			expect(categories).to be_an(Array)
+			expect(@categories).to be_an(Array)
 		end
 
 		it 'creates a category' do

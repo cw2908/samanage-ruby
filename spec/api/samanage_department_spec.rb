@@ -1,11 +1,12 @@
 require 'samanage'
 describe Samanage::Api do
 	context 'department' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@departments = @controller.departments
 		end
-		it 'get_users: it returns API call of users' do
+		it 'get_users: it returns API call of departments' do
 			api_call = @controller.get_departments
 			expect(api_call).to be_a(Hash)
 			expect(api_call[:total_count]).to be_an(Integer)
@@ -13,10 +14,9 @@ describe Samanage::Api do
 			expect(api_call).to have_key(:code)
 		end
 		it 'collects all departments' do
-			departments = @controller.collect_departments
 			department_count = @controller.get_departments[:total_count]
-			expect(departments).to be_an(Array)
-			expect(departments.size).to eq(department_count)
+			expect(@departments).to be_an(Array)
+			expect(@departments.size).to eq(department_count)
 		end
 		it 'creates a department' do
 			department_name = "department ##{(rand*10**4).ceil}"

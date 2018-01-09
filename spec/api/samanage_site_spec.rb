@@ -1,9 +1,10 @@
 require 'samanage'
 describe Samanage::Api do
 	context 'Site' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@sites = @controller.sites
 		end
 		it 'get_users: it returns API call of users' do
 			api_call = @controller.get_sites
@@ -13,7 +14,7 @@ describe Samanage::Api do
 			expect(api_call).to have_key(:code)
 		end
 		it 'collects all sites' do
-			sites = @controller.collect_sites
+			sites = @sites
 			site_count = @controller.get_sites[:total_count]
 			expect(sites).to be_an(Array)
 			expect(sites.size).to eq(site_count)

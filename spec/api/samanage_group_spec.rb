@@ -1,9 +1,11 @@
 require 'samanage'
 describe Samanage::Api do
 	context 'group' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
+			@groups = @controller.groups
+			@users = @controller.users
 		end
 		it 'get_users: it returns API call of users' do
 			api_call = @controller.get_groups
@@ -13,14 +15,12 @@ describe Samanage::Api do
 			expect(api_call).to have_key(:code)
 		end
 		it 'collects all groups' do
-			groups = @controller.collect_groups
 			group_count = @controller.get_groups[:total_count]
-			expect(groups).to be_an(Array)
-			expect(groups.size).to eq(group_count)
+			expect(@groups).to be_an(Array)
+			expect(@groups.size).to eq(group_count)
 		end
 		it 'find_group: returns a group card by known id' do
-			groups = @controller.collect_groups
-			sample_id = groups.sample['id']
+			sample_id = @groups.sample['id']
 			group = @controller.find_group(id: sample_id)
 			expect(group[:data]['id']).to eq(sample_id)  # id should match found group
 			expect(group[:data]).to have_key('name')
@@ -42,7 +42,7 @@ describe Samanage::Api do
 		end
 
 		it 'finds a group by name' do
-			group = @controller.collect_groups.sample
+			group = @groups.sample
 			group_name = group['name']
 			group_id = group['id']
 			found_group_id = @controller.find_group_id_by_name(group: group_name)
@@ -55,8 +55,8 @@ describe Samanage::Api do
 			expect(found_group_id).to be(nil)
 		end
 		it 'adds member to group' do
-			random_group_id = @controller.collect_groups.sample['id']
-			random_user_email = @controller.collect_users.sample['email']
+			random_group_id = @groups.sample['id']
+			random_user_email = @users.sample['email']
 
 			add_user_to_group = @controller.add_member_to_group(email: random_user_email, group_id: random_group_id)
 			expect(add_user_to_group[:code]).to eq(200).or(201)

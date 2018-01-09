@@ -5,9 +5,10 @@ describe Samanage::Api do
       before(:each) do 
         TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
         @controller = Samanage::Api.new(token: TOKEN)
+        @users = @controller.users
       end
       it 'sends an activation email' do
-        valid_email = @controller.users.sample['email'] 
+        valid_email = @users.sample['email'] 
         send_email = @controller.send_activation_email(email: valid_email)
         expect(send_email[:code]).to be(200)
       end

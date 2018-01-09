@@ -1,11 +1,11 @@
 require 'spec_helper'
 describe Samanage do
 	describe 'API Controller' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 		end
-	  context 'on creation' do
-	  	it 'Requires Email & Token' do
+	  context 'on instantiation' do
+	  	it 'Requires Valid Token' do
 	  		expect{
 	  			api_controller = Samanage::Api.new(token: "invalid token")
 	  			api_controller.authorize

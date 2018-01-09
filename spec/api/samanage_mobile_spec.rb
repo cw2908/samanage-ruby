@@ -3,9 +3,10 @@ require 'samanage'
 describe Samanage::Api do
 	context 'Mobile' do
 		describe 'API Functions' do
-			before(:each) do
+			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 				@controller = Samanage::Api.new(token: TOKEN)
+				@mobiles = @controller.mobiles
 			end
 			it 'get_mobiles: it returns API call of mobiles' do
 				api_call = @controller.get_mobiles
@@ -15,10 +16,9 @@ describe Samanage::Api do
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_mobiles: collects array of mobiles' do
-				mobiles = @controller.collect_mobiles
 				mobile_count = @controller.get_mobiles[:total_count]
-				expect(mobiles).to be_an(Array)
-				expect(mobiles.size).to eq(mobile_count)
+				expect(@mobiles).to be_an(Array)
+				expect(@mobiles.size).to eq(mobile_count)
 			end
 			it 'create_mobile(payload: json): creates a mobile' do
 				mobile_name = "samanage-ruby-#{(rand*10**10).ceil}"
@@ -46,8 +46,7 @@ describe Samanage::Api do
 				expect{@controller.create_mobile(payload: json)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_mobile: returns a mobile card by known id' do
-				mobiles = @controller.collect_mobiles
-				sample_id = mobiles.sample['id']
+				sample_id = @mobiles.sample['id']
 				mobile = @controller.find_mobile(id: sample_id)
 
 				expect(mobile[:data]['id']).to eq(sample_id)  # id should match found mobile
@@ -60,8 +59,7 @@ describe Samanage::Api do
 				expect{@controller.find_mobile(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found mobile
 			end
 			it 'update_mobile: update_mobile by id' do
-				mobiles = @controller.collect_mobiles
-				sample_id = mobiles.sample['id']
+				sample_id = @mobiles.sample['id']
 				new_name = (0...50).map {('a'..'z').to_a[rand(26)] }.join
 				json = {
 					:mobile => {

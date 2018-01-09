@@ -1,7 +1,7 @@
 require 'samanage'
 describe Samanage::Api do
 	context 'Comments' do
-		before(:each) do
+		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@controller = Samanage::Api.new(token: TOKEN)
 		end

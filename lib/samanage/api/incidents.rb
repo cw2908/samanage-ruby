@@ -15,7 +15,9 @@ module Samanage
 		def collect_incidents(options: {})
 			incidents = Array.new
 			total_pages = self.get_incidents[:total_pages]
+			puts "Pulling Incidents with Audit Archives (this may take a while)" if options[:audit_archives] && options[:verbose]
 			1.upto(total_pages) do |page|
+				puts "Collecting Incidents page: #{page}/#{total_pages}" if options[:verbose]
 				if options[:audit_archives]
 					archives = 'layout=long&audit_archive=true'
 					paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]

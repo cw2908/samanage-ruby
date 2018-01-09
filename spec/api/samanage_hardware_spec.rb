@@ -2,9 +2,10 @@ require 'samanage'
 describe Samanage::Api do
 	context 'Hardware' do
 		describe 'API Functions' do
-			before(:each) do
+			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 				@controller = Samanage::Api.new(token: TOKEN)
+				@hardwares = @controller.hardwares
 			end
 			it 'get_hardwares: it returns API call of hardwares' do
 				api_call = @controller.get_hardwares
@@ -14,10 +15,9 @@ describe Samanage::Api do
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_hardwares: collects array of hardwares' do
-				hardwares = @controller.collect_hardwares
 				hardware_count = @controller.get_hardwares[:total_count]
-				expect(hardwares).to be_an(Array)
-				expect(hardwares.size).to eq(hardware_count)
+				expect(@hardwares).to be_an(Array)
+				expect(@hardwares.size).to eq(hardware_count)
 			end
 			it 'create_hardware(payload: payload): creates a hardware' do
 				hardware_name = "samanage-ruby-#{(rand*10**10).ceil}"
@@ -44,8 +44,7 @@ describe Samanage::Api do
 				expect{@controller.create_hardware(payload: payload)}.to raise_error(Samanage::InvalidRequest)
 			end
 			it 'find_hardware: returns a hardware card by known id' do
-				hardwares = @controller.collect_hardwares
-				sample_id = hardwares.sample['id']
+				sample_id = @hardwares.sample['id']
 				hardware = @controller.find_hardware(id: sample_id)
 
 				expect(hardware[:data]['id']).to eq(sample_id)  # id should match found hardware
@@ -59,8 +58,7 @@ describe Samanage::Api do
 			end
 
 			it 'finds_hardwares_by_serial' do
-				hardwares = @controller.collect_hardwares
-				sample_hardware = hardwares.sample
+				sample_hardware = @hardwares.sample
 				sample_serial_number = sample_hardware['serial_number']
 				sample_id = sample_hardware['id']
 				found_assets = @controller.find_hardwares_by_serial(serial_number: sample_serial_number)
@@ -71,8 +69,7 @@ describe Samanage::Api do
 				# expect(sample_id).to eq(found_assets[:data].first.dig('id'))
 			end
 			it 'update_hardware: update_hardware by id' do
-				hardwares = @controller.collect_hardwares
-				sample_id = hardwares.sample['id']
+				sample_id = @hardwares.sample['id']
 				new_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
 				payload = {
 					:hardware => {
