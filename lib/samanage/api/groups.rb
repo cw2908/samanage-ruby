@@ -22,7 +22,7 @@ module Samanage
 
 		def find_group_id_by_name(group: nil)
 			group_api = self.execute(path: "groups.json?name=#{group}")
-			if group == group_api[:data].first['name']
+			if !group_api[:data].empty? && group == group_api[:data].first['name']
 				return group_api[:data].first['id']
 			end
 		end
