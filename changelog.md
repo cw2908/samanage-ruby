@@ -1,3 +1,6 @@
+# 1.8.91 
+- Group case sensitivity fix
+
 # 1.8.9
 - Adding output verbosity for collection methods
 
