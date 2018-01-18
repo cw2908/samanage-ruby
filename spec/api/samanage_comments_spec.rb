@@ -26,13 +26,9 @@ describe Samanage::Api do
 			end
 
 			it 'collects all comments' do
-				## incident_id = @samanage.get_incidents()[:data].sample.dig('id')
-				# incident_id = 19394209
-				# comments_api = @samanage.get_comments(incident_id: incident_id)
-				# comments_found = @samanage.collect_comments(incident_id: incident_id)
-
+				comments = @samanage.collect_comments(incident_id: incident_id)
 				# Total count bug
-				# expect(comments_api[:total_count]).to eq(comments_found.size)
+				expect(comments_found).to be(Array)
 			end
 		end
 	end

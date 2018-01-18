@@ -1,3 +1,3 @@
 module Samanage
-  VERSION = '1.8.91'
+  VERSION = '1.9.00'
 end

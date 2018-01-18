@@ -1,3 +1,6 @@
+# 1.9.00
+- Adding contracts 
+
 # 1.8.91 
 - Group case sensitivity fix
 
