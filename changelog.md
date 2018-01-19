@@ -1,4 +1,7 @@
-# 1.9.00
+# 1.9.1 
+- Adding items to contracts & faster tests
+
+# 1.9.0
 - Adding contracts 
 
 # 1.8.91 
