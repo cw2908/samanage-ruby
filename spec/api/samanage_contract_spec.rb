@@ -16,7 +16,7 @@ describe Samanage::Api do
 				expect(api_call).to have_key(:code)
 			end
 			it 'collect_contracts: collects array of contracts' do
-				contract_count = @samanage.contracts
+				contract_count = @samanage.get_contracts[:total_count]
 				expect(@contracts).to be_an(Array)
 				expect(@contracts.size).to eq(contract_count)
 			end
