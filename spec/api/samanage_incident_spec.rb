@@ -5,8 +5,8 @@ describe Samanage::Api do
 		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@samanage = Samanage::Api.new(token: TOKEN)
-			@incidents = @samanage.get_incidents[:data]
-			@users = @samanage.get_users[:data]
+			@incidents = @samanage.incidents
+			@users = @samanage.users
 			@incidents_with_archives = @samanage.incidents(options: {audit_archives: true})
 		end
 			it 'get_incidents: it returns API call of incidents' do
