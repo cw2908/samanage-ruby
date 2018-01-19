@@ -4,6 +4,7 @@ module Samanage
 		MAX_RETRIES = 3
 		PATHS = {
 			category: 'categories.json',
+			contract: 'contracts.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 			department: 'departments.json',
@@ -88,7 +89,7 @@ module Samanage
 				when 'put'
 					api_call = self.class.put(full_path, query: payload, headers: headers)
 				when 'delete'
-					api_call = self.class.put(full_path, query: payload, headers: headers)
+					api_call = self.class.delete(full_path, query: payload, headers: headers)
 				else
 					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
 				end

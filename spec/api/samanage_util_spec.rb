@@ -5,7 +5,7 @@ describe Samanage::Api do
       before(:each) do 
         TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
         @samanage = Samanage::Api.new(token: TOKEN)
-        @users = @samanage.users
+        @users = @samanage.get_users[:data]
       end
       it 'sends an activation email' do
         valid_email = @users.sample['email'] 

@@ -5,7 +5,7 @@ describe Samanage::Api do
 			before(:all) do
 				TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 				@samanage = Samanage::Api.new(token: TOKEN)
-				@hardwares = @samanage.hardwares
+				@hardwares = @samanage.get_hardwares[:data]
 			end
 			it 'get_hardwares: it returns API call of hardwares' do
 				api_call = @samanage.get_hardwares

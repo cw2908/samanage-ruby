@@ -81,7 +81,8 @@ describe Samanage::Api do
 			end
 			it 'finds more audit archives for option[:audit_archives] = true' do
 				incident_keys = @incidents_with_archives.sample.keys
-				expect(incident_keys).to include('audits')
+				expect(incident_keys).to include
+				('audits')
 			end
 			it 'finds audit archives for options: {audit_archives: true, layout: "long"}' do
 				full_incident_keys = @incidents_with_archives.sample.keys

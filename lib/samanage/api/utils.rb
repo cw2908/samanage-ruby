@@ -1,6 +1,5 @@
 module Samanage
   class Api
-    # returns
     def send_activation_email(email: )
       user_id = self.find_user_id_by_email(email: email)
       raise Samanage::Error.new(error: 'Invalid Email', response: {}) unless user_id
