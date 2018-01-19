@@ -4,7 +4,7 @@ describe Samanage::Api do
 		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@samanage = Samanage::Api.new(token: TOKEN)
-			@departments = @samanage.departments
+			@departments = @samanage.get_departments[:data]
 		end
 		it 'get_users: it returns API call of departments' do
 			api_call = @samanage.get_departments

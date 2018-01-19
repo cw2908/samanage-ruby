@@ -42,6 +42,12 @@ module Samanage
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
+    def add_item_to_contract(id: nil, payload: nil)
+      path = "contracts/#{id}/items.json"
+      self.execute(path: path, http_method: 'post', payload: payload)
+    end
+
+
 
 	alias_method :contracts, :collect_contracts
 	end

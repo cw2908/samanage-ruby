@@ -4,7 +4,7 @@ describe Samanage::Api do
 		before(:all) do
 			TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
 			@samanage = Samanage::Api.new(token: TOKEN)
-			@categories = @samanage.categories
+			@categories = @samanage.get_categories[:data]
 		end
 		it 'collects all categories' do
 			expect(@categories).to be_an(Array)

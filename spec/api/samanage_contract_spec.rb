@@ -26,7 +26,7 @@ describe Samanage::Api do
 				json = {
 					contract: {
 						type: 'SoftwareLicense',
-            manufacturer_name: manufacturer_name,
+            manufacturer_name: 'Adobe',
             status: 'Active',
 						name:  random_name,
 					}
@@ -70,7 +70,20 @@ describe Samanage::Api do
 				contract_update = @samanage.update_contract(payload: json, id: sample_id)
 				expect(contract_update[:data]["manufacturer_name"]).to eq(new_name)
 				expect(contract_update[:code]).to eq(200).or(201)
-			end
+      end
+      it 'adds an item to a contract by id' do
+        sample_id = @contracts.sample['id']
+        item = {
+          item: {
+            name: "name",
+            version:" 123",
+            qty: "2",
+            tag: "tag",
+          }
+        }
+        add_item = @samanage.add_item_to_contract(id: sample_id, payload: item)
+        expect(add_item[:code]).to eq(200).or(201)
+      end
 		end
 	end
 end
