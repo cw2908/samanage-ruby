@@ -51,6 +51,10 @@ module Samanage
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
+		def delete_incident(id: )
+      self.execute(path: "incidents/#{id}.json", http_method: 'delete')
+    end
+
 
 	alias_method :incidents, :collect_incidents
 	end

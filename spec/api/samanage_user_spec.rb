@@ -113,6 +113,15 @@ describe Samanage::Api do
 				expect(user_update[:data]["name"]).to eq(new_name)
 				expect(user_update[:code]).to eq(200).or(201)
 			end
+			it 'deletes a valid user' do
+        sample_user_id = @users.select{|u| !u['last_login']}.sample['id']
+        user_delete = @samanage.delete_user(id: sample_user_id)
+        expect(user_delete[:code]).to eq(200).or(201)
+      end
+      it 'fails to delete invalid user' do 
+        invalid_user_id = 0
+        expect{@samanage.delete_user(id: invalid_user_id)}.to raise_error(Samanage::InvalidRequest)
+      end
 		end
 	end
 end

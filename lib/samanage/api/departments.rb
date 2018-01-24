@@ -19,8 +19,11 @@ module Samanage
 
 		def create_department(payload: nil, options: {})
 			self.execute(path: PATHS[:department], http_method: 'post', payload: payload)
-		end
 
+		end
+		def delete_department(id: )
+      self.execute(path: "departments/#{id}.json", http_method: 'delete')
+    end
 
 		alias_method :departments, :collect_departments
 	end

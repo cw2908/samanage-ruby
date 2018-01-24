@@ -20,6 +20,10 @@ module Samanage
 			self.execute(path: PATHS[:site], http_method: 'post', payload: payload)
 		end
 
+		def delete_site(id: )
+			self.execute(path: "sites/#{id}.json", http_method: 'delete')
+		end
+
 	alias_method :sites, :collect_sites
 	end
 end

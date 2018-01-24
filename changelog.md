@@ -1,3 +1,6 @@
+# 1.9.2 
+- Adding delete functionality for modules Contracts, Departments, Groups, Hardwares, Incidents, Mobiles, Other_assets, Sites, Users
+
 # 1.9.1 
 - Adding items to contracts & faster tests
 

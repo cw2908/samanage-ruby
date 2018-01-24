@@ -64,6 +64,10 @@ module Samanage
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
+		def delete_user(id: )
+      self.execute(path: "users/#{id}.json", http_method: 'delete')
+		end
+
 	alias_method :users, :collect_users
 	end
 end

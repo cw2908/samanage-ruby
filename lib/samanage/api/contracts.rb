@@ -45,6 +45,10 @@ module Samanage
     def add_item_to_contract(id: nil, payload: nil)
       path = "contracts/#{id}/items.json"
       self.execute(path: path, http_method: 'post', payload: payload)
+		end
+		
+		def delete_contract(id: )
+      self.execute(path: "contracts/#{id}.json", http_method: 'delete')
     end
 
 
