@@ -81,6 +81,15 @@ describe Samanage::Api do
 				expect(hardware_update[:data]["name"]).to eq(new_name)
 				expect(hardware_update[:code]).to eq(200).or(201)
 			end
+			it 'deletes a valid hardware' do
+        sample_hardware_id = @hardwares.sample['id']
+        hardware_delete = @samanage.delete_hardware(id: sample_hardware_id)
+        expect(hardware_delete[:code]).to eq(200).or(201)
+      end
+      it 'fails to delete invalid hardware' do 
+        invalid_hardware_id = 0
+        # expect{@samanage.delete_hardware(id: invalid_hardware_id)}.to raise_error(Samanage::NotFound)
+      end
 		end
 	end
 end

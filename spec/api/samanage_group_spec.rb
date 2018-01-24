@@ -61,5 +61,14 @@ describe Samanage::Api do
 			add_user_to_group = @samanage.add_member_to_group(email: random_user_email, group_id: random_group_id)
 			expect(add_user_to_group[:code]).to eq(200).or(201)
 		end
+	  it 'deletes a valid group' do
+        sample_group_id = @groups.sample['id']
+        group_delete = @samanage.delete_group(id: sample_group_id)
+        expect(group_delete[:code]).to eq(200).or(201)
+      end
+      it 'fails to delete invalid group' do 
+        invalid_group_id = 0
+        expect{@samanage.delete_group(id: invalid_group_id)}.to raise_error(Samanage::NotFound)
+      end
 	end
 end

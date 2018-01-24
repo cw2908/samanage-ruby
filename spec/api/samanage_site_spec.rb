@@ -36,5 +36,15 @@ describe Samanage::Api do
 			expect(site_create[:data]['name']).to eq(site_name)
 			expect(site_create[:code]).to eq(201).or(200)
 		end
+		it 'deletes a valid site' do
+			sample_site_id = @sites.sample['id']
+			site_delete = @samanage.delete_site(id: sample_site_id)
+
+			expect(site_delete[:code]).to eq(200).or(201)
+		end
+		it 'fails to delete invalid site' do 
+			invalid_site_id = 0
+			expect{@samanage.delete_site(id: invalid_site_id)}.to raise_error(Samanage::NotFound)
+		end
 	end
 end

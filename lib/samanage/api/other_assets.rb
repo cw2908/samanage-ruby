@@ -39,6 +39,9 @@ module Samanage
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
+		def delete_other_asset(id: )
+      self.execute(path: "other_assets/#{id}.json", http_method: 'delete')
+    end
 
 
 	alias_method :other_assets, :collect_other_assets

@@ -38,7 +38,11 @@ module Samanage
 			member_path = "memberships.json?group_id=#{group_id}.json&user_ids=#{user_id}"
 			self.execute(path: member_path, http_method: 'post')
 		end
-	alias_method :groups, :collect_groups
-
+		
+		def delete_group(id: )
+      self.execute(path: "groups/#{id}.json", http_method: 'delete')
+    end
+		
+		alias_method :groups, :collect_groups
 	end
 end

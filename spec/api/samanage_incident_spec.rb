@@ -90,6 +90,15 @@ describe Samanage::Api do
 				expect(basic_incident_keys.size).to be < full_incident_keys.size
 				expect(full_incident_keys).to include('audits')
 			end
+			it 'deletes a valid incident' do
+        sample_incident_id = @incidents.sample['id']
+        incident_delete = @samanage.delete_incident(id: sample_incident_id)
+        expect(incident_delete[:code]).to eq(200).or(201)
+      end
+      it 'fails to delete invalid incident' do 
+        invalid_incident_id = 0
+        # expect{@samanage.delete_incident(id: invalid_incident_id)}.to raise_error(Samanage::NotFound)
+      end
 		end
 	end
 end

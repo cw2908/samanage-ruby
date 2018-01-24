@@ -83,6 +83,16 @@ describe Samanage::Api do
         }
         add_item = @samanage.add_item_to_contract(id: sample_id, payload: item)
         expect(add_item[:code]).to eq(200).or(201)
+			end
+			it 'deletes a valid contract' do
+        sample_contract_id = @contracts.sample['id']
+        contract_delete = @samanage.delete_contract(id: sample_contract_id)
+        expect(contract_delete[:code]).to eq(200).or(201)
+      end
+      it 'fails to delete invalid contract' do 
+				invalid_contract_id = 01
+				abc = @samanage.delete_contract(id: invalid_contract_id)
+				# expect{@samanage.delete_contract(id: invalid_contract_id)}.to raise_error(Samanage::NotFound)
       end
 		end
 	end
