@@ -17,7 +17,8 @@
 
 guard :rspec, cmd: 'bundle exec rspec', all_on_start: true do
   watch(%r{^spec/.+_spec\.rb$})
-  watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
+  watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/samanage_#{m[1]}_spec.rb" }
+  watch(%r{^lib/api/(.+)\.rb$})     { |m| "spec/lib/api/samanage_#{m[1]}_spec.rb" }
   watch(%r{^lib/(.+)\.rb$})
   watch('spec/spec_helper.rb')  { "spec" }
 end

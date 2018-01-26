@@ -1,3 +1,53 @@
+# 1.9.2 
+- Adding delete functionality for modules Contracts, Departments, Groups, Hardwares, Incidents, Mobiles, Other_assets, Sites, Users
+
+# 1.9.1 
+- Adding items to contracts & faster tests
+
+# 1.9.0
+- Adding contracts 
+
+# 1.8.91 
+- Group case sensitivity fix
+
+# 1.8.9
+- Adding output verbosity for collection methods
+
+# 1.8.8
+- Base level .execute delete functionality
+- Error message for invalid http methods
+- Added audit_archive to incident options
+
+# 1.8.7
+- Fixing retry bug
+
+# 1.8.6
+- Removing layout=long verbosity
+
+# 1.8.5
+- Adding option for incidents layout=long
+
+# 1.8.3 
+- Additional Request Timeout retry support
+- Support for non-parsed responseq
+- Moving non object specific methods to samanage/api/utils
+- Added activation emails
+
+# 1.8.2
+- Adding Category support
+
+#1.8.1
+- More flexible membership adding
+- Collection method aliasing for simpler api (old methods will be removed in v2.0)
+
+#1.8.0
+- Adding coverage for invalid api requests
+
+#1.7.9
+- Solving eu datacenter support against base_url
+#1.7.8
+- Fixing nil condition in user_id methods
+
 #1.7.6
 - Adding group_id find methods for group name and user email
 

@@ -8,14 +8,14 @@ module Samanage
 		end
 
 		# Returns all other assets
-		def collect_other_assets
+		def collect_other_assets(options: {})
 			page = 1
 			other_assets = Array.new
 			total_pages = self.get_other_assets[:total_pages]
 			other_assets = []
-			while page <= total_pages
+			1.upto(total_pages) do |page|
+				puts "Collecting Other Assets page: #{page}/#{total_pages}" if options[:verbose]
 				other_assets += self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")[:data]
-				page += 1
 			end
 			other_assets.uniq
 		end
@@ -38,5 +38,12 @@ module Samanage
 			path = "other_assets/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
+
+		def delete_other_asset(id: )
+      self.execute(path: "other_assets/#{id}.json", http_method: 'delete')
+    end
+
+
+	alias_method :other_assets, :collect_other_assets
 	end
 end

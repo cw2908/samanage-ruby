@@ -1,34 +1,36 @@
 module Samanage
 	class Api
 		include HTTParty
-		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
-
-
+		MAX_RETRIES = 3
 		PATHS = {
-			hardware: 'hardwares.json',
-			user: 'users.json',
-			incident: 'incidents.json',
-			other_asset: 'other_assets.json',
-			mobile: 'mobiles.json',
+			category: 'categories.json',
+			contract: 'contracts.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
-			site: 'sites.json',
 			department: 'departments.json',
-			group: 'groups.json'
+			group: 'groups.json',
+			hardware: 'hardwares.json',
+			incident: 'incidents.json',
+			mobile: 'mobiles.json',
+			other_asset: 'other_assets.json',
+			site: 'sites.json',
+			user: 'users.json',
 		}
-		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins
+		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
+		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
 		# Development mode forzes authorization & prepopulates custom forms/fields and admins
 		# datacenter should equal 'eu' or blank
-		def initialize(token: nil, datacenter: nil, development_mode: false)
-			self.token = token if token
+		def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
+			self.token = token
 			if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
-				self.datacenter = nil
+				datacenter = nil
 			end
-			self.base_url =  "https://api#{self.datacenter}.samanage.com/"
-			self.datacenter = datacenter if datacenter
+			self.datacenter ||= datacenter.to_s.downcase
+			self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
 			self.content_type = 'json'
 			self.admins = []
+			self.max_retries = max_retries
 			if development_mode
 				if self.authorized? != true
 					self.authorize
@@ -72,14 +74,34 @@ module Samanage
 				'Content-type'  => "application/#{self.content_type}",
 				'X-Samanage-Authorization' => 'Bearer ' + self.token
 			}
+			@options = {
+				headers: headers,
+				payload: payload
+			}
 			full_path = self.base_url + path
-			case http_method.to_s.downcase
-			when 'get'
-				api_call = HTTParty.get(full_path, headers: headers)
-			when 'post'
-				api_call = HTTParty.post(full_path, query: payload, headers: headers)
-			when 'put'
-				api_call = HTTParty.put(full_path, query: payload, headers: headers)
+			retries = 0
+			begin
+				case http_method.to_s.downcase
+				when 'get'
+					api_call = self.class.get(full_path, headers: headers)
+				when 'post'
+					api_call = self.class.post(full_path, query: payload, headers: headers)
+				when 'put'
+					api_call = self.class.put(full_path, query: payload, headers: headers)
+				when 'delete'
+					api_call = self.class.delete(full_path, query: payload, headers: headers)
+				else
+					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
+				end
+			rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
+				puts "Error: #{e} - #{e.class}"
+				puts "Retry: #{retries}/#{self.max_retries}"
+				sleep 3
+				retries += 1
+				retry if retries < self.max_retries
+				error = e
+				response = e.class
+				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
 
 			response = Hash.new
@@ -94,7 +116,13 @@ module Samanage
 			# Error cases
 			case response[:code]
 			when 200..201
-				response[:data] = JSON.parse(api_call.body)
+				begin
+					response[:data] = JSON.parse(api_call.body)
+				rescue JSON::ParserError => e
+					response[:data] = api_call.body
+					puts "** Warning **#{e.class}"
+					puts e
+				end
 				response
 			when 401
 				response[:data] = api_call.body
@@ -114,10 +142,6 @@ module Samanage
 				error = response[:response]
 				raise Samanage::InvalidRequest.new(error: error, response: response)
 			end
-			rescue Errno::ECONNREFUSED => e
-				error = e
-				response = e.class
-				raise Samanage::InvalidRequest.new(error: error, response: response)
 		end
 
 

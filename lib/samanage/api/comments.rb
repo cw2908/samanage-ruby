@@ -27,5 +27,7 @@ module Samanage
 			end
 			comments
 		end
+
+		alias_method :comments, :collect_comments
 	end
 end
