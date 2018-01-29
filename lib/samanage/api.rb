@@ -93,9 +93,14 @@ module Samanage
 				else
 					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
 				end
+<<<<<<< Updated upstream
 			rescue Errno::ECONNREFUSED, Net::OpenTimeout, Net::ReadTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
 				puts "Error: #{e} - #{e.class}"
 				puts "Retry: #{retries}/#{self.max_retries}"
+=======
+			rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
+				puts "Error:[#{e.class}] #{e} -  Retry: #{retries}/#{self.max_retries}"
+>>>>>>> Stashed changes
 				sleep 3
 				retries += 1
 				retry if retries < self.max_retries
