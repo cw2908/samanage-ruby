@@ -32,7 +32,7 @@ module Samanage
 			self.execute(path: path)
 		end
 
-		def add_member_to_group(email: , group_id: , group_name: )
+		def add_member_to_group(email: , group_id: nil, group_name: nil)
 			group_id = group_id ||= self.find_group_id_by_name(group: group_name)
 			user_id = self.find_user_id_by_email(email: email)
 			member_path = "memberships.json?group_id=#{group_id}.json&user_ids=#{user_id}"
