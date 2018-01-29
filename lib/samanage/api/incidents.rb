@@ -40,13 +40,13 @@ module Samanage
 		end
 
 		# Find incident by ID
-		def find_incident(id: nil)
+		def find_incident(id: )
 			path = "incidents/#{id}.json"
 			self.execute(path: path)
 		end
 
 		# Update an incident given id and json
-		def update_incident(payload: nil, id: nil, options: {})
+		def update_incident(payload: , id: , options: {})
 			path = "incidents/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end

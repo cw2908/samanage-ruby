@@ -19,7 +19,7 @@ module Samanage
 		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
-		# Development mode forzes authorization & prepopulates custom forms/fields and admins
+		# Development mode forces authorization & pre-populates admins and custom forms / fields
 		# datacenter should equal 'eu' or blank
 		def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
 			self.token = token

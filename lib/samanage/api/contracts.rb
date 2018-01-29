@@ -20,12 +20,12 @@ module Samanage
 		end
 
 		# Create contract given json payload
-		def create_contract(payload: nil, options: {})
+		def create_contract(payload: , options: {})
 			self.execute(path: PATHS[:contract], http_method: 'post', payload: payload)
 		end
 
 		# Find contract given id
-		def find_contract(id: nil)
+		def find_contract(id: )
 			path = "contracts/#{id}.json"
 			self.execute(path: path)
 		end
@@ -37,12 +37,12 @@ module Samanage
 		end
 
 		# Update contract given id
-		def update_contract(payload: nil, id: nil, options: {})
+		def update_contract(payload: , id: , options: {})
 			path = "contracts/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
-    def add_item_to_contract(id: nil, payload: nil)
+    def add_item_to_contract(id: , payload: )
       path = "contracts/#{id}/items.json"
       self.execute(path: path, http_method: 'post', payload: payload)
 		end

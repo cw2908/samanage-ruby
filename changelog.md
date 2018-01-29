@@ -1,3 +1,7 @@
+# 1.9.4
+- Remove (keyword: nil)
+- Collapse error retry output
+
 # 1.9.3
 - Handle HTTP Read Timeout
 
