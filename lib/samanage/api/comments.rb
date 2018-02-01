@@ -14,20 +14,7 @@ module Samanage
 			self.execute(http_method: 'post', path: path, payload: comment)
 		end
 
-		# Return all comments from the incident_id
-		def collect_comments(incident_id: )
 
-			page = 1
-			max_pages = 5
-			comments = Array.new
-			while page <= max_pages
-				path = "incidents/#{incident_id}/comments.json?page=#{page}"
-				comments += self.execute(path: path)[:data]
-				page += 1
-			end
-			comments
-		end
-
-		alias_method :comments, :collect_comments
+		alias_method :comments, :get_comments
 	end
 end
