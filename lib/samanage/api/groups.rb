@@ -16,23 +16,23 @@ module Samanage
 			groups
 		end
 
-		def create_group(payload: nil, options: {})
+		def create_group(payload: , options: {})
 			self.execute(path: PATHS[:group], http_method: 'post', payload: payload)
 		end
 
-		def find_group_id_by_name(group: nil)
+		def find_group_id_by_name(group: )
 			group_api = self.execute(path: "groups.json?name=#{group}")
 			if !group_api[:data].empty? && group == group_api[:data].first['name']
 				return group_api[:data].first['id']
 			end
 		end
 
-		def find_group(id: nil)
+		def find_group(id: )
 			path = "groups/#{id}.json"
 			self.execute(path: path)
 		end
 
-		def add_member_to_group(email: nil, group_id: nil, group_name: nil)
+		def add_member_to_group(email: , group_id: nil, group_name: nil)
 			group_id = group_id ||= self.find_group_id_by_name(group: group_name)
 			user_id = self.find_user_id_by_email(email: email)
 			member_path = "memberships.json?group_id=#{group_id}.json&user_ids=#{user_id}"

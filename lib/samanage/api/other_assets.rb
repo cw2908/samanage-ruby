@@ -22,19 +22,19 @@ module Samanage
 
 
 		# Create an other_asset given json
-		def create_other_asset(payload: nil, options: {})
+		def create_other_asset(payload: , options: {})
 			self.execute(path: PATHS[:other_asset], http_method: 'post', payload: payload)
 		end
 
 
 		# Find other_asset by id
-		def find_other_asset(id: nil)
+		def find_other_asset(id: )
 			path = "other_assets/#{id}.json"
 			self.execute(path: path)
 		end
 
  		# Update other_asset given json and id
-		def update_other_asset(payload: nil, id: nil, options: {})
+		def update_other_asset(payload: , id: , options: {})
 			path = "other_assets/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end

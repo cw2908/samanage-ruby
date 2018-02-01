@@ -16,7 +16,7 @@ module Samanage
 			sites
 		end
 
-		def create_site(payload: nil, options: {})
+		def create_site(payload: , options: {})
 			self.execute(path: PATHS[:site], http_method: 'post', payload: payload)
 		end
 

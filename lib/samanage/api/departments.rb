@@ -17,7 +17,7 @@ module Samanage
 			departments
 		end
 
-		def create_department(payload: nil, options: {})
+		def create_department(payload: , options: {})
 			self.execute(path: PATHS[:department], http_method: 'post', payload: payload)
 
 		end

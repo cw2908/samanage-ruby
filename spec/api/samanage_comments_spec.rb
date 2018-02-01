@@ -28,7 +28,7 @@ describe Samanage::Api do
 
 			it 'collects all comments' do
 				incident_id = @incidents.sample.dig('id')
-				comments = @samanage.collect_comments(incident_id: incident_id)
+				comments = @samanage.comments(incident_id: incident_id)
 				# Total count bug
 				# expect(comments).to be(Array)
 			end

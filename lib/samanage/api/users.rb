@@ -20,12 +20,12 @@ module Samanage
 		end
 
 		# Create user given JSON
-		def create_user(payload: nil, options: {})
+		def create_user(payload: , options: {})
 			self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
 		end
 
     # Return user by ID
-		def find_user(id: nil)
+		def find_user(id: )
 			path = "users/#{id}.json"
 			self.execute(path: path)
 		end
@@ -50,16 +50,16 @@ module Samanage
 		end
 
     # Check for user by field (ex: users.json?field=value)
-		def check_user(field: 'email', value: nil)
+		def check_user(field: 'email', value: )
 			if field.to_s.downcase == 'email'
-				value = value.gsub("+",'%2B')
+				value = value.to_s.gsub("+",'%2B')
 			end
 			url = "users.json?#{field}=#{value}"
 			self.execute(path: url)
 		end
 
     # Update user by id
-		def update_user(payload: nil, id: nil)
+		def update_user(payload: , id: )
 			path = "users/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end

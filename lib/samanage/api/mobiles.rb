@@ -37,7 +37,7 @@ module Samanage
 		end
 
 		# Update mobile given id
-		def update_mobile(payload: nil, id: nil, options: {})
+		def update_mobile(payload: , id: , options: {})
 			path = "mobiles/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end

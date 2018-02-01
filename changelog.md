@@ -1,3 +1,11 @@
+# 1.9.31
+- Alias original comment method
+- Remove (keyword: nil)
+- Collapse error retry output
+
+# 1.9.3
+- Handle HTTP Read Timeout
+
 # 1.9.2 
 - Adding delete functionality for modules Contracts, Departments, Groups, Hardwares, Incidents, Mobiles, Other_assets, Sites, Users
 

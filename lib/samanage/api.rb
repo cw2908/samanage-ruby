@@ -19,7 +19,7 @@ module Samanage
 		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
-		# Development mode forzes authorization & prepopulates custom forms/fields and admins
+		# Development mode forces authorization & pre-populates admins and custom forms / fields
 		# datacenter should equal 'eu' or blank
 		def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
 			self.token = token
@@ -94,8 +94,7 @@ module Samanage
 					raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
 				end
 			rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
-				puts "Error: #{e} - #{e.class}"
-				puts "Retry: #{retries}/#{self.max_retries}"
+				puts "Error:[#{e.class}] #{e} -  Retry: #{retries}/#{self.max_retries}"
 				sleep 3
 				retries += 1
 				retry if retries < self.max_retries
