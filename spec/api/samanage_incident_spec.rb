@@ -57,6 +57,15 @@ describe Samanage::Api do
 				expect(incident[:data]).to have_key('requester')
 				expect(incident[:data]).to have_key('id')
 			end
+			it 'find_incident: returns more keys with layout=long' do
+				sample_id = @incidents.sample['id']
+				layout_regular_incident = @samanage.find_incident(id: sample_id)
+				layout_long_incident = @samanage.find_incident(id: sample_id, options: {layout: 'long'})
+
+				expect(layout_long_incident[:data]['id']).to eq(sample_id)  # id should match found incident
+				expect(layout_long_incident[:data].keys.size).to be > (layout_regular_incident.keys.size)
+				expect(layout_long_incident[:data].keys - layout_regular_incident[:data].keys).to_not be([])
+			end
 			it 'find_incident: returns nothing for an invalid id' do
 				sample_id = (0..10).entries.sample
 				expect{@samanage.find_incident(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found incident

@@ -40,8 +40,11 @@ module Samanage
 		end
 
 		# Find incident by ID
-		def find_incident(id: )
+		def find_incident(id: , options: {})
 			path = "incidents/#{id}.json"
+			if options[:layout] == 'long'
+				path += '?layout=long'
+			end
 			self.execute(path: path)
 		end
 

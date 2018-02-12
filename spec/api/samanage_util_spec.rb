@@ -16,6 +16,12 @@ describe Samanage::Api do
         invalid_email = @samanage.users.sample['email'].gsub!('@','$')
         expect{@samanage.send_activation_email(email: invalid_email)}.to raise_error(Samanage::Error)
       end
+      it 'downloads an attachment' do
+        attachable_incident_id = 22215549 # Need filter for has attachment?
+        incident = @samanage.find_incident(id: attachable_incident_id, options: {layout: 'long'})
+        attachment = @samanage.download_attachment(attachment: incident[:data]['attachments'].first)
+        expect(attachment.class).to be(File)
+      end
     end
   end
 end
