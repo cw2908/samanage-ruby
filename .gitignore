@@ -8,3 +8,6 @@ test.rb
 */**.DS_STORE
 doc
 .yardoc
+./Incident
+./Change
+./Problem

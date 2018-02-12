@@ -1,3 +1,7 @@
+# 1.9.32
+- Adding layout long for single incident
+- Adding attachment downloads
+
 # 1.9.31
 - Alias original comment method
 - Remove (keyword: nil)
