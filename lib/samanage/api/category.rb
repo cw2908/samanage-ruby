@@ -17,6 +17,10 @@ module Samanage
 			self.execute(path: PATHS[:category], http_method: 'post', payload: payload)
 		end
 
+		def delete_category(id: )
+			self.execute(path: "categories/#{id}", http_method: 'delete')
+		end
+
 		# def find_category(name: )
 		# 	self.categories
 		# end
