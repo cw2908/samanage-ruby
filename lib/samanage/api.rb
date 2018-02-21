@@ -48,15 +48,11 @@ module Samanage
 		# Check token against api.json
 		def authorize
 			self.execute(path: 'api.json')
-			rescue OpenSSL::SSL::SSLError => e
-				puts "Raised: #{e} #{e.class}"
-				puts 'Disabling Local SSL Verification'
-				self.execute(path: 'api.json', ssl_fix: true)
 			self.authorized = true
 		end
 
 		# Calling execute without a method defaults to GET
-		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false)
+		def execute(http_method: 'get', path: nil, payload: nil, verbose: nil)
 			if payload.class == String
 				begin
 				payload = JSON.parse(payload)
