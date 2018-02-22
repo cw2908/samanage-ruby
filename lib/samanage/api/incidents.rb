@@ -27,7 +27,7 @@ module Samanage
             if block_given?
               yield incident_with_archive
             end
-            incidents.push([incident_with_archive])
+            incidents.push(incident_with_archive)
           end
         else
           layout = options[:layout] == 'long' ? '&layout=long' : nil
