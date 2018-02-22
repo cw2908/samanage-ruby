@@ -9,12 +9,16 @@ module Samanage
 
 		# Get all contracts
 		def collect_contracts(options: {})
-			page = 1
 			contracts = Array.new
 			total_pages = self.get_contracts[:total_pages]
 			1.upto(total_pages) do |page|
 				puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
-				contracts += self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data]
+				self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data].each do |contract|
+					if block_given?
+						yield contract
+					end
+					contracts << contract
+				end
 			end
 			contracts
 		end
@@ -42,14 +46,14 @@ module Samanage
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
 
-    def add_item_to_contract(id: , payload: )
+		def add_item_to_contract(id: , payload: )
       path = "contracts/#{id}/items.json"
       self.execute(path: path, http_method: 'post', payload: payload)
 		end
 		
 		def delete_contract(id: )
       self.execute(path: "contracts/#{id}.json", http_method: 'delete')
-    end
+		end
 
 
 

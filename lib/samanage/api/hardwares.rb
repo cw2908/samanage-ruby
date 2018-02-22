@@ -9,12 +9,16 @@ module Samanage
 
 		# Get all hardwares
 		def collect_hardwares(options: {})
-			page = 1
 			hardwares = Array.new
 			total_pages = self.get_hardwares[:total_pages]
 			1.upto(total_pages) do |page|
 				puts "Collecting Hardwares page: #{page}/#{total_pages}" if options[:verbose]
-				hardwares += self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")[:data]
+				self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")[:data].each do |hardware|
+					if block_given?
+						yield hardware
+					end
+					hardwares << hardware
+				end
 			end
 			hardwares
 		end
@@ -50,8 +54,8 @@ module Samanage
 		end
 
 		def delete_hardware(id: )
-      self.execute(path: "hardwares/#{id}.json", http_method: 'delete')
-    end
+			self.execute(path: "hardwares/#{id}.json", http_method: 'delete')
+		end
 
 	alias_method :hardwares, :collect_hardwares
 	end

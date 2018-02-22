@@ -10,7 +10,12 @@ module Samanage
 		# - to break into subcategories, add
 		def collect_categories
 			categories = Array.new
-			categories += self.execute(http_method: 'get', path: "categories.json")[:data]
+			 self.execute(http_method: 'get', path: "categories.json")[:data].each do |category|
+				if block_given?
+					yield category
+				end
+				categories << category
+			 end
 		end
 
 		def create_category(payload: nil, options: {})

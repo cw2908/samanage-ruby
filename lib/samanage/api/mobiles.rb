@@ -9,12 +9,16 @@ module Samanage
 
 		# Get all mobiles
 		def collect_mobiles(options: {})
-			page = 1
 			mobiles = Array.new
 			total_pages = self.get_mobiles[:total_pages]
 			1.upto(total_pages) do |page|
 				puts "Collecting Mobiles page: #{page}/#{total_pages}" if options[:verbose]
-				mobiles += self.execute(http_method: 'get', path: "mobiles.json?page=#{page}")[:data]
+				self.execute(http_method: 'get', path: "mobiles.json?page=#{page}")[:data].each do |mobile|
+					if block_given? 
+						yield mobiles
+					end
+					mobiles << mobile
+				end
 			end
 			mobiles
 		end
@@ -43,8 +47,8 @@ module Samanage
 		end
 
 		def delete_mobile(id: )
-      self.execute(path: "mobiles/#{id}.json", http_method: 'delete')
-    end
+			self.execute(path: "mobiles/#{id}.json", http_method: 'delete')
+		end
 
 
 	alias_method :mobiles, :collect_mobiles

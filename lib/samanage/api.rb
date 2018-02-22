@@ -6,6 +6,7 @@ module Samanage
 		PATHS = {
 			category: 'categories.json',
 			contract: 'contracts.json',
+			change: 'changes.json',
 			custom_fields: 'custom_fields.json',
 			custom_forms: 'custom_forms.json',
 			department: 'departments.json',

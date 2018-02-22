@@ -23,11 +23,21 @@ module Samanage
 					paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]
 					paginated_incidents.map do |incident|
 						archive_path = "incidents/#{incident['id']}.json?#{archives}"
-						incidents << self.execute(path: archive_path)[:data]
+						self.execute(path: archive_path)[:data].each do |incident_with_archive|
+							if block_given?
+								yield incident_with_archive
+							end
+							incidents << incident_with_archive
+						end
 					end
 				else
 					layout = options[:layout] == 'long' ? '&layout=long' : nil
-					incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
+					self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data].each do |incident|
+						if block_given?
+							yield incident
+						end
+						incidents += incident
+					end
 				end
 			end
 			incidents
@@ -56,7 +66,7 @@ module Samanage
 
 		def delete_incident(id: )
       self.execute(path: "incidents/#{id}.json", http_method: 'delete')
-    end
+		end
 
 
 	alias_method :incidents, :collect_incidents

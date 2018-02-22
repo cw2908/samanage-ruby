@@ -6,13 +6,16 @@ module Samanage
 		end
 
 		def collect_departments(options: {})
-			page = 1
 			departments = Array.new
 			total_pages = self.get_departments[:total_pages]
 			1.upto(total_pages) do |page|
 				puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
-				departments += self.execute(http_method: 'get', path: "departments.json?page=#{page}")[:data]
-				page += 1
+				self.execute(http_method: 'get', path: "departments.json?page=#{page}")[:data].each do |department|
+					if block_given?
+						yield department
+					end
+					departments << department
+				end
 			end
 			departments
 		end
@@ -23,7 +26,7 @@ module Samanage
 		end
 		def delete_department(id: )
       self.execute(path: "departments/#{id}.json", http_method: 'delete')
-    end
+		end
 
 		alias_method :departments, :collect_departments
 	end
