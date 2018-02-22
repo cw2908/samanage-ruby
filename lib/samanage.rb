@@ -24,5 +24,4 @@ require 'samanage/url_builder'
 require 'samanage/version'
 
 module Samanage
-	
 end
