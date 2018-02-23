@@ -9,7 +9,7 @@ module Samanage
 
   # Returns all users in the account
     def collect_users(options: {})
-      page = 1
+        
       users = Array.new
       total_pages = self.get_users[:total_pages]
       1.upto(total_pages) do |page|

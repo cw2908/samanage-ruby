@@ -6,7 +6,7 @@ module Samanage
     end
 
     def collect_departments(options: {})
-      page = 1
+        
       departments = Array.new
       total_pages = self.get_departments[:total_pages]
       1.upto(total_pages) do |page|

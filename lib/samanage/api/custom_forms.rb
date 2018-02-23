@@ -8,7 +8,6 @@ module Samanage
 
     # Get all custom forms
     def collect_custom_forms(options: {})
-      page = 1
       custom_forms = Array.new
       total_pages = self.get_custom_forms[:total_pages]
       1.upto(total_pages) do |page|

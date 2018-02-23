@@ -9,7 +9,7 @@ module Samanage
 
     # Returns all other assets
     def collect_other_assets(options: {})
-      page = 1
+        
       other_assets = Array.new
       total_pages = self.get_other_assets[:total_pages]
       other_assets = []

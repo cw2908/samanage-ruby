@@ -9,7 +9,7 @@ module Samanage
 
     # Get all mobiles
     def collect_mobiles(options: {})
-      page = 1
+        
       mobiles = Array.new
       total_pages = self.get_mobiles[:total_pages]
       1.upto(total_pages) do |page|

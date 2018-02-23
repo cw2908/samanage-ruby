@@ -6,7 +6,7 @@ module Samanage
     end
 
     def collect_sites(options: {})
-      page = 1
+        
       sites = Array.new
       total_pages = self.get_sites[:total_pages]
       1.upto(total_pages) do |page|
