@@ -1,5 +1,6 @@
 module Samanage
   class Api
+    include HTTPMultiParty
     def upload_attachment(attachment: , attachable_id: , attachable_type: )
       self.execute(
         path: 'webhooks',
