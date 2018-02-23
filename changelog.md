@@ -1,6 +1,8 @@
 # 2.0.0
 - Support for responding to blocks in all paginated collection methods
 - Added Changes (itsm)
+# 1.9.33
+- Using new cert
 
 # 1.9.32
 - Adding layout long for single incident
