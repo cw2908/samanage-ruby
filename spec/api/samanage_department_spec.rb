@@ -34,7 +34,7 @@ describe Samanage::Api do
       expect(department_create[:code]).to eq(201).or(200)
     end
     it 'deletes a valid department' do
-      sample_department_id = @departments.sample['id']
+      sample_department_id = @departments.sample.dig('id')
       department_delete = @samanage.delete_department(id: sample_department_id)
       expect(department_delete[:code]).to eq(200).or(201)
     end
