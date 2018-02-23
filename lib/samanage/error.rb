@@ -1,28 +1,28 @@
 module Samanage
-	class Error < StandardError
-		attr_accessor :status_code, :response, :error
-		
-		def initialize(error: nil, response: {})
-			self.error = error
-			if response.class == Hash
-				self.status_code = response[:code]
-				self.response = response[:data] ||= response[:response]
-			else
-				self.status_code = nil
-				self.response = response
-			end
+  class Error < StandardError
+    attr_accessor :status_code, :response, :error
+    
+    def initialize(error: nil, response: {})
+      self.error = error
+      if response.class == Hash
+        self.status_code = response[:code]
+        self.response = response[:data] ||= response[:response]
+      else
+        self.status_code = nil
+        self.response = response
+      end
 
-			puts "[Error] #{self.status_code}: #{self.response}"
-		end
-	end
+      puts "[Error] #{self.status_code}: #{self.response}"
+    end
+  end
 
-	# API Errors
-	class SamanageError < Error; end
+  # API Errors
+  class SamanageError < Error; end
 
-	class AuthorizationError < SamanageError; end
+  class AuthorizationError < SamanageError; end
 
-	class InvalidRequest < SamanageError; end
+  class InvalidRequest < SamanageError; end
 
-	class NotFound < SamanageError; end
+  class NotFound < SamanageError; end
 
 end

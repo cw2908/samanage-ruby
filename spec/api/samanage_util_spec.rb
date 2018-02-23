@@ -1,6 +1,6 @@
 require 'samanage'
 describe Samanage::Api do
-	context 'Utils' do
+  context 'Utils' do
     describe 'API Functions' do
       before(:each) do 
         TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
