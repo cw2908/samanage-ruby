@@ -21,7 +21,6 @@ describe Samanage::Api do
         expect(@contracts.size).to eq(contract_count)
       end
       it 'create_contract(payload: json): creates a contract' do
-        manufacturer_name = "samanage-ruby-#{(rand*10**10).ceil}"
         random_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
         json = {
           contract: {
@@ -88,11 +87,6 @@ describe Samanage::Api do
         sample_contract_id = @contracts.sample['id']
         contract_delete = @samanage.delete_contract(id: sample_contract_id)
         expect(contract_delete[:code]).to eq(200).or(201)
-      end
-      it 'fails to delete invalid contract' do 
-        invalid_contract_id = 01
-        abc = @samanage.delete_contract(id: invalid_contract_id)
-        # expect{@samanage.delete_contract(id: invalid_contract_id)}.to raise_error(Samanage::NotFound)
       end
     end
   end

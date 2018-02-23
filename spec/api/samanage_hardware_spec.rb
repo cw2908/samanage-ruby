@@ -61,7 +61,6 @@ describe Samanage::Api do
       it 'finds_hardwares_by_serial' do
         sample_hardware = @hardwares.sample
         sample_serial_number = sample_hardware['serial_number']
-        sample_id = sample_hardware['id']
         found_assets = @samanage.find_hardwares_by_serial(serial_number: sample_serial_number)
         found_sample = found_assets[:data].sample
         expect(sample_serial_number).not_to be(nil)
@@ -85,10 +84,6 @@ describe Samanage::Api do
         sample_hardware_id = @hardwares.sample['id']
         hardware_delete = @samanage.delete_hardware(id: sample_hardware_id)
         expect(hardware_delete[:code]).to eq(200).or(201)
-      end
-      it 'fails to delete invalid hardware' do 
-        invalid_hardware_id = 0
-        # expect{@samanage.delete_hardware(id: invalid_hardware_id)}.to raise_error(Samanage::NotFound)
       end
     end
   end

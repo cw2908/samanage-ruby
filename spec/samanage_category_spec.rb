@@ -6,14 +6,8 @@ describe Samanage::Api do
       @samanage = Samanage::Api.new(token: TOKEN)
       @categories = @samanage.collect_categories
     end
-    it 'collects all categories' do
-      category_count = @samanage.execute(path: 'categories.json')
-      expect(@categories).to be_an(Array)
-    end
-
     it 'creates a category' do
       category_name = "category ##{(rand*10**4).ceil}"
-      category_location = "Location #{(rand*10**4).ceil}"
       category_description = "Location #{(rand*10**4).ceil}"
       payload = {
         category: {
@@ -22,8 +16,7 @@ describe Samanage::Api do
         }
       }
       category_create = @samanage.create_category(payload: payload)
-
-      expect(category_create[:data]['id']).to be_an(Integer)
+		  expect(category_create[:data]['id']).to be_an(Integer)
       expect(category_create[:data]['name']).to eq(category_name)
       expect(category_create[:code]).to eq(200).or(201)
     end

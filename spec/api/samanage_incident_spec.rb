@@ -104,10 +104,6 @@ describe Samanage::Api do
         incident_delete = @samanage.delete_incident(id: sample_incident_id)
         expect(incident_delete[:code]).to eq(200).or(201)
       end
-      it 'fails to delete invalid incident' do 
-        invalid_incident_id = 0
-        # expect{@samanage.delete_incident(id: invalid_incident_id)}.to raise_error(Samanage::NotFound)
-      end
     end
   end
 end

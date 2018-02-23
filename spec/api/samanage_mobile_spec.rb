@@ -75,10 +75,6 @@ describe Samanage::Api do
         mobile_delete = @samanage.delete_mobile(id: sample_mobile_id)
         expect(mobile_delete[:code]).to eq(200).or(201)
       end
-      it 'fails to delete invalid mobile' do 
-        invalid_mobile_id = 0
-        # expect{@samanage.delete_mobile(id: invalid_mobile_id)}.to raise_error(Samanage::NotFound)
-      end
     end
   end
 end

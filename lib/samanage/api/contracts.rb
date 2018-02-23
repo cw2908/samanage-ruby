@@ -9,7 +9,6 @@ module Samanage
 
     # Get all contracts
     def collect_contracts(options: {})
-      page = 1
       contracts = Array.new
       total_pages = self.get_contracts[:total_pages]
       1.upto(total_pages) do |page|

@@ -25,13 +25,6 @@ describe Samanage::Api do
 
         expect(api_call.dig(:data,'body')).to eq(rand_text)
       end
-
-      it 'collects all comments' do
-        incident_id = @incidents.sample.dig('id')
-        comments = @samanage.comments(incident_id: incident_id)
-        # Total count bug
-        # expect(comments).to be(Array)
-      end
     end
   end
 end

@@ -20,7 +20,6 @@ describe Samanage::Api do
     end
     it 'creates a department' do
       department_name = "department ##{(rand*10**4).ceil}"
-      department_location = "Location #{(rand*10**4).ceil}"
       department_description = "Location #{(rand*10**4).ceil}"
       payload = {
         department: {
