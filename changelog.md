@@ -1,4 +1,7 @@
 # 1.9.32
+- Using new cert
+
+# 1.9.32
 - Adding layout long for single incident
 - Adding attachment downloads
 
