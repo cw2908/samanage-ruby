@@ -17,7 +17,7 @@ module Samanage
 			site: 'sites.json',
 			user: 'users.json',
 		}
-		ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
+		ssl_ca_file "#{File.expand_path('..')}/data/gd-class2-root.crt"
 		attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
 		# Development mode forces authorization & pre-populates admins and custom forms / fields
