@@ -8,6 +8,24 @@ module Samanage
       self.execute(http_method: 'put', path: "users/#{user_id}.json?send_activation_email=1&add_callbacks=1")
     end
 
+    def upload_attachment(attachment: , attachable_id: , attachable_type: )
+      if attachment.class != File
+        return "Attachment argument must be file, received: #{attachment.class} for #{attachment}"
+      end
+      self.execute(
+        path: 'attachments.json',
+        http_method: 'post',
+        headers: {'Content-Type' => "multipart/form-data"},
+        payload: {
+          'file[attachment]' => attachment,
+          'file[attachable_id]' => attachable_id,
+          'file[attachable_type]' => attachable_type,
+        }
+      )
+    end
+
+
+
     # Downloads a Samanage Attachment object can overwrite default filename and path (Object/ObjectID/Original_Filename)
     def download_attachment(attachment: {}, filename: nil, path: nil)
       attachable_type = attachment['attachable_type']

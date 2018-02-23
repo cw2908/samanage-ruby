@@ -2,6 +2,7 @@ require 'open-uri'
 module Samanage
   class Api
     include HTTParty
+    include HTTMultiParty
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
@@ -18,7 +19,7 @@ module Samanage
       site: 'sites.json',
       user: 'users.json',
     }
-    ssl_ca_file "#{File.expand_path('..')}/data/cacert.pem"
+    ssl_ca_file "#{File.expand_path('..')}/data/gd-class2-root.crt"
     attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
 
     # Development mode forces authorization & pre-populates admins and custom forms / fields
@@ -53,7 +54,7 @@ module Samanage
     end
 
     # Calling execute without a method defaults to GET
-    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil)
+    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
       if payload.class == String
         begin
         payload = JSON.parse(payload)
@@ -72,10 +73,13 @@ module Samanage
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
       }
+      # headers.merge!(default_headers)
       @options = {
         headers: headers,
         payload: payload
       }
+      # puts "headers: #{headers}"
+      # puts "default_headers: #{default_headers}"
       full_path = self.base_url + path
       retries = 0
       begin

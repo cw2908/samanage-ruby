@@ -1,5 +1,5 @@
 $LOAD_PATH << File.dirname(__FILE__)
-require 'httparty'
+require 'httmultiparty'
 
 require 'samanage/api'
 require 'samanage/api/category'
