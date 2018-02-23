@@ -9,6 +9,7 @@ module Samanage
     end
 
     def upload_attachment(attachment: , attachable_id: , attachable_type: )
+      include HTTMultiParty
       if attachment.class != File
         return "Attachment argument must be file, received: #{attachment.class} for #{attachment}"
       end

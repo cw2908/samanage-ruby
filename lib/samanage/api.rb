@@ -2,7 +2,6 @@ require 'open-uri'
 module Samanage
   class Api
     include HTTParty
-    include HTTMultiParty
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
@@ -68,18 +67,15 @@ module Samanage
         verbose = '?layout=long'
       end
 
-      headers = {
+      headers = headers.merge({
         'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
-      }
-      # headers.merge!(default_headers)
+      })
       @options = {
         headers: headers,
         payload: payload
       }
-      # puts "headers: #{headers}"
-      # puts "default_headers: #{default_headers}"
       full_path = self.base_url + path
       retries = 0
       begin
@@ -139,6 +135,7 @@ module Samanage
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response)
       else
+        puts api_call.inspect
         response[:data] = api_call.body
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response)
