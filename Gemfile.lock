@@ -19,6 +19,10 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    httmultiparty (0.3.16)
+      httparty (>= 0.7.3)
+      mimemagic
+      multipart-post
     httparty (0.15.6)
       multi_xml (>= 0.5.2)
     listen (3.1.5)
@@ -27,7 +31,9 @@ GEM
       ruby_dep (~> 1.2)
     lumberjack (1.0.12)
     method_source (0.8.2)
+    mimemagic (0.3.2)
     multi_xml (0.6.0)
+    multipart-post (2.0.0)
     nenv (0.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -62,6 +68,7 @@ PLATFORMS
 
 DEPENDENCIES
   guard-rspec
+  httmultiparty
   httparty
   rspec
 
