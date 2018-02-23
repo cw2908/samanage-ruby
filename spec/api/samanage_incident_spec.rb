@@ -94,8 +94,6 @@ describe Samanage::Api do
         ('audits')
       end
       it 'finds audit archives for options: {audit_archives: true, layout: "long"}' do
-        puts "@incidents_with_archives: #{@incidents_with_archives.count} - #{@incidents_with_archives.sample.inspect}"
-        puts "@incidents: #{@incidents.count} - #{@incidents.sample.inspect}"
         full_incident_keys = @incidents_with_archives.sample.keys
         basic_incident_keys = @incidents.sample.keys
         expect(basic_incident_keys.size).to be < full_incident_keys.size
@@ -105,10 +103,6 @@ describe Samanage::Api do
         sample_incident_id = @incidents.sample['id']
         incident_delete = @samanage.delete_incident(id: sample_incident_id)
         expect(incident_delete[:code]).to eq(200).or(201)
-      end
-      it 'fails to delete invalid incident' do 
-        invalid_incident_id = 0
-        # expect{@samanage.delete_incident(id: invalid_incident_id)}.to raise_error(Samanage::NotFound)
       end
     end
   end

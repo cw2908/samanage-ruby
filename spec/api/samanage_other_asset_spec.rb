@@ -78,10 +78,6 @@ describe Samanage::Api do
         sample_other_asset_id = @other_assets.sample['id']
         other_asset_delete = @samanage.delete_other_asset(id: sample_other_asset_id)
         expect(other_asset_delete[:code]).to eq(200).or(201)
-      end
-      it 'fails to delete invalid other_asset' do 
-        invalid_other_asset_id = 0
-        # expect{@samanage.delete_other_asset(id: invalid_other_asset_id)}.to raise_error(Samanage::NotFound)
       end      
     end
   end

@@ -26,10 +26,6 @@ module Samanage
       self.execute(path: "categories/#{id}", http_method: 'delete')
     end
 
-    # def find_category(name: )
-    #   self.categories
-    # end
-
   alias_method :categories, :collect_categories
   end
 end
