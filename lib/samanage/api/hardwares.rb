@@ -20,18 +20,18 @@ module Samanage
 		end
 
 		# Create hardware given json payload
-		def create_hardware(payload: nil, options: {})
+		def create_hardware(payload: , options: {})
 			self.execute(path: PATHS[:hardware], http_method: 'post', payload: payload)
 		end
 
 		# Find hardware given id
-		def find_hardware(id: nil)
+		def find_hardware(id: )
 			path = "hardwares/#{id}.json"
 			self.execute(path: path)
 		end
 
 		# Find hardware given a serial number
-		def find_hardwares_by_serial(serial_number: nil)
+		def find_hardwares_by_serial(serial_number: )
 			path = "hardwares.json?serial_number[]=#{serial_number}"
 			self.execute(path: path)
 		end
@@ -44,7 +44,7 @@ module Samanage
 		end
 
 		# Update hardware given id
-		def update_hardware(payload: nil, id: nil, options: {})
+		def update_hardware(payload: , id: , options: {})
 			path = "hardwares/#{id}.json"
 			self.execute(path: path, http_method: 'put', payload: payload)
 		end
