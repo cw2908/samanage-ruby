@@ -1,14 +1,14 @@
 module Samanage
   class Api
-    include HTTMultiParty
     def upload_attachment(attachment: , attachable_id: , attachable_type: )
-      if attachment.class != File
-        return "Attachment argument must be file, received: #{attachment.class} for #{attachment}"
-      end
       self.execute(
-        path: 'attachments.json',
+        path: 'webhooks',
         http_method: 'post',
-        headers: {'Content-Type' => "multipart/form-data"},
+        headers: {
+          'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
+          'Content-Type' => "multipart/form-data",
+          'X-Samanage-Authorization' => 'Bearer ' + self.token
+        },
         payload: {
           'file[attachment]' => attachment,
           'file[attachable_id]' => attachable_id,

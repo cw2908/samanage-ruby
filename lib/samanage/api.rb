@@ -1,7 +1,7 @@
 require 'open-uri'
 module Samanage
   class Api
-    include HTTParty
+    include HTTMultiParty
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
