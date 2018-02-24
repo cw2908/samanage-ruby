@@ -1,7 +1,6 @@
 require 'open-uri'
 module Samanage
   class Api
-    include HTTParty
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
@@ -53,9 +52,14 @@ module Samanage
 
     # Calling execute without a method defaults to GET
     def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
+      if path == 'attachments.json'
+        self.class.include(HTTMultiParty)
+      else
+        self.class.include(HTTParty)
+      end
       if payload.class == String
         begin
-        payload = JSON.parse(payload)
+          payload = JSON.parse(payload)
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
           raise Samanage::Error(error: e, response: nil)

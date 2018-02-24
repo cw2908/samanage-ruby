@@ -2,6 +2,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 require 'httmultiparty'
 
 require 'samanage/api'
+require 'samanage/api/attachments'
 require 'samanage/api/category'
 require 'samanage/api/changes'
 require 'samanage/api/contracts'

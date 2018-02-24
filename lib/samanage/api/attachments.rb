@@ -1,12 +1,11 @@
 module Samanage
   class Api
-    include HTTPMultiParty
     def upload_attachment(attachment: , attachable_id: , attachable_type: )
       self.execute(
-        path: 'webhooks',
+        path: 'attachments.json',
         http_method: 'post',
         headers: {
-          'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
+          'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}",
           'Content-Type' => "multipart/form-data",
           'X-Samanage-Authorization' => 'Bearer ' + self.token
         },
