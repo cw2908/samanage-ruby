@@ -6,6 +6,7 @@ module Samanage
     PATHS = {
       category: 'categories.json',
       contract: 'contracts.json',
+      change: 'changes.json',
       custom_fields: 'custom_fields.json',
       custom_forms: 'custom_forms.json',
       department: 'departments.json',
@@ -47,18 +48,14 @@ module Samanage
     # Check token against api.json
     def authorize
       self.execute(path: 'api.json')
-      rescue OpenSSL::SSL::SSLError => e
-        puts "Raised: #{e} #{e.class}"
-        puts 'Disabling Local SSL Verification'
-        self.execute(path: 'api.json', ssl_fix: true)
       self.authorized = true
     end
 
     # Calling execute without a method defaults to GET
-    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, ssl_fix: false)
+    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
       if payload.class == String
         begin
-        payload = JSON.parse(payload)
+          payload = JSON.parse(payload)
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
           raise Samanage::Error(error: e, response: nil)
@@ -69,11 +66,11 @@ module Samanage
         verbose = '?layout=long'
       end
 
-      headers = {
+      headers = headers.merge({
         'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
-      }
+      })
       @options = {
         headers: headers,
         payload: payload

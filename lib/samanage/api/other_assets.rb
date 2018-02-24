@@ -9,15 +9,19 @@ module Samanage
 
     # Returns all other assets
     def collect_other_assets(options: {})
-        
       other_assets = Array.new
       total_pages = self.get_other_assets[:total_pages]
       other_assets = []
       1.upto(total_pages) do |page|
         puts "Collecting Other Assets page: #{page}/#{total_pages}" if options[:verbose]
-        other_assets += self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")[:data]
+        self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")[:data].each do |other_asset|
+          if block_given?
+            yield other_asset
+          end
+          other_assets << other_asset
+        end
       end
-      other_assets.uniq
+      other_assets
     end
 
 

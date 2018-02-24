@@ -1,3 +1,7 @@
+# 2.0.0
+- Support for responding to blocks in all paginated collection methods
+- Added Changes (itsm)
+
 # 1.9.35
 - Solve warnings
 

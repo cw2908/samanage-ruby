@@ -10,7 +10,12 @@ module Samanage
       total_pages = self.get_groups[:total_pages]
       1.upto(total_pages) do |page|
         puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
-        groups += self.execute(http_method: 'get', path: "groups.json?page=#{page}")[:data]
+        self.execute(http_method: 'get', path: "groups.json?page=#{page}")[:data].each do |group|
+          if block_given?
+            yield group
+          end
+          groups << group
+        end
       end
       groups
     end

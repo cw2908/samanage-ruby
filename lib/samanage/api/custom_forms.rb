@@ -12,7 +12,12 @@ module Samanage
       total_pages = self.get_custom_forms[:total_pages]
       1.upto(total_pages) do |page|
         puts "Collecting Custom Forms page: #{page}/#{total_pages}" if options[:verbose]
-        custom_forms += self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data]
+        self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data].each do |custom_form|
+          if block_given?
+            yield custom_form
+          end
+          custom_forms << custom_form
+        end
       end
       custom_forms
     end

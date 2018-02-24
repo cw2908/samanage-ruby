@@ -13,7 +13,12 @@ module Samanage
       total_pages = self.get_contracts[:total_pages]
       1.upto(total_pages) do |page|
         puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
-        contracts += self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data]
+        self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data].each do |contract|
+          if block_given?
+            yield contract
+          end
+          contracts << contract
+        end
       end
       contracts
     end

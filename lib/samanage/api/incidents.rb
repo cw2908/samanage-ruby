@@ -19,15 +19,24 @@ module Samanage
       1.upto(total_pages) do |page|
         puts "Collecting Incidents page: #{page}/#{total_pages}" if options[:verbose]
         if options[:audit_archives]
-          archives = 'layout=long&audit_archive=true'
+          archives_params = 'layout=long&audit_archive=true'
           paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]
           paginated_incidents.map do |incident|
-            archive_path = "incidents/#{incident['id']}.json?#{archives}"
-            incidents << self.execute(path: archive_path)[:data]
+            archive_uri = "incidents/#{incident['id']}.json?#{archives_params}"
+            incident_with_archive = self.execute(path: archive_uri)[:data]
+            if block_given?
+              yield incident_with_archive
+            end
+            incidents.push(incident_with_archive)
           end
         else
           layout = options[:layout] == 'long' ? '&layout=long' : nil
-          incidents += self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data]
+          self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data].each do |incident|
+            if block_given?
+              yield incident
+            end
+            incidents.push(incident)
+          end
         end
       end
       incidents
