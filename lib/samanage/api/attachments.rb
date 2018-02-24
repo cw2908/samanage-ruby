@@ -1,21 +1,5 @@
 module Samanage
   class Api
-    def upload_attachment(attachment: , attachable_id: , attachable_type: )
-      self.execute(
-        path: 'attachments.json',
-        http_method: 'post',
-        headers: {
-          'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}",
-          'Content-Type' => "multipart/form-data",
-          'X-Samanage-Authorization' => 'Bearer ' + self.token
-        },
-        payload: {
-          'file[attachment]' => attachment,
-          'file[attachable_id]' => attachable_id,
-          'file[attachable_type]' => attachable_type,
-        }
-      )
-    end
     def download_attachment(attachment: {}, filename: nil, path: nil)
       attachable_type = attachment['attachable_type']
       attachable_id = attachment['attachable_id'].to_s

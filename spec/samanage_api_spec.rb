@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe Samanage do
   describe 'API Controller' do
-    before(:all) do
+    before(:each) do
       TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
     end
     context 'on instantiation' do
