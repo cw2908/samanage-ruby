@@ -1,3 +1,6 @@
+# 2.0.1
+- Adding New Error Condition
+
 # 2.0.0
 - Support for responding to blocks in all paginated collection methods
 - Added Changes (itsm)
