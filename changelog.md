@@ -1,4 +1,4 @@
-# 2.0.01
+# 2.0.02
 - Bugfix for custom fields (fix httparty version)
 
 # 2.0.0

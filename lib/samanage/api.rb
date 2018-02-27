@@ -29,7 +29,6 @@ module Samanage
       end
       self.datacenter ||= datacenter.to_s.downcase
       self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
-      # self.base_url =  "https://services.samanage.com/"
       self.content_type = 'json'
       self.admins = []
       self.max_retries = max_retries
@@ -67,11 +66,11 @@ module Samanage
         verbose = '?layout=long'
       end
 
-      headers = {
+      headers = headers.merge({
         'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
-      }
+      })
       @options = {
         headers: headers,
         query: payload
