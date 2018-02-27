@@ -34,7 +34,6 @@ module Samanage
       self.admins = []
       self.max_retries = max_retries
       if development_mode
-        puts "Creating Samanage::Agent version #{self::VERSION} in Development Mode"
         if self.authorized? != true
           self.authorize
         end
@@ -73,9 +72,6 @@ module Samanage
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
       }
-      ap headers
-      puts "headers: #{headers}"
-      ap payload
       @options = {
         headers: headers,
         query: payload
