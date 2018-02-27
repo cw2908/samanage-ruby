@@ -4,7 +4,7 @@ describe Samanage::Api do
   context 'Users' do
     before(:all) do
       TOKEN ||= ENV['SAMANAGE_TEST_API_TOKEN']
-      @samanage = Samanage::Api.new(token: TOKEN)
+      @samanage = Samanage::Api.new(token: TOKEN, development_mode: true)
       @users = @samanage.users
     end
     describe 'API Functions' do
@@ -121,6 +121,23 @@ describe Samanage::Api do
       it 'fails to delete invalid user' do 
         invalid_user_id = 0
         expect{@samanage.delete_user(id: invalid_user_id)}.to raise_error(Samanage::InvalidRequest)
+      end
+      it 'ensures custom field is updated' do
+        val ="Random #{(rand*10**4).ceil}"
+        field_name = @samanage.custom_forms['user'][0]['custom_form_fields'].sample.dig('custom_field','name')
+        payload = {
+          user: {
+            custom_fields_values:{
+              custom_fields_value:[
+                { name: field_name, value: val}
+              ]
+            }
+          }
+        }
+        user_id = @users.sample.dig('id')
+        api_call = @samanage.update_user(id: user_id, payload: payload)
+        return_val = api_call.dig(:data,'custom_fields_values','custom_fields_value').select{|i| i['name' == field_name]}.dig('value')
+        expect(val).to eq(return_val)
       end
     end
   end
