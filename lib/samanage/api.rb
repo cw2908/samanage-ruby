@@ -73,7 +73,7 @@ module Samanage
       })
       @options = {
         headers: headers,
-        query: payload
+        payload: payload
       }
       full_path = self.base_url + path
       retries = 0
