@@ -58,7 +58,7 @@ module Samanage
           payload = JSON.parse(payload)
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
-          raise Samanage::Error(error: e, response: nil)
+          raise Samanage::Error.new(error: e, response: nil)
         end
       end
       token = token ||= self.token
@@ -73,7 +73,7 @@ module Samanage
       })
       @options = {
         headers: headers,
-        payload: payload
+        query: payload
       }
       full_path = self.base_url + path
       retries = 0
