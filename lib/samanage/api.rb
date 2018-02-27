@@ -29,10 +29,12 @@ module Samanage
       end
       self.datacenter ||= datacenter.to_s.downcase
       self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
+      # self.base_url =  "https://services.samanage.com/"
       self.content_type = 'json'
       self.admins = []
       self.max_retries = max_retries
       if development_mode
+        puts "Creating Samanage::Agent version #{self::VERSION} in Development Mode"
         if self.authorized? != true
           self.authorize
         end
@@ -58,7 +60,7 @@ module Samanage
           payload = JSON.parse(payload)
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
-          raise Samanage::Error(error: e, response: nil)
+          raise Samanage::Error.new(error: e, response: nil)
         end
       end
       token = token ||= self.token
@@ -66,14 +68,17 @@ module Samanage
         verbose = '?layout=long'
       end
 
-      headers = headers.merge({
+      headers = {
         'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
         'Content-type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
-      })
+      }
+      ap headers
+      puts "headers: #{headers}"
+      ap payload
       @options = {
         headers: headers,
-        payload: payload
+        query: payload
       }
       full_path = self.base_url + path
       retries = 0
