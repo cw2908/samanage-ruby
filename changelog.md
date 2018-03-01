@@ -1,3 +1,6 @@
+# 2.0.04
+- Fix case sensitivity relationships
+ 
 # 2.0.03
 - Bugfix for custom fields (fix httparty version)
 

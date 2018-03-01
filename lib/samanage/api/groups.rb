@@ -26,6 +26,7 @@ module Samanage
 
     def find_group_id_by_name(group: )
       group_api = self.execute(path: "groups.json?name=#{group}")
+      # Group names are case sensitive
       if !group_api[:data].empty? && group == group_api[:data].first['name']
         return group_api[:data].first['id']
       end

@@ -91,7 +91,7 @@ module Samanage
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
       rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
-        puts "Error:[#{e.class}] #{e} -  Retry: #{retries}/#{self.max_retries}"
+        puts "[Warning]#{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
         sleep 3
         retries += 1
         retry if retries < self.max_retries
@@ -116,8 +116,7 @@ module Samanage
           response[:data] = JSON.parse(api_call.body)
         rescue JSON::ParserError => e
           response[:data] = api_call.body
-          puts "** Warning **#{e.class}"
-          puts e
+          puts "[Warning] #{e.class}: #{e}"
         end
         response
       when 401

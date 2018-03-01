@@ -46,7 +46,7 @@ module Samanage
       group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['group_ids'].to_a
       group_ids.each do |group_id|
         group = self.find_group(id: group_id)
-        if group[:data]['is_user'] && email == group[:data]['email']
+        if group[:data]['is_user'] && email.to_s.downcase == group[:data]['email'].to_s.downcase
           return group_id
         end
       end
