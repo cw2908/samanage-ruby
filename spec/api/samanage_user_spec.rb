@@ -38,7 +38,7 @@ describe Samanage::Api do
         expect(@users.size).to eq(user_count)
       end
       it 'create_user(payload: json): creates a user' do
-        user_name = "samanage-ruby-#{(rand*10**10).ceil}"
+        user_name = "autotest-#{(rand*42**100).ceil}"
         email = user_name + "@samanage.com"
         json = {
           :user => {
