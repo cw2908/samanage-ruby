@@ -142,7 +142,7 @@ module Samanage
 
 
     def set_params(options:)
-      options[:audit_archive] = options[:audit_archive] || options[:audit_archives]
+      options[:audit_archive] = options[:audit_archive] || options[:audit_archives] if options[:audit_archives]
       URI.encode_www_form(options.except(:verbose))
     end
 

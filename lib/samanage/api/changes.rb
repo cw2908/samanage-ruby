@@ -20,7 +20,8 @@ module Samanage
         params = self.set_params(options: options)
         puts "Collecting changes page: #{page}/#{total_pages}" if options[:verbose]
         path = "changes.json?" + params
-        self.execute(http_method: 'get', path: path)[:data].each do |change|
+        request = self.execute(http_method: 'get', path: path)
+        request[:data].each do |change|
           if block_given?
             yield change
           end
