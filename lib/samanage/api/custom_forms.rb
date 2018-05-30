@@ -11,6 +11,8 @@ module Samanage
       custom_forms = Array.new
       total_pages = self.get_custom_forms[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting Custom Forms page: #{page}/#{total_pages}" if options[:verbose]
         self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data].each do |custom_form|
           if block_given?

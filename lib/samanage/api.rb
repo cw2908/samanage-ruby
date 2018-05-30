@@ -1,3 +1,4 @@
+require 'httparty'
 require 'open-uri'
 module Samanage
   class Api
@@ -137,6 +138,12 @@ module Samanage
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response)
       end
+    end
+
+
+    def set_params(options:)
+      options[:audit_archive] = options[:audit_archive] || options[:audit_archives] if options[:audit_archives]
+      URI.encode_www_form(options.except(:verbose))
     end
 
 

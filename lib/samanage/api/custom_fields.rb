@@ -12,6 +12,8 @@ module Samanage
       custom_fields = Array.new
       total_pages = self.get_custom_fields[:total_pages] ||= 2
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting Custom Fields page: #{page}/#{total_pages}" if options[:verbose]
         self.execute(path: "custom_fields.json")[:data].each do |custom_field|
           if block_given?

@@ -1,10 +1,11 @@
 module Samanage
   class Api
-
+    
     # Default get incident path
     def get_incidents(path: PATHS[:incident], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'incidents.json?' + params
+      self.execute(path: path)
     end
 
 
@@ -19,10 +20,13 @@ module Samanage
       1.upto(total_pages) do |page|
         puts "Collecting Incidents page: #{page}/#{total_pages}" if options[:verbose]
         if options[:audit_archives]
-          archives_params = 'layout=long&audit_archive=true'
-          paginated_incidents = self.execute(path: "incidents.json?page=#{page}")[:data]
+          options[:page] = page
+          params = URI.encode_www_form(options.except!(:layout,'layout')) # layout not needed as audit only on individual record
+          paginated_path = "incidents.json?" + params
+          paginated_incidents = self.execute(path: paginated_path)[:data]
           paginated_incidents.map do |incident|
-            archive_uri = "incidents/#{incident['id']}.json?#{archives_params}"
+            params = self.set_params(options: options)
+            archive_uri = "incidents/#{incident['id']}.json?layout=long&audit_archive=true"
             incident_with_archive = self.execute(path: archive_uri)[:data]
             if block_given?
               yield incident_with_archive
@@ -30,8 +34,10 @@ module Samanage
             incidents.push(incident_with_archive)
           end
         else
-          layout = options[:layout] == 'long' ? '&layout=long' : nil
-          self.execute(http_method: 'get', path: "incidents.json?page=#{page}#{layout}")[:data].each do |incident|
+          options[:page] = page
+          params = self.set_params(options: options)
+          path = "incidents.json?" + params
+          self.execute(http_method: 'get', path: path)[:data].each do |incident|
             if block_given?
               yield incident
             end
@@ -50,16 +56,16 @@ module Samanage
 
     # Find incident by ID
     def find_incident(id: , options: {})
-      path = "incidents/#{id}.json"
-      if options[:layout] == 'long'
-        path += '?layout=long'
-      end
+
+      params = self.set_params(options: options)
+      path = "incidents/#{id}.json?" + params
       self.execute(path: path)
     end
 
     # Update an incident given id and json
     def update_incident(payload: , id: , options: {})
-      path = "incidents/#{id}.json"
+      params = self.set_params(options: options)
+      path = "incidents/#{id}.json?" + params
       self.execute(path: path, http_method: 'put', payload: payload)
     end
 

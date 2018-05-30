@@ -12,6 +12,8 @@ module Samanage
       contracts = Array.new
       total_pages = self.get_contracts[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
         self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data].each do |contract|
           if block_given?

@@ -2,7 +2,7 @@ module Samanage
   class Error < StandardError
     attr_accessor :status_code, :response, :error
     
-    def initialize(error: nil, response: {})
+    def initialize(error: nil, response: {}, options: {})
       self.error = error
       if response.class == Hash
         self.status_code = response[:code]
@@ -12,7 +12,7 @@ module Samanage
         self.response = response
       end
 
-      puts "[Error] #{self.status_code}: #{self.response}"
+      puts "[Error] #{self.status_code}: #{self.response}" if options[:verbose]
     end
   end
 
