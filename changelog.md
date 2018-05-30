@@ -1,3 +1,6 @@
+# 2.1.0
+- Use `URI#encode_www_form`
+
 # 2.0.04
 - Fix case sensitivity relationships
  

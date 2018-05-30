@@ -1,3 +1,4 @@
+require 'httparty'
 require 'open-uri'
 module Samanage
   class Api
