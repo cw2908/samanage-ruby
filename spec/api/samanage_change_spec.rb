@@ -80,7 +80,6 @@ describe Samanage::Api do
           }
         }
         change_update = @samanage.update_change(payload: change_json, id: sample_id)
-        puts "change_update[:data]: #{change_update[:data]}"
         # expect(change_update[:data]['description']).to eq(description) # change bug #00044569
         expect(change_update[:code]).to eq(200).or(201)
       end
