@@ -7,7 +7,7 @@ describe Samanage::Api do
       @samanage = Samanage::Api.new(token: TOKEN)
       @incidents = @samanage.incidents
       @users = @samanage.users
-      @incidents_with_archives = @samanage.incidents(options: {audit_archives: true})
+      @incidents_with_archives = @samanage.incidents(options: {audit_archives: true, layout: 'long', verbose: true})
     end
       it 'get_incidents: it returns API call of incidents' do
         api_call = @samanage.get_incidents
@@ -94,7 +94,7 @@ describe Samanage::Api do
         ('audits')
       end
       it 'finds audit archives for options: {audit_archives: true, layout: "long"}' do
-        full_incident_keys = @incidents_with_archives.sample.keys
+        full_incident_keys = @incidents_with_archives.first.keys
         basic_incident_keys = @incidents.sample.keys
         expect(basic_incident_keys.size).to be < full_incident_keys.size
         expect(full_incident_keys).to include('audits')

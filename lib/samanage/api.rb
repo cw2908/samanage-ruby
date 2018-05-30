@@ -140,6 +140,12 @@ module Samanage
     end
 
 
+    def set_params(options:)
+      options[:audit_archive] = options[:audit_archive] || options[:audit_archives]
+      URI.encode_www_form(options.except(:verbose))
+    end
+
+
     # Return all admins in the account
     def list_admins
       admin_role_id = self.execute(path: 'roles.json')[:data].select{|role| role['name'] == 'Administrator'}.first['id']

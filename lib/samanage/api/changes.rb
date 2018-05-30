@@ -16,9 +16,11 @@ module Samanage
       changes = Array.new
       total_pages = self.get_changes[:total_pages]
       1.upto(total_pages) do |page|
-      puts "Collecting changes page: #{page}/#{total_pages}" if options[:verbose]
-        layout = options[:layout] == 'long' ? '&layout=long' : nil
-        self.execute(http_method: 'get', path: "changes.json?page=#{page}#{layout}")[:data].each do |change|
+        options[:page] = page
+        params = self.set_params(options: options)
+        puts "Collecting changes page: #{page}/#{total_pages}" if options[:verbose]
+        path = "changes.json?" + params
+        self.execute(http_method: 'get', path: path)[:data].each do |change|
           if block_given?
             yield change
           end

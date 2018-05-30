@@ -12,6 +12,8 @@ module Samanage
       mobiles = Array.new
       total_pages = self.get_mobiles[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting Mobiles page: #{page}/#{total_pages}" if options[:verbose]
         self.execute(http_method: 'get', path: "mobiles.json?page=#{page}")[:data].each do |mobile|
           if block_given? 
