@@ -3,8 +3,9 @@ module Samanage
 
     # Default get change path
     def get_changes(path: PATHS[:change], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'changes.json?' + params
+      self.execute(path: path)
     end
 
 
@@ -14,7 +15,7 @@ module Samanage
     #   - layout: 'long'
     def collect_changes(options: {})
       changes = Array.new
-      total_pages = self.get_changes[:total_pages]
+      total_pages = self.get_changes(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

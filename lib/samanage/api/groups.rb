@@ -1,13 +1,14 @@
 module Samanage
   class Api
     def get_groups(path: PATHS[:group], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'groups.json?' + params
+      self.execute(path: path)
     end
 
     def collect_groups(options: {})
       groups = Array.new
-      total_pages = self.get_groups[:total_pages]
+      total_pages = self.get_groups(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

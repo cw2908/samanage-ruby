@@ -1,8 +1,9 @@
 module Samanage
   class Api
     def get_categories(path: PATHS[:category], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'categories.json?' + params
+      self.execute(path: path)
     end
 
 

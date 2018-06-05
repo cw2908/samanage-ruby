@@ -3,14 +3,15 @@ module Samanage
 
     # Get contract default path
     def get_contracts(path: PATHS[:contract], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'contracts.json?' + params
+      self.execute(path: path)
     end
 
     # Get all contracts
     def collect_contracts(options: {})
       contracts = Array.new
-      total_pages = self.get_contracts[:total_pages]
+      total_pages = self.get_contracts(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

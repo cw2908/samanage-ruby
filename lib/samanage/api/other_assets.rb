@@ -3,14 +3,15 @@ module Samanage
 
     # Default get other_assets path
     def get_other_assets(path: PATHS[:other_asset], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'other_assets.json' + params
+      self.execute(path: path)
     end
 
     # Returns all other assets
     def collect_other_assets(options: {})
       other_assets = Array.new
-      total_pages = self.get_other_assets[:total_pages]
+      total_pages = self.get_other_assets(options: options)[:total_pages]
       other_assets = []
       1.upto(total_pages) do |page|
         options[:page] = page

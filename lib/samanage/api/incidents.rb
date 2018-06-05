@@ -15,7 +15,7 @@ module Samanage
     #   - layout: 'long'
     def collect_incidents(options: {})
       incidents = Array.new
-      total_pages = self.get_incidents[:total_pages]
+      total_pages = self.get_incidents(options: options)[:total_pages]
       puts "Pulling Incidents with Audit Archives (this may take a while)" if options[:audit_archives] && options[:verbose]
       1.upto(total_pages) do |page|
         puts "Collecting Incidents page: #{page}/#{total_pages}" if options[:verbose]
