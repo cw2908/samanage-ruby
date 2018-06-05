@@ -33,6 +33,8 @@ module Samanage
         url += 'sites'
       when /department/
         url += 'departments'
+      when /solution/
+        url += 'solutions'
       when /contract/
         url += 'contracts'
       when /group/
