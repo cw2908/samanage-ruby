@@ -17,6 +17,7 @@ module Samanage
       mobile: 'mobiles.json',
       other_asset: 'other_assets.json',
       site: 'sites.json',
+      solution: 'solutions.json',
       user: 'users.json',
     }
     attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries

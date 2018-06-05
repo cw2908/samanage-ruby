@@ -1,3 +1,6 @@
+# 2.1.01
+- Added solutions
+
 # 2.1.0
 - Use `URI#encode_www_form`
 
