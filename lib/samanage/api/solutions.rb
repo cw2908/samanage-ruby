@@ -1,13 +1,14 @@
 module Samanage
   class Api
     def get_solutions(path: PATHS[:solution], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'solutions.json' + params
+      self.execute(path: path)
     end
 
     def collect_solutions(options: {})
       solutions = Array.new
-      total_pages = self.get_solutions[:total_pages]
+      total_pages = self.get_solutions(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

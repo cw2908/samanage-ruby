@@ -3,14 +3,16 @@ module Samanage
 
     # Get mobile default path
     def get_mobiles(path: PATHS[:mobile], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'mobiles.json' + params
+      self.execute(path: path)
+
     end
 
     # Get all mobiles
     def collect_mobiles(options: {})
       mobiles = Array.new
-      total_pages = self.get_mobiles[:total_pages]
+      total_pages = self.get_mobiles(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

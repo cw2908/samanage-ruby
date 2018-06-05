@@ -4,15 +4,14 @@ module Samanage
   # Get users, using URL builder
   def get_users(path: PATHS[:user], options: {})
     params = self.set_params(options: options)
-    path = path + params
-    url = Samanage::UrlBuilder.new(path: path, options: options).url
-    self.execute(path: url)
+    path = 'users.json' + params
+    self.execute(path: path)
   end
 
   # Returns all users in the account
     def collect_users(options: {})
       users = Array.new
-      total_pages = self.get_users[:total_pages]
+      total_pages = self.get_users(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)

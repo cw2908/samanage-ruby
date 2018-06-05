@@ -2,14 +2,15 @@ module Samanage
   class Api
     # Get custom forms path
     def get_custom_forms(path: PATHS[:custom_forms], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'custom_forms.json?' + params
+      self.execute(path: path)
     end
 
     # Get all custom forms
     def collect_custom_forms(options: {})
       custom_forms = Array.new
-      total_pages = self.get_custom_forms[:total_pages]
+      total_pages = self.get_custom_forms(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)
