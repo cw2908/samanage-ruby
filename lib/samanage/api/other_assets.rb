@@ -5,7 +5,6 @@ module Samanage
     def get_other_assets(path: PATHS[:other_asset], options: {})
       params = self.set_params(options: options)
       path = 'other_assets.json?' + params
-      puts path
       self.execute(path: path)
     end
 
