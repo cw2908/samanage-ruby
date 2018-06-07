@@ -39,8 +39,7 @@ describe Samanage::Api do
       new_description = solution_description = "Description #{(rand*10**4).ceil}"
       payload = {solution: {description: new_description}}
       solution_update = @samanage.update_solution(id: sample_solution_id, payload: payload)
-      puts "solution_update: #{solution_update}"
-
+      
       expect(new_description).to eq(solution_update.dig(:data,'description'))
       expect(solution_update[:code]).to eq(200)
     end
