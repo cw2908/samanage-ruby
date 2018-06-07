@@ -14,7 +14,7 @@ module Samanage
         params = self.set_params(options: options)
         puts "Collecting Sites page: #{page}/#{total_pages}" if options[:verbose]
         path = "sites.json?" + params
-        self.execute(http_method: 'get', path: path)[:data].each do |site|
+        self.execute(path: path)[:data].each do |site|
           if block_given?
             yield site
           end

@@ -37,7 +37,7 @@ module Samanage
           options[:page] = page
           params = self.set_params(options: options)
           path = "incidents.json?" + params
-          self.execute(http_method: 'get', path: path)[:data].each do |incident|
+          self.execute(path: path)[:data].each do |incident|
             if block_given?
               yield incident
             end

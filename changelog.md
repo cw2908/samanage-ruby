@@ -1,3 +1,9 @@
+# 2.1.03
+- Use paths
+
+# 2.1.02
+- Use parmas in all collections
+
 # 2.1.01
 - Added solutions
 
