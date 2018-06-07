@@ -16,7 +16,8 @@ module Samanage
         options[:page] = page
         params = self.set_params(options: options)
         puts "Collecting Hardwares page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")[:data].each do |hardware|
+        path = "hardwares.json?#{params}"
+        self.execute(path: path)[:data].each do |hardware|
           if block_given?
             yield hardware
           end

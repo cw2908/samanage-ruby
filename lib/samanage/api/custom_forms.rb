@@ -15,7 +15,8 @@ module Samanage
         options[:page] = page
         params = self.set_params(options: options)
         puts "Collecting Custom Forms page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "custom_forms.json?page=#{page}")[:data].each do |custom_form|
+        path = "custom_forms.json?#{params}"
+        self.execute(path: path)[:data].each do |custom_form|
           if block_given?
             yield custom_form
           end

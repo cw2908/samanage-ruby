@@ -17,7 +17,8 @@ module Samanage
         params = self.set_params(options: options)
         path = "users.json?" + params
         puts "Collecting Users page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "users.json?page=#{page}")[:data].each do |user|
+        path = "users.json?#{params}"
+        self.execute(path: path)[:data].each do |user|
           if block_given?
             yield user
           end

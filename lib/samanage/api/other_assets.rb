@@ -4,7 +4,8 @@ module Samanage
     # Default get other_assets path
     def get_other_assets(path: PATHS[:other_asset], options: {})
       params = self.set_params(options: options)
-      path = 'other_assets.json' + params
+      path = 'other_assets.json?' + params
+      puts path
       self.execute(path: path)
     end
 
@@ -17,7 +18,8 @@ module Samanage
         options[:page] = page
         params = self.set_params(options: options)
         puts "Collecting Other Assets page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "other_assets.json?page=#{page}")[:data].each do |other_asset|
+        path = "other_assets.json?#{params}"
+        self.execute(path: path)[:data].each do |other_asset|
           if block_given?
             yield other_asset
           end

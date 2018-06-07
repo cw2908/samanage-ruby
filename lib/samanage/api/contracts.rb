@@ -16,7 +16,8 @@ module Samanage
         options[:page] = page
         params = self.set_params(options: options)
         puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "contracts.json?page=#{page}")[:data].each do |contract|
+        path = "contracts.json?#{params}"
+        self.execute(path: path)[:data].each do |contract|
           if block_given?
             yield contract
           end

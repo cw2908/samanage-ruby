@@ -14,7 +14,7 @@ module Samanage
         params = self.set_params(options: options)
         puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
         path = 'groups.json?' + params
-        self.execute(http_method: 'get', path: path)[:data].each do |group|
+        self.execute(path: path)[:data].each do |group|
           if block_given?
             yield group
           end

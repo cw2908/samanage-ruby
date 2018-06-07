@@ -16,7 +16,8 @@ module Samanage
         options[:page] = page
         params = self.set_params(options: options)
         puts "Collecting Custom Fields page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(path: "custom_fields.json")[:data].each do |custom_field|
+        path = "custom_fields.json?#{params}"
+        self.execute(path: path)[:data].each do |custom_field|
           if block_given?
             yield custom_field
           end
