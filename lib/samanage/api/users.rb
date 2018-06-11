@@ -4,7 +4,7 @@ module Samanage
   # Get users, using URL builder
   def get_users(path: PATHS[:user], options: {})
     params = self.set_params(options: options)
-    path = 'users.json' + params
+    path = 'users.json?' + params
     self.execute(path: path)
   end
 

@@ -4,7 +4,7 @@ module Samanage
     # Get mobile default path
     def get_mobiles(path: PATHS[:mobile], options: {})
       params = self.set_params(options: options)
-      path = 'mobiles.json' + params
+      path = 'mobiles.json?' + params
       self.execute(path: path)
 
     end

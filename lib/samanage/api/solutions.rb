@@ -2,7 +2,7 @@ module Samanage
   class Api
     def get_solutions(path: PATHS[:solution], options: {})
       params = self.set_params(options: options)
-      path = 'solutions.json' + params
+      path = 'solutions.json?' + params
       self.execute(path: path)
     end
 
