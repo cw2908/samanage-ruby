@@ -38,6 +38,14 @@ Initialize API controller
     incident_update = api_controller.update_incident(id: 123, payload: incident_data)
 ```
 
+
+- Use Filters
+```ruby
+    incidents_updated_today = @samanage.incidents(options: {'updated' => 1})
+    expired_hardwares = @samanage.hardwares(options: {'warranty_status[]' => 'Expired'})
+```
+
+
 - Update hardware
 ```ruby
 hardware = {hardware: {name: 'My Computer'}}
