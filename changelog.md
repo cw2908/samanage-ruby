@@ -1,3 +1,5 @@
+# 2.1.04
+- params bug fix
 # 2.1.03
 - Use paths
 

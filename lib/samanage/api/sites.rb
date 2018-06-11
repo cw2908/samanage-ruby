@@ -2,7 +2,7 @@ module Samanage
   class Api
     def get_sites(path: PATHS[:site], options: {})
       params = self.set_params(options: options)
-      path = 'sites.json' + params
+      path = 'sites.json?' + params
       self.execute(path: path)
     end
 
