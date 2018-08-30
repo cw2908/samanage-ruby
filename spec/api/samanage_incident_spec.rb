@@ -75,7 +75,7 @@ describe Samanage::Api do
         sample_incident = @incidents.reject{|i| ['Closed','Resolved'].include? i['state']}.sample
         sample_id = sample_incident['id']
         name = Faker::Movie.quote
-        description = [Faker::String.random,Faker::Seinfield.quote,Faker::Lorem.paragraph].sample
+        description = [Faker::String.random,Faker::Seinfeld.quote,Faker::Lorem.paragraph].sample
         incident_json = {
           :incident => {
             :description => description
