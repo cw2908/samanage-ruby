@@ -1,3 +1,5 @@
+# 2.1.05
+- Adding new error checks
 # 2.1.04
 - params bug fix
 # 2.1.03
