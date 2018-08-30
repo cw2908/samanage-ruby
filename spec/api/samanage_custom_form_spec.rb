@@ -9,7 +9,7 @@ describe Samanage::Api do
         @custom_forms = @controller.collect_custom_forms
       end
       it 'collects all custom forms' do
-        expect(@custom_forms).to be_a(Array)
+        expect(@custom_forms).to be_an(Array)
       end
       it 'Organizes custom forms by module' do
         api_call = @controller.organize_forms

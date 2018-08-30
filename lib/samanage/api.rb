@@ -48,7 +48,7 @@ module Samanage
 
     # Check "oken against api.json"    
     def authorize
-      self.execute(path: "api#{self.content_type}")
+      self.execute(path: "api.#{self.content_type}")
       self.authorized = true
     end
 
