@@ -1,5 +1,6 @@
 # 2.1.05
 - Adding new error checks
+- Using Faker for tests
 # 2.1.04
 - params bug fix
 # 2.1.03
