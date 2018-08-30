@@ -49,7 +49,6 @@ describe Samanage::Api do
             :email => email,
           }
         }
-        puts json
         user_create = @samanage.create_user(payload: json)
         expect(user_create[:data]['email']).to eq(email)
         expect(user_create[:data]['id']).to be_an(Integer)
