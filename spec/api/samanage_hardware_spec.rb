@@ -1,4 +1,5 @@
 require 'samanage'
+require 'faker'
 describe Samanage::Api do
   context 'Hardware' do
     describe 'API Functions' do
@@ -21,8 +22,8 @@ describe Samanage::Api do
         expect(@hardwares.size).to eq(hardware_count)
       end
       it 'create_hardware(payload: payload): creates a hardware' do
-        hardware_name = "samanage-ruby-#{(rand*10**10).ceil}"
-        serial_number = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+        hardware_name = Faker::Science.scientist
+        serial_number = Faker::Device.serial
         payload = {
           :hardware => {
             :name => hardware_name,

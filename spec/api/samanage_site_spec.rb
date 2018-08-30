@@ -22,7 +22,7 @@ describe Samanage::Api do
     it 'creates a site' do
       site_name = "Site ##{(rand*10**4).ceil}"
       site_location = "Location #{(rand*10**4).ceil}"
-      site_description = "Descrption #{(rand*10**4).ceil}"
+      site_description = Faker::Movie.quote
       payload = {
         site: {
           name: site_name,

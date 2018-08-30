@@ -1,4 +1,5 @@
 require 'samanage'
+require 'faker'
 
 describe Samanage::Api do
   context 'Users' do
@@ -38,14 +39,15 @@ describe Samanage::Api do
         expect(@users.size).to eq(user_count)
       end
       it 'create_user(payload: json): creates a user' do
-        user_name = "autotest-#{(rand*42**100).ceil}"
-        email = user_name + "@samanage.com"
+        user_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
+        email = Faker::Internet.email(user_name,'.')
         json = {
           :user => {
             :name => user_name,
             :email => email,
           }
         }
+        puts json
         user_create = @samanage.create_user(payload: json)
         expect(user_create[:data]['email']).to eq(email)
         expect(user_create[:data]['id']).to be_an(Integer)
@@ -53,7 +55,7 @@ describe Samanage::Api do
         expect(user_create[:code]).to eq(200).or(201)
       end
       it 'create_user: fails if no email' do
-        user_name = "samanage-ruby-#{(rand*10**(rand(10))).ceil}"
+        user_name = Faker::Superhero.name
         json = {
           :user => {
             :name => user_name,
@@ -120,10 +122,11 @@ describe Samanage::Api do
 
       it 'update_user: update_user by id' do
         sample_id = @users.sample['id']
-        new_name = (0...25).map { ('a'..'z').to_a[rand(26)] }.join
+        new_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
         json = {
           :user => {
-            :name => new_name
+            name: new_name,
+            title: Faker::Job.title
           }
         }
         user_update = @samanage.update_user(payload: json, id: sample_id)

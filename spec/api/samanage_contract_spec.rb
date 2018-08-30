@@ -21,7 +21,7 @@ describe Samanage::Api do
         expect(@contracts.size).to eq(contract_count)
       end
       it 'create_contract(payload: json): creates a contract' do
-        random_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+        random_name = Faker::Artist.name
         json = {
           contract: {
             type: 'SoftwareLicense',
@@ -36,7 +36,7 @@ describe Samanage::Api do
         expect(contract_create[:data]['name']).to eq(random_name)
       end
       it 'create_contract: fails if no status' do
-        contract_name = "samanage-ruby-#{(rand*10**10).ceil}"
+        contract_name = Faker::Ancient.god
         json = {
           :contract => {
             model: 'test',
@@ -60,7 +60,7 @@ describe Samanage::Api do
       end
       it 'update_contract: update_contract by id' do
         sample_id = @contracts.sample['id']
-        new_name = (0...50).map {('a'..'z').to_a[rand(26)] }.join
+        new_name = Faker::Company.name 
         json = {
           contract: {
             manufacturer_name: new_name
@@ -74,10 +74,10 @@ describe Samanage::Api do
         sample_id = @contracts.sample['id']
         item = {
           item: {
-            name: "name",
+            name: Faker::Company.catch_phrase ,
             version:" 123",
             qty: "2",
-            tag: "tag",
+            tag: Faker::Company.profession,
           }
         }
         add_item = @samanage.add_item_to_contract(id: sample_id, payload: item)
