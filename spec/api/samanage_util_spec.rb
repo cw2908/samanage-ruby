@@ -10,6 +10,7 @@ describe Samanage::Api do
       end
       it 'sends an activation email' do
         valid_email = @users.sample['email'] 
+        puts valid_email
         send_email = @samanage.send_activation_email(email: valid_email)
         expect(send_email[:code]).to eq(200)
       end
