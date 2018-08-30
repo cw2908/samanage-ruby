@@ -74,7 +74,7 @@ describe Samanage::Api do
       it 'update_incident: update_incident by id' do
         sample_incident = @incidents.reject{|i| ['Closed','Resolved'].include? i['state']}.sample
         sample_id = sample_incident['id']
-        description = [Faker::String.random,Faker::Sienfield.quote,Faker::Lorem.paragraph].sample
+        description = [Faker::String.random,Faker::Seinfield.quote,Faker::Lorem.paragraph].sample
         incident_json = {
           :incident => {
             :description => description
