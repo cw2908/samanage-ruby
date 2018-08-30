@@ -10,8 +10,10 @@ describe Samanage::Api do
     end
     describe 'API Functions' do
       it 'ensures custom field is updated' do
-        val ="Random #{(rand*10**4).ceil}"
-        field_name = @samanage.custom_forms['user'][0]['custom_form_fields'].sample.dig('custom_field','name')
+        val = Faker::Seinfeld.quote
+        field_name = @samanage.custom_forms['user'][0]['custom_form_fields']
+          .select{|f|  f.dig('custom_field','field_type') == 1} # field_type == 1 is text
+          .sample.dig('custom_field','name')
         payload = {
           user: {
             custom_fields_values:{
