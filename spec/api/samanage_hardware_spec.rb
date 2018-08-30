@@ -71,10 +71,12 @@ describe Samanage::Api do
       end
       it 'update_hardware: update_hardware by id' do
         sample_id = @hardwares.sample['id']
-        new_name = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+        new_name = [Faker::Dune.planet,Faker::ProgrammingLanguage.name].join('-')
         payload = {
           :hardware => {
-            :name => new_name
+            name: new_name,
+            tag: Faker::Dune.saying,
+            asset_id: Faker::Space.moon
           }
         }
         hardware_update = @samanage.update_hardware(payload: payload, id: sample_id)
