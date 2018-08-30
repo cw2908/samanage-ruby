@@ -9,7 +9,7 @@ describe Samanage::Api do
         @incidents = @samanage.incidents
       end
       it 'sends an activation email' do
-        valid_email = @users.select{|u| u['last_login']}.sample['email']
+        valid_email = @users.select{|u| u['email'].match(/samanage/)}.sample['email']
         send_email = @samanage.send_activation_email(email: valid_email)
         expect(send_email[:code]).to eq(200)
       end
