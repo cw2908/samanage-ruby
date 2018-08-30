@@ -1,3 +1,4 @@
+require 'httparty'
 require 'open-uri'
 module Samanage
   class Api
@@ -5,19 +6,20 @@ module Samanage
     attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
     MAX_RETRIES = 3
     PATHS = {
-      category: "categories.json",
-      contract: "contracts.json",
-      change: "changes.json",
-      custom_fields: "custom_fields.json",
-      custom_forms: "custom_forms.json",
-      department: "departments.json",
-      group: "groups.json",
-      hardware: "hardwares.json",
-      incident: "incidents.json",
-      mobile: "mobiles.json",
-      other_asset: "other_assets.json",
-      site: "sites.json",
-      user: "users.json",
+      category: 'categories.json',
+      contract: 'contracts.json',
+      change: 'changes.json',
+      custom_fields: 'custom_fields.json',
+      custom_forms: 'custom_forms.json',
+      department: 'departments.json',
+      group: 'groups.json',
+      hardware: 'hardwares.json',
+      incident: 'incidents.json',
+      mobile: 'mobiles.json',
+      other_asset: 'other_assets.json',
+      site: 'sites.json',
+      solution: 'solutions.json',
+      user: 'users.json',
     }
     # Development mode forces authorization & pre-populates admins and custom forms / fields
     # datacenter should equal 'eu' or blank
@@ -57,7 +59,7 @@ module Samanage
           payload = JSON.parse(payload)
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
-          raise Samanage::Error(error: e, response: nil)
+          raise Samanage::Error.new(error: e, response: nil)
         end
       end
       token = token ||= self.token
@@ -89,8 +91,13 @@ module Samanage
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
+<<<<<<< HEAD
       rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN => e
         puts "Error:[#{e.class}] #{e} -  Retry: #{retries}/#{self.max_retries}"
+=======
+      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
+        puts "[Warning]#{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
+>>>>>>> 81b45d6b0aa3dc30a74822203c4d47d5c57da232
         sleep 3
         retries += 1
         retry if retries < self.max_retries
@@ -115,8 +122,7 @@ module Samanage
           response[:data] = JSON.parse(api_call.body)
         rescue JSON::ParserError => e
           response[:data] = api_call.body
-          puts "** Warning **#{e.class}"
-          puts e
+          puts "[Warning] #{e.class}: #{e}"
         end
         response
       when 401
@@ -137,6 +143,12 @@ module Samanage
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response)
       end
+    end
+
+
+    def set_params(options:)
+      options[:audit_archive] = options[:audit_archive] || options[:audit_archives] if options[:audit_archives]
+      URI.encode_www_form(options.except(:verbose))
     end
 
 

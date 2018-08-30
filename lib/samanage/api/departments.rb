@@ -1,16 +1,20 @@
 module Samanage
   class Api
     def get_departments(path: PATHS[:department], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'departments.json?' + params
+      self.execute(path: path)
     end
 
     def collect_departments(options: {})
       departments = Array.new
-      total_pages = self.get_departments[:total_pages]
+      total_pages = self.get_departments(options: options)[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "departments.json?page=#{page}")[:data].each do |department|
+        path = "departments.json?#{params}"
+        self.execute(path: path)[:data].each do |department|
           if block_given?
             yield department
           end

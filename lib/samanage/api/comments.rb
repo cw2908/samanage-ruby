@@ -10,7 +10,8 @@ module Samanage
 
     # Add a new comment
     def create_comment(incident_id: , comment: , options: {})
-      path = "incidents/#{incident_id}/comments.json"
+      params = self.set_params(options: options)
+      path = "incidents/#{incident_id}/comments.json?" + params
       self.execute(http_method: 'post', path: path, payload: comment)
     end
 

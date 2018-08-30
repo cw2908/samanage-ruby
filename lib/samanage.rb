@@ -1,5 +1,5 @@
 $LOAD_PATH << File.dirname(__FILE__)
-require 'httmultiparty'
+require 'httparty'
 
 require 'samanage/api'
 require 'samanage/api/attachments'
@@ -17,6 +17,7 @@ require 'samanage/api/mobiles'
 require 'samanage/api/other_assets'
 require 'samanage/api/requester'
 require 'samanage/api/sites'
+require 'samanage/api/solutions'
 require 'samanage/api/users'
 require 'samanage/api/utils'
 require 'samanage/error'
@@ -25,4 +26,14 @@ require 'samanage/url_builder'
 require 'samanage/version'
 
 module Samanage
+end
+
+class Hash
+  def except!(*keys)
+    keys.each { |key| delete(key) }
+    self
+  end
+  def except(*keys)
+    dup.except!(*keys)
+  end
 end

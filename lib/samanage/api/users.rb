@@ -3,17 +3,22 @@ module Samanage
 
   # Get users, using URL builder
   def get_users(path: PATHS[:user], options: {})
-    url = Samanage::UrlBuilder.new(path: path, options: options).url
-    self.execute(path: url)
+    params = self.set_params(options: options)
+    path = 'users.json?' + params
+    self.execute(path: path)
   end
 
   # Returns all users in the account
     def collect_users(options: {})
       users = Array.new
-      total_pages = self.get_users[:total_pages]
+      total_pages = self.get_users(options: options)[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
+        path = "users.json?" + params
         puts "Collecting Users page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "users.json?page=#{page}")[:data].each do |user|
+        path = "users.json?#{params}"
+        self.execute(path: path)[:data].each do |user|
           if block_given?
             yield user
           end
@@ -46,7 +51,7 @@ module Samanage
       group_ids = user[:data].select{|u| u['email'].to_s.downcase == email.to_s.downcase}.first.to_h['group_ids'].to_a
       group_ids.each do |group_id|
         group = self.find_group(id: group_id)
-        if group[:data]['is_user'] && email == group[:data]['email']
+        if group[:data]['is_user'] && email.to_s.downcase == group[:data]['email'].to_s.downcase
           return group_id
         end
       end
@@ -54,7 +59,7 @@ module Samanage
     end
 
     # Check for user by field (ex: users.json?field=value)
-    def check_user(field: 'email', value: )
+    def check_user(field: 'email', value: , options: {})
       if field.to_s.downcase == 'email'
         value = value.to_s.gsub("+",'%2B')
       end

@@ -1,5 +1,22 @@
-# 2.0.1
-- Adding New Error Condition
+# 2.1.04
+- params bug fix
+# 2.1.03
+- Use paths
+
+# 2.1.02
+- Use parmas in all collections
+
+# 2.1.01
+- Added solutions
+
+# 2.1.0
+- Use `URI#encode_www_form`
+
+# 2.0.04
+- Fix case sensitivity relationships
+ 
+# 2.0.03
+- Bugfix for custom fields (fix httparty version)
 
 # 2.0.0
 - Support for responding to blocks in all paginated collection methods

@@ -3,17 +3,21 @@ module Samanage
 
     # Get hardware default path
     def get_hardwares(path: PATHS[:hardware], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'hardwares.json?' + params
+      self.execute(path: path)
     end
 
     # Get all hardwares
     def collect_hardwares(options: {})
       hardwares = Array.new
-      total_pages = self.get_hardwares[:total_pages]
+      total_pages = self.get_hardwares(options: options)[:total_pages]
       1.upto(total_pages) do |page|
+        options[:page] = page
+        params = self.set_params(options: options)
         puts "Collecting Hardwares page: #{page}/#{total_pages}" if options[:verbose]
-        self.execute(http_method: 'get', path: "hardwares.json?page=#{page}")[:data].each do |hardware|
+        path = "hardwares.json?#{params}"
+        self.execute(path: path)[:data].each do |hardware|
           if block_given?
             yield hardware
           end

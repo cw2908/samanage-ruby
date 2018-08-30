@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.license                 = 'MIT'
   s.require_paths           = ["lib"]
   s.required_ruby_version   = '>= 2.3'
-  s.add_development_dependency 'httparty', ['~> 0.15']
-  s.add_runtime_dependency 'httparty', ['~> 0.15']
-  s.add_runtime_dependency 'httmultiparty', ['~> 0.3']
+  s.add_development_dependency 'httparty', ['0.15.7']
+  s.add_runtime_dependency 'httparty', ['0.15.7']
 end

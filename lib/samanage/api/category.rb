@@ -1,21 +1,17 @@
 module Samanage
   class Api
     def get_categories(path: PATHS[:category], options: {})
-      url = Samanage::UrlBuilder.new(path: path, options: options).url
-      self.execute(path: url)
+      params = self.set_params(options: options)
+      path = 'categories.json?' + params
+      self.execute(path: path)
     end
 
 
     # Samanage categories are not paginated
     # - to break into subcategories, add
-    def collect_categories
-      categories = Array.new
-       self.execute(http_method: 'get', path: "categories.json")[:data].each do |category|
-        if block_given?
-          yield category
-        end
-        categories << category
-       end
+    def collect_categories(options: {})
+      request = self.execute(http_method: 'get', path: "categories.json")
+      request[:data]
     end
 
     def create_category(payload: nil, options: {})
