@@ -65,6 +65,7 @@ PLATFORMS
 
 DEPENDENCIES
   faker
+  ffi (= 1.9.24)
   guard-rspec
   httparty (= 0.15.7)
   rspec
