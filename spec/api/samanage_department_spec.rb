@@ -1,4 +1,5 @@
 require 'samanage'
+require 'faker'
 describe Samanage::Api do
   context 'department' do
     before(:all) do
@@ -19,8 +20,8 @@ describe Samanage::Api do
       expect(@departments.size).to eq(department_count)
     end
     it 'creates a department' do
-      department_name = "department ##{(rand*10**4).ceil}"
-      department_description = "Location #{(rand*10**4).ceil}"
+      department_name = Faker::Book.title
+      department_description = Faker::Book.author
       payload = {
         department: {
           name: department_name,

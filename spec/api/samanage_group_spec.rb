@@ -26,8 +26,8 @@ describe Samanage::Api do
       expect(group[:data]).to have_key('name')
     end
     it 'creates a group' do
-      group_name = "Group Name #{(rand*10**4).ceil}"
-      group_description = "Description #{(rand*10**4).ceil}"
+      group_name = Faker::BossaNova.artist
+      group_description = Faker::BossaNova.song
       payload = {
         group: {
           name: group_name,

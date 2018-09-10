@@ -20,8 +20,8 @@ describe Samanage::Api do
       expect(solutions.size).to eq(solution_count)
     end
     it 'creates a solution' do
-      solution_name = "solution ##{(rand*10**4).ceil}"
-      solution_description = "Description #{(rand*10**4).ceil}"
+      solution_name = Faker::Music.album
+      solution_description = Faker::Music.band
       payload = {
         solution: {
           name: solution_name,
@@ -36,7 +36,7 @@ describe Samanage::Api do
     end
     it 'updates a valid solution' do
       sample_solution_id = @solutions.sample['id']
-      new_description = solution_description = "Description #{(rand*10**4).ceil}"
+      new_description = Faker::Movie.quote
       payload = {solution: {description: new_description}}
       solution_update = @samanage.update_solution(id: sample_solution_id, payload: payload)
       

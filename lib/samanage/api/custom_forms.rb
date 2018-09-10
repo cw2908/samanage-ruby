@@ -3,7 +3,6 @@ module Samanage
     # Get custom forms path
     def get_custom_forms(path: PATHS[:custom_forms], options: {})
       params = self.set_params(options: options)
-      path = 'custom_forms.json?' + params
       self.execute(path: path)
     end
 
