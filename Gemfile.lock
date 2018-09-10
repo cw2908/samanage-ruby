@@ -65,10 +65,7 @@ PLATFORMS
 
 DEPENDENCIES
   faker
-<<<<<<< HEAD
   ffi (= 1.9.24)
-=======
->>>>>>> f24e30fd6d61f9dcf600c5439623e3120b42ddea
   guard-rspec
   httparty (= 0.15.7)
   rspec
