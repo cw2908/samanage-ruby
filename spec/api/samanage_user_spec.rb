@@ -42,7 +42,7 @@ describe Samanage::Api do
       end
       it 'create_user(payload: json): creates a user' do
         user_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
-        email = Faker::Internet.safe_email(user_name,'.')
+        email = Faker::Internet.safe_email(user_name)
         json = {
           :user => {
             :name => user_name,
