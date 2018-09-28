@@ -1,4 +1,5 @@
 require 'samanage'
+require 'faker'
 
 describe Samanage::Api do
   context 'Users' do
@@ -9,8 +10,10 @@ describe Samanage::Api do
     end
     describe 'API Functions' do
       it 'ensures custom field is updated' do
-        val ="Random #{(rand*10**4).ceil}"
-        field_name = @samanage.custom_forms['user'][0]['custom_form_fields'].sample.dig('custom_field','name')
+        val = Faker::Seinfeld.quote
+        field_name = @samanage.custom_forms['user'][0]['custom_form_fields']
+          .select{|f|  f.dig('custom_field','field_type') == 1} # field_type == 1 is text
+          .sample.dig('custom_field','name')
         payload = {
           user: {
             custom_fields_values:{
@@ -38,8 +41,8 @@ describe Samanage::Api do
         expect(@users.size).to eq(user_count)
       end
       it 'create_user(payload: json): creates a user' do
-        user_name = "autotest-#{(rand*42**100).ceil}"
-        email = user_name + "@samanage.com"
+        user_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
+        email = Faker::Internet.safe_email(user_name)
         json = {
           :user => {
             :name => user_name,
@@ -53,7 +56,7 @@ describe Samanage::Api do
         expect(user_create[:code]).to eq(200).or(201)
       end
       it 'create_user: fails if no email' do
-        user_name = "samanage-ruby-#{(rand*10**(rand(10))).ceil}"
+        user_name = Faker::Superhero.name
         json = {
           :user => {
             :name => user_name,
@@ -120,10 +123,11 @@ describe Samanage::Api do
 
       it 'update_user: update_user by id' do
         sample_id = @users.sample['id']
-        new_name = (0...25).map { ('a'..'z').to_a[rand(26)] }.join
+        new_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
         json = {
           :user => {
-            :name => new_name
+            name: new_name,
+            title: Faker::Job.title
           }
         }
         user_update = @samanage.update_user(payload: json, id: sample_id)

@@ -7,3 +7,4 @@ $LOAD_PATH.unshift(lib_dir)
 $LOAD_PATH.uniq!
 
 require 'samanage'
+require 'faker'

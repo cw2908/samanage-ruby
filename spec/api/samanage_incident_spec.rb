@@ -1,4 +1,5 @@
 require 'samanage'
+require 'faker'
 describe Samanage::Api do
   context 'Incidents' do
     describe 'API Functions' do
@@ -24,12 +25,12 @@ describe Samanage::Api do
       end
       it 'create_incident(payload: json): creates a incident' do
         users_email = @samanage.collect_users.sample['email']
-        incident_name = "Samanage Ruby Incident"
+        incident_name = [Faker::StarWars.specie,Faker::StarWars.planet,Faker::StarWars.droid].shuffle.join(' ')
         json = {
           :incident => {
             :requester => {:email => users_email},
             :name => incident_name,
-            :description => "Description"
+            :description => Faker::StarWars.quote
           }
         }
         incident_create = @samanage.create_incident(payload: json)
@@ -43,7 +44,7 @@ describe Samanage::Api do
         json = {
           :incident => {
             :requester => {:email => users_email},
-            :description => "Description"
+            :description => Faker::StarWars.quote
           }
         }
         expect{@samanage.create_incident(payload: json)}.to raise_error(Samanage::InvalidRequest)
@@ -73,7 +74,8 @@ describe Samanage::Api do
       it 'update_incident: update_incident by id' do
         sample_incident = @incidents.reject{|i| ['Closed','Resolved'].include? i['state']}.sample
         sample_id = sample_incident['id']
-        description = (0...500).map { ('a'..'z').to_a[rand(26)] }.join
+        name = Faker::Movie.quote
+        description = [Faker::String.random,Faker::Seinfeld.quote,Faker::Lorem.paragraph].sample
         incident_json = {
           :incident => {
             :description => description

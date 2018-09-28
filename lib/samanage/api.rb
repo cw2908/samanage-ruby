@@ -3,6 +3,7 @@ require 'open-uri'
 module Samanage
   class Api
     include HTTParty
+    attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
@@ -20,11 +21,9 @@ module Samanage
       solution: 'solutions.json',
       user: 'users.json',
     }
-    attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
-
     # Development mode forces authorization & pre-populates admins and custom forms / fields
     # datacenter should equal 'eu' or blank
-    def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES)
+    def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES, content_type: 'json')
       self.token = token
       if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
         datacenter = nil
@@ -47,15 +46,15 @@ module Samanage
       self.authorized
     end
 
-    # Check token against api.json
+    # Check "oken against api.json"    
     def authorize
-      self.execute(path: 'api.json')
+      self.execute(path: "api.#{self.content_type}")
       self.authorized = true
     end
 
     # Calling execute without a method defaults to GET
     def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
-      if payload.class == String
+      if payload.class == String && self.content_type == 'json'
         begin
           payload = JSON.parse(payload)
         rescue => e
@@ -92,8 +91,8 @@ module Samanage
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
-      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError => e
-        puts "[Warning]#{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
+      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError => e
+        puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
         sleep 3
         retries += 1
         retry if retries < self.max_retries
@@ -150,7 +149,7 @@ module Samanage
 
     # Return all admins in the account
     def list_admins
-      admin_role_id = self.execute(path: 'roles.json')[:data].select{|role| role['name'] == 'Administrator'}.first['id']
+      admin_role_id = self.execute(path: "roles.json")[:data].select{|role| role['name'] == 'Administrator'}.first['id']
       self.admins.push(
         self.execute(path: "users.json?role=#{admin_role_id}")[:data].map{|u| u['email']}
       ).flatten

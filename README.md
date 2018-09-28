@@ -52,6 +52,26 @@ result = api_controller.update_hardware(id: 123, payload: hardware)
 ```
 
 
+### Listing and Searching
+- Find All Users
+```ruby
+users = api_controller.users # returns all users
+```
+- Filtering Incidents matching custom field and updated in the last 7 days
+```ruby
+incidents = api_controller.incidents(options: {'Custom Field' => 'Some Value', 'updated[]' => 7})
+```
+
+- Listing / Searching also responds to blocks
+```ruby
+api.controller.users(options: {'Some Filter' => 'Some Value'}) do |user|
+  if user['email'].match(/something/)
+    foo(bar: bar, user: user)
+  else
+    puts "User #{user['email']} did not match"
+  end
+end
+```
 
 
 
