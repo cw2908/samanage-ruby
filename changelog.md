@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ### 2.1.07
 - Added problems
 
-=======
->>>>>>> 3472ce46f4bf3326f797e56d891a79d78517f284
 ### 2.1.06 
 - Added time track support
 ### 2.1.05
