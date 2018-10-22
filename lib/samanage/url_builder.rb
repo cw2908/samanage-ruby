@@ -37,6 +37,8 @@ module Samanage
         url += 'solutions'
       when /contract/
         url += 'contracts'
+      when /problem/
+        url += 'problems'
       when /group/
         url += 'groups'
       end

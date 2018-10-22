@@ -14,6 +14,7 @@ module Samanage
       department: 'departments.json',
       group: 'groups.json',
       hardware: 'hardwares.json',
+      problem: 'problems.json',
       incident: 'incidents.json',
       mobile: 'mobiles.json',
       other_asset: 'other_assets.json',
