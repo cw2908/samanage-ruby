@@ -12,7 +12,7 @@ module Samanage
       1.upto(total_pages) do |page|
         options[:page] = page
         params = self.set_params(options: options)
-        puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
+        puts "Collecting Departments page: #{page}/#{total_pages}" if options[:verbose]
         path = "departments.json?#{params}"
         self.execute(path: path)[:data].each do |department|
           if block_given?
