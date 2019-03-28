@@ -7,17 +7,18 @@ module Samanage
     MAX_RETRIES = 3
     PATHS = {
       category: 'categories.json',
-      contract: 'contracts.json',
       change: 'changes.json',
+      contract: 'contracts.json',
       custom_fields: 'custom_fields.json',
       custom_forms: 'custom_forms.json',
       department: 'departments.json',
       group: 'groups.json',
       hardware: 'hardwares.json',
-      problem: 'problems.json',
       incident: 'incidents.json',
       mobile: 'mobiles.json',
       other_asset: 'other_assets.json',
+      problem: 'problems.json',
+      purchase_order: 'purchase_orders.json',
       site: 'sites.json',
       solution: 'solutions.json',
       user: 'users.json',
@@ -31,7 +32,7 @@ module Samanage
       end
       self.datacenter ||= datacenter.to_s.downcase
       self.base_url =  "https://api#{self.datacenter.to_s.downcase}.samanage.com/"
-      self.content_type = 'json'
+      self.content_type = content_type || 'json'
       self.admins = []
       self.max_retries = max_retries
       if development_mode
@@ -55,9 +56,9 @@ module Samanage
 
     # Calling execute without a method defaults to GET
     def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
-      if payload.class == String && self.content_type == 'json'
+      if payload.class == Hash && self.content_type == 'json'
         begin
-          payload = JSON.parse(payload)
+          payload = payload.to_json
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
           raise Samanage::Error.new(error: e, response: nil)
@@ -84,17 +85,17 @@ module Samanage
         when 'get'
           api_call = self.class.get(full_path, headers: headers)
         when 'post'
-          api_call = self.class.post(full_path, query: payload, headers: headers)
+          api_call = self.class.post(full_path, body: payload, headers: headers)
         when 'put'
-          api_call = self.class.put(full_path, query: payload, headers: headers)
+          api_call = self.class.put(full_path, body: payload, headers: headers)
         when 'delete'
-          api_call = self.class.delete(full_path, query: payload, headers: headers)
+          api_call = self.class.delete(full_path, body: payload, headers: headers)
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
-      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError => e
+      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests => e
         puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
-        sleep 3
+        sleep 5
         retries += 1
         retry if retries < self.max_retries
         error = e

@@ -51,7 +51,6 @@ describe Samanage::Api do
       it 'find_change: returns a change card by known id' do
         sample_id = @changes.sample['id']
         change = @samanage.find_change(id: sample_id)
-
         expect(change[:data]['id']).to eq(sample_id)  # id should match found change
         expect(change[:data]).to have_key('name')
         expect(change[:data]).to have_key('requester')

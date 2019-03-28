@@ -32,7 +32,7 @@ describe Samanage::Api do
 
       expect(department_create[:data]['id']).to be_an(Integer)
       expect(department_create[:data]['name']).to eq(department_name)
-      expect(department_create[:code]).to eq(201).or(200)
+      expect(department_create[:code]).to eq(200).or(201)
     end
     it 'deletes a valid department' do
       sample_department_id = @departments.sample.dig('id')

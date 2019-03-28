@@ -17,5 +17,26 @@ module Samanage
       end
       downloaded_attachment
     end
+
+    def create_attachment(filepath: , attachable_type: , attachable_id: )
+      if !File.exists?(filepath)
+        puts "Cannot find filepath: '#{filepath.inspect}'"
+        return
+      end
+      self.class.post(
+        self.base_url + 'attachments.json',
+        body: {
+          'file[attachable_type]' =>  attachable_type,
+          'file[attachable_id]' =>  attachable_id,
+          'file[attachment]' =>  File.open(filepath, 'r')
+        },
+        headers: {
+          'Content-Type' => 'multipart/form-data',
+          'X-Samanage-Authorization' => 'Bearer ' + self.token
+        }
+      )
+    end
+
+
   end
 end
