@@ -1,3 +1,12 @@
+### 2.1.09
+- Updated HTTParty to 0.16.4
+- Optimize heavy audit+layout incident collection
+- Adding purchase order support
+- Added support for attachments
+- Fix content type inheritance
+- Use body instead of query params
+- Handle HTTPTooManyRequests
+
 ### 2.1.08
 - Correct Message
 

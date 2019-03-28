@@ -1,3 +1,4 @@
+require 'faker'
 require 'samanage'
 describe Samanage::Api do
   context 'group' do
@@ -46,7 +47,6 @@ describe Samanage::Api do
       group_name = group['name']
       group_id = group['id']
       found_group_id = @samanage.find_group_id_by_name(group: group_name)
-
       expect(group_id).to eq(found_group_id)
     end
     it 'returns nil for finding invalid group by name' do
