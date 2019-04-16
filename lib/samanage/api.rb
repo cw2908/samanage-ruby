@@ -58,7 +58,9 @@ module Samanage
     def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
       if payload.class == Hash && self.content_type == 'json'
         begin
-          payload = payload.to_json
+          if path != 'attachments.json'
+            payload = payload.to_json
+          end
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
           raise Samanage::Error.new(error: e, response: nil)
@@ -93,7 +95,7 @@ module Samanage
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
-      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests => e
+      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests, SocketError => e
         puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
         sleep 5
         retries += 1

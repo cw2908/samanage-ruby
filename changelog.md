@@ -1,3 +1,7 @@
+### 2.1.10
+- Attachments for Windows
+- Handle Socket Errors
+
 ### 2.1.09
 - Updated HTTParty to 0.16.4
 - Optimize heavy audit+layout incident collection
