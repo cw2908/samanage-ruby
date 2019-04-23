@@ -23,19 +23,21 @@ module Samanage
         puts "Cannot find filepath: '#{filepath.inspect}'"
         return
       end
-      self.execute(
+      req = self.execute(
         path: 'attachments.json',
         http_method: 'post',
         payload: {
           'file[attachable_type]' =>  attachable_type,
           'file[attachable_id]' =>  attachable_id,
-          'file[attachment]' =>  File.open(filepath, 'r')
+          'file[attachment]' =>  file = File.open(filepath, 'r')
         },
         headers: {
           'Content-Type' => 'multipart/form-data',
           'X-Samanage-Authorization' => 'Bearer ' + self.token
         }
       )
+      file.close
+      req
     end
 
 

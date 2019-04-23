@@ -1,3 +1,10 @@
+### 2.1.12
+- Add vendor support
+- Close opened files
+
+### 2.1.11
+- Update runtime
+
 ### 2.1.10
 - Attachments for Windows
 - Handle Socket Errors

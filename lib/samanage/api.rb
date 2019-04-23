@@ -6,6 +6,7 @@ module Samanage
     attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
     MAX_RETRIES = 3
     PATHS = {
+      attachment: 'attachments.json',
       category: 'categories.json',
       change: 'changes.json',
       contract: 'contracts.json',
@@ -22,6 +23,7 @@ module Samanage
       site: 'sites.json',
       solution: 'solutions.json',
       user: 'users.json',
+      vendor: 'vendors.json',
     }
     # Development mode forces authorization & pre-populates admins and custom forms / fields
     # datacenter should equal 'eu' or blank
