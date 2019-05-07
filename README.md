@@ -1,6 +1,5 @@
 # Samanage Ruby Gem
 [![Gem Version](https://badge.fury.io/rb/samanage.svg)](https://badge.fury.io/rb/samanage)
-[![Build Status](https://semaphoreci.com/api/v1/projects/8e1f8e7f-6e09-4dad-ac10-e9f41fa61b7d/1437435/shields_badge.svg)](https://semaphoreci.com/cw2908/samanage-ruby)
 ## Requirements
 - Ruby >= 2.3
 
