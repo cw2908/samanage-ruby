@@ -1,9 +1,9 @@
 module Samanage
   class Api
     def get_sites(path: PATHS[:site], options: {})
-      params = self.set_params(options: options)
-      path = 'sites.json?' + params
-      self.execute(path: path)
+      
+      path = 'sites.json?'
+      self.execute(path: path, options: options)
     end
 
     def collect_sites(options: {})
@@ -11,10 +11,10 @@ module Samanage
       total_pages = self.get_sites(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Sites page: #{page}/#{total_pages}" if options[:verbose]
-        path = "sites.json?" + params
-        self.execute(path: path)[:data].each do |site|
+        path = "sites.json?"
+        self.execute(path: path, options: options)[:data].each do |site|
           if block_given?
             yield site
           end

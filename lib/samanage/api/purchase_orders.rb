@@ -3,9 +3,9 @@ module Samanage
 
     # Default get purchase_order path
     def get_purchase_orders(path: PATHS[:purchase_order], options: {})
-      params = self.set_params(options: options)
-      path = 'purchase_orders.json?' + params
-      self.execute(path: path)
+      
+      path = 'purchase_orders.json?'
+      self.execute(path: path, options: options)
     end
 
 
@@ -18,10 +18,10 @@ module Samanage
       total_pages = self.get_purchase_orders(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting purchase_orders page: #{page}/#{total_pages}" if options[:verbose]
-        path = "purchase_orders.json?" + params
-        request = self.execute(http_method: 'get', path: path)
+        path = "purchase_orders.json?"
+        request = self.execute(http_method: 'get', path: path, options: options)
         request[:data].each do |purchase_order|
           if block_given?
             yield purchase_order

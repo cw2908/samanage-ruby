@@ -1,3 +1,7 @@
+### 2.1.13
+- Pass Query params separate from Body
+- Add Release support
+
 ### 2.1.12
 - Add vendor support
 - Close opened files

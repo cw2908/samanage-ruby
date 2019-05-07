@@ -3,9 +3,9 @@ module Samanage
 
     # Get mobile default path
     def get_mobiles(path: PATHS[:mobile], options: {})
-      params = self.set_params(options: options)
-      path = 'mobiles.json?' + params
-      self.execute(path: path)
+      
+      path = 'mobiles.json?'
+      self.execute(path: path, options: options)
 
     end
 
@@ -15,10 +15,10 @@ module Samanage
       total_pages = self.get_mobiles(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Mobiles page: #{page}/#{total_pages}" if options[:verbose]
-        path = "mobiles.json?#{params}"
-        self.execute(path: path)[:data].each do |mobile|
+        path = "mobiles.json?"
+        self.execute(path: path, options: options)[:data].each do |mobile|
           if block_given? 
             yield mobiles
           end

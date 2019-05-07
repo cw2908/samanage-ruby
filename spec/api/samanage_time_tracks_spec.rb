@@ -8,6 +8,13 @@ describe Samanage::Api do
       @samanage = Samanage::Api.new(token: TOKEN)
       @incidents = @samanage.incidents
     end
+    it 'Returns empty when no time tracks for valid incident' do
+      incidents_without_time_tracks = @incidents.select{|incident| incident['time_tracks'].to_a.empty?}
+      incident_id = incidents_without_time_tracks.sample.dig('id')
+      time_tracks = @samanage.time_tracks(incident_id: incident_id)
+      expect(time_tracks).to be_an(Array)
+      expect(time_tracks).to be_empty
+    end
     it 'creates a time_track' do
       incident_id = @incidents.sample.dig('id')
       name = [Faker::NatoPhoneticAlphabet.code_word,Faker::NatoPhoneticAlphabet.code_word,Faker::NatoPhoneticAlphabet.code_word].join(' ')
@@ -42,13 +49,6 @@ describe Samanage::Api do
         }
       })
       expect(request[:code]).to eq(200).or(201)
-    end
-    it 'Returns empty when no time tracks for valid incident' do
-      incidents_without_time_tracks = @incidents.reject{|incident| !incident['time_tracks'].to_a.empty?}
-      incident_id = incidents_without_time_tracks.sample.dig('id')
-      time_tracks = @samanage.time_tracks(incident_id: incident_id)
-      expect(time_tracks).to be_an(Array)
-      expect(time_tracks).to be_empty
     end
     it 'fails when invalid incident' do
       expect { @samanage.time_tracks(incident_id: rand(100)) }.to raise_error(Samanage::NotFound)

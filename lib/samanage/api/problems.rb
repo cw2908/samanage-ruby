@@ -3,9 +3,9 @@ module Samanage
 
     # Default get problem path
     def get_problems(path: PATHS[:problem], options: {})
-      params = self.set_params(options: options)
-      path = 'problems.json?' + params
-      self.execute(path: path)
+      
+      path = 'problems.json?'
+      self.execute(path: path, options: options)
     end
 
 
@@ -18,10 +18,10 @@ module Samanage
       total_pages = self.get_problems(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting problems page: #{page}/#{total_pages}" if options[:verbose]
-        path = "problems.json?" + params
-        request = self.execute(http_method: 'get', path: path)
+        path = "problems.json?"
+        request = self.execute(http_method: 'get', path: path, options: options)
         request[:data].each do |problem|
           if block_given?
             yield problem

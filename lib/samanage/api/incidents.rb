@@ -3,9 +3,9 @@ module Samanage
     
     # Default get incident path
     def get_incidents(path: PATHS[:incident], options: {})
-      params = self.set_params(options: options)
-      path = 'incidents.json?' + params
-      self.execute(path: path)
+      
+      path = 'incidents.json?'
+      self.execute(path: path,options: options)
     end
 
 
@@ -22,8 +22,8 @@ module Samanage
         if options[:audit_archives]
           options[:page] = page
           params = URI.encode_www_form(options.except(:audit_archives,:audit_archive,:layout)) # layout not needed as audit only on individual record
-          paginated_path = "incidents.json?" + params
-          paginated_incidents = self.execute(path: paginated_path)[:data]
+          paginated_path = "incidents.json?"
+          paginated_incidents = self.execute(path: paginated_path, options: options)[:data]
           paginated_incidents.map do |incident|
             params = self.set_params(options: options.except(:audit_archives,:audit_archive,:layout))
             archive_uri = "incidents/#{incident['id']}.json?layout=long&audit_archive=true"
@@ -35,9 +35,9 @@ module Samanage
           end
         else
           options[:page] = page
-          params = self.set_params(options: options)
-          path = "incidents.json?" + params
-          self.execute(path: path)[:data].each do |incident|
+          
+          path = "incidents.json?"
+          self.execute(path: path, options: options)[:data].each do |incident|
             if block_given?
               yield incident
             end
@@ -57,16 +57,16 @@ module Samanage
     # Find incident by ID
     def find_incident(id: , options: {})
 
-      params = self.set_params(options: options)
-      path = "incidents/#{id}.json?" + params
-      self.execute(path: path)
+      
+      path = "incidents/#{id}.json?"
+      self.execute(path: path, options: options)
     end
 
     # Update an incident given id and json
     def update_incident(payload: , id: , options: {})
-      params = self.set_params(options: options)
-      path = "incidents/#{id}.json?" + params
-      self.execute(path: path, http_method: 'put', payload: payload)
+      
+      path = "incidents/#{id}.json?"
+      self.execute(path: path, http_method: 'put', payload: payload, options: options)
     end
 
     def delete_incident(id: )

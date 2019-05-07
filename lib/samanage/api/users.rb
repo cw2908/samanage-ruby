@@ -3,9 +3,9 @@ module Samanage
 
   # Get users, using URL builder
   def get_users(path: PATHS[:user], options: {})
-    params = self.set_params(options: options)
-    path = 'users.json?' + params
-    self.execute(path: path)
+    
+    path = 'users.json?'
+    self.execute(path: path, options: options)
   end
 
   # Returns all users in the account
@@ -14,11 +14,11 @@ module Samanage
       total_pages = self.get_users(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
-        path = "users.json?" + params
+        
+        path = "users.json?"
         puts "Collecting Users page: #{page}/#{total_pages}" if options[:verbose]
-        path = "users.json?#{params}"
-        self.execute(path: path)[:data].each do |user|
+        path = "users.json?"
+        self.execute(path: path, options: options)[:data].each do |user|
           if block_given?
             yield user
           end

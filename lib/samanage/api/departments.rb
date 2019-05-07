@@ -1,9 +1,9 @@
 module Samanage
   class Api
     def get_departments(path: PATHS[:department], options: {})
-      params = self.set_params(options: options)
-      path = 'departments.json?' + params
-      self.execute(path: path)
+      
+      path = 'departments.json?'
+      self.execute(path: path, options: options)
     end
 
     def collect_departments(options: {})
@@ -11,10 +11,10 @@ module Samanage
       total_pages = self.get_departments(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Departments page: #{page}/#{total_pages}" if options[:verbose]
-        path = "departments.json?#{params}"
-        self.execute(path: path)[:data].each do |department|
+        path = "departments.json?"
+        self.execute(path: path, options: options)[:data].each do |department|
           if block_given?
             yield department
           end

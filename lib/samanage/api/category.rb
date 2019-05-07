@@ -1,9 +1,8 @@
 module Samanage
   class Api
     def get_categories(path: PATHS[:category], options: {})
-      params = self.set_params(options: options)
-      path = 'categories.json?' + params
-      self.execute(path: path)
+      path = 'categories.json'
+      self.execute(path: path, options: options)
     end
 
 

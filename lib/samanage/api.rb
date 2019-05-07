@@ -20,6 +20,7 @@ module Samanage
       other_asset: 'other_assets.json',
       problem: 'problems.json',
       purchase_order: 'purchase_orders.json',
+      release: 'releases.json',
       site: 'sites.json',
       solution: 'solutions.json',
       user: 'users.json',
@@ -57,7 +58,7 @@ module Samanage
     end
 
     # Calling execute without a method defaults to GET
-    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {})
+    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {}, options: {})
       if payload.class == Hash && self.content_type == 'json'
         begin
           if path != 'attachments.json'
@@ -74,26 +75,23 @@ module Samanage
       end
 
       headers = headers.merge({
-        'Accept' => "application/vnd.samanage.v2.0+#{self.content_type}#{verbose}",
-        'Content-type'  => "application/#{self.content_type}",
+        'Accept' => "application/vnd.samanage.v2.1+#{self.content_type}#{verbose}",
+        'Content-Type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
       })
-      @options = {
-        headers: headers,
-        payload: payload
-      }
+      options = options.except(:verbose)
       full_path = self.base_url + path
       retries = 0
       begin
         case http_method.to_s.downcase
         when 'get'
-          api_call = self.class.get(full_path, headers: headers)
+          api_call = self.class.get(full_path, headers: headers, query: options)
         when 'post'
-          api_call = self.class.post(full_path, body: payload, headers: headers)
+          api_call = self.class.post(full_path, body: payload, headers: headers, query: options)
         when 'put'
-          api_call = self.class.put(full_path, body: payload, headers: headers)
+          api_call = self.class.put(full_path, body: payload, headers: headers, query: options)
         when 'delete'
-          api_call = self.class.delete(full_path, body: payload, headers: headers)
+          api_call = self.class.delete(full_path, body: payload, headers: headers, query: options)
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end

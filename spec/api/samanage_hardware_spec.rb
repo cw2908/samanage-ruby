@@ -34,7 +34,7 @@ describe Samanage::Api do
 
         expect(hardware_create[:data]['id']).to be_an(Integer)
         expect(hardware_create[:data]['name']).to eq(hardware_name)
-        expect(hardware_create[:code]).to eq(201).or(200)
+        expect(hardware_create[:code]).to eq(200).or(201)
       end
       it 'create_hardware: fails if no serial' do
         hardware_name = "samanage-ruby-#{(rand*10**10).ceil}"

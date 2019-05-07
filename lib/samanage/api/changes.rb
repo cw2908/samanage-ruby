@@ -3,9 +3,8 @@ module Samanage
 
     # Default get change path
     def get_changes(path: PATHS[:change], options: {})
-      params = self.set_params(options: options)
-      path = 'changes.json?' + params
-      self.execute(path: path)
+      path = 'changes.json?'
+      self.execute(path: path, options: options)
     end
 
 
@@ -18,10 +17,10 @@ module Samanage
       total_pages = self.get_changes(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting changes page: #{page}/#{total_pages}" if options[:verbose]
-        path = "changes.json?" + params
-        request = self.execute(http_method: 'get', path: path)
+        path = "changes.json?"
+        request = self.execute(http_method: 'get', path: path, options: options)
         request[:data].each do |change|
           if block_given?
             yield change

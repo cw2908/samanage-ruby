@@ -1,9 +1,9 @@
 module Samanage
   class Api
     def get_solutions(path: PATHS[:solution], options: {})
-      params = self.set_params(options: options)
-      path = 'solutions.json?' + params
-      self.execute(path: path)
+      
+      path = 'solutions.json?'
+      self.execute(path: path, options: options)
     end
 
     def collect_solutions(options: {})
@@ -11,10 +11,10 @@ module Samanage
       total_pages = self.get_solutions(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Solutions page: #{page}/#{total_pages}" if options[:verbose]
-        path = "solutions.json?" + params
-        self.execute(http_method: 'get', path: path)[:data].each do |solution|
+        path = "solutions.json?"
+        self.execute(http_method: 'get', path: path, options: options)[:data].each do |solution|
           if block_given?
             yield solution
           end

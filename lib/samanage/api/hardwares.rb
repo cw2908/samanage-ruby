@@ -3,9 +3,9 @@ module Samanage
 
     # Get hardware default path
     def get_hardwares(path: PATHS[:hardware], options: {})
-      params = self.set_params(options: options)
-      path = 'hardwares.json?' + params
-      self.execute(path: path)
+      
+      path = 'hardwares.json?'
+      self.execute(path: path, options: options)
     end
 
     # Get all hardwares
@@ -14,10 +14,10 @@ module Samanage
       total_pages = self.get_hardwares(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Hardwares page: #{page}/#{total_pages}" if options[:verbose]
-        path = "hardwares.json?#{params}"
-        self.execute(path: path)[:data].each do |hardware|
+        path = "hardwares.json?"
+        self.execute(path: path, options: options)[:data].each do |hardware|
           if block_given?
             yield hardware
           end

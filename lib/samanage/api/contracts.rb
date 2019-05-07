@@ -3,9 +3,9 @@ module Samanage
 
     # Get contract default path
     def get_contracts(path: PATHS[:contract], options: {})
-      params = self.set_params(options: options)
-      path = 'contracts.json?' + params
-      self.execute(path: path)
+      
+      path = 'contracts.json?'
+      self.execute(path: path, options: options)
     end
 
     # Get all contracts
@@ -14,10 +14,10 @@ module Samanage
       total_pages = self.get_contracts(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
-        path = "contracts.json?#{params}"
-        self.execute(path: path)[:data].each do |contract|
+        path = "contracts.json?"
+        self.execute(path: path, options: options)[:data].each do |contract|
           if block_given?
             yield contract
           end

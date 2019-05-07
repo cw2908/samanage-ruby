@@ -1,9 +1,9 @@
 module Samanage
   class Api
     def get_vendors(path: PATHS[:vendor], options: {})
-      params = self.set_params(options: options)
-      path = 'vendors.json?' + params
-      self.execute(path: path)
+      
+      path = 'vendors.json?'
+      self.execute(path: path, options: options)
     end
 
     def collect_vendors(options: {})
@@ -11,10 +11,10 @@ module Samanage
       total_pages = self.get_vendors(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting vendors page: #{page}/#{total_pages}" if options[:verbose]
-        path = "vendors.json?" + params
-        self.execute(http_method: 'get', path: path)[:data].each do |vendor|
+        path = "vendors.json?"
+        self.execute(http_method: 'get', path: path, options: options)[:data].each do |vendor|
           if block_given?
             yield vendor
           end

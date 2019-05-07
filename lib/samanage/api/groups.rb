@@ -1,9 +1,9 @@
 module Samanage
   class Api
     def get_groups(path: PATHS[:group], options: {})
-      params = self.set_params(options: options)
-      path = 'groups.json?' + params
-      self.execute(path: path)
+      
+      path = 'groups.json?'
+      self.execute(path: path, options: options)
     end
 
     def collect_groups(options: {})
@@ -11,10 +11,10 @@ module Samanage
       total_pages = self.get_groups(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        params = self.set_params(options: options)
+        
         puts "Collecting Groups page: #{page}/#{total_pages}" if options[:verbose]
-        path = 'groups.json?' + params
-        self.execute(path: path)[:data].each do |group|
+        path = 'groups.json?'
+        self.execute(path: path, options: options)[:data].each do |group|
           if block_given?
             yield group
           end
@@ -30,9 +30,9 @@ module Samanage
 
     def find_group_id_by_name(group: '', options: {})
       options.merge!({name: group}) if group && !options.keys.include?(:name)
-      params = self.set_params(options: options)
-      path = "groups.json?" + params
-      group_api = self.execute(path: path )
+      
+      path = "groups.json?"
+      group_api = self.execute(path: path, options: options)
       # Group names are case sensitive
       if !group_api[:data].empty? && group == group_api[:data].first['name']
         return group_api[:data].first['id']

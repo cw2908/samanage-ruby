@@ -74,7 +74,6 @@ describe Samanage::Api do
       it 'update_incident: update_incident by id' do
         sample_incident = @incidents.reject{|i| ['Closed','Resolved'].include? i['state']}.sample
         sample_id = sample_incident['id']
-        name = Faker::Movie.quote
         description = [Faker::String.random,Faker::Seinfeld.quote,Faker::Lorem.paragraph].sample
         incident_json = {
           :incident => {
@@ -105,6 +104,24 @@ describe Samanage::Api do
         sample_incident_id = @incidents.sample['id']
         incident_delete = @samanage.delete_incident(id: sample_incident_id)
         expect(incident_delete[:code]).to eq(200).or(201)
+      end
+      it 'Sends an email if add_callbacks=true in params' do
+        sample_id = @incidents.sample['id']
+        audits_req = @samanage.find_incident(id: sample_id, options: {layout: 'long'})
+      
+        initial_email_audits = audits_req.dig(:data,'audits').select{|audit| audit['message'].match(/was sent./) }.count
+        incident_json = {
+          :incident => {
+            :due_at => Date.new(2019,rand(12),rand(28)), # need to configure email notifications for due date change
+            assignee: {email: @users.find{|u| u.dig('role','name') == 'Administrator'}.dig('email')}
+          }
+        }
+      
+        @samanage.update_incident(payload: incident_json, id: sample_id, options: {add_callbacks: true})
+        sleep 5 # Wait for email to send
+        final_audits_req = @samanage.find_incident(id: sample_id, options: {layout: 'long'})
+        final_email_audits = final_audits_req.dig(:data,'audits').select{|audit| audit['message'].match(/was sent./) }.count
+        expect(initial_email_audits).to be < final_email_audits
       end
     end
   end
