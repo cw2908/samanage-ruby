@@ -8,6 +8,7 @@ describe Samanage::Api do
       @samanage = Samanage::Api.new(token: TOKEN)
       @purchase_orders = @samanage.purchase_orders
       @users = @samanage.get_users[:data]
+      @vendors = @samanage.get_vendors[:data]
     end
       it 'get_purchase_orders: it returns API call of purchase_orders' do
         api_call = @samanage.get_purchase_orders
@@ -23,13 +24,13 @@ describe Samanage::Api do
         expect(@purchase_orders.size).to eq(purchase_order_count)
       end
       it 'create_purchase_order(payload: json): creates a purchase_order' do
-        users_email = @samanage.collect_users.sample['email']
+        users_email = @users.find{|u| u['role']['name']=='Administrator'}.to_h['email']
         purchase_order_name = Faker::Book.title
         json = {
           purchase_order: {
             buyer: {email: users_email},
             name: purchase_order_name,
-            vendor: {name: 'Samanage'}
+            vendor: {name: @vendors.sample['name']}
           }
         }
         purchase_order_create = @samanage.create_purchase_order(payload: json)
@@ -37,7 +38,7 @@ describe Samanage::Api do
         expect(purchase_order_create[:data]['name']).to eq(purchase_order_name)
         expect(purchase_order_create[:code]).to eq(200).or(201)
       end
-      it 'create_purchase_order: fails if no name/title' do
+      it 'create_purchase_order: fails if no vendor' do
         users_email = @users.sample['email']
         json = {
           :purchase_order => {

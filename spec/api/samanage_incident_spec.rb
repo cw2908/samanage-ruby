@@ -106,13 +106,13 @@ describe Samanage::Api do
         expect(incident_delete[:code]).to eq(200).or(201)
       end
       it 'Sends an email if add_callbacks=true in params' do
-        sample_id = @incidents.sample['id']
+        sample_id = @samanage.get_incidents[:data].sample['id']
         audits_req = @samanage.find_incident(id: sample_id, options: {layout: 'long'})
       
         initial_email_audits = audits_req.dig(:data,'audits').select{|audit| audit['message'].match(/was sent./) }.count
         incident_json = {
           :incident => {
-            :due_at => Date.new(2019,rand(12),rand(28)), # need to configure email notifications for due date change
+            due_at: Date.new(2019,rand(11) + 1, rand(27) + 1), # need to configure email notifications for due date change
             assignee: {email: @users.find{|u| u.dig('role','name') == 'Administrator'}.dig('email')}
           }
         }

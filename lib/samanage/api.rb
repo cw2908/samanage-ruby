@@ -121,7 +121,9 @@ module Samanage
           response[:data] = JSON.parse(api_call.body)
         rescue JSON::ParserError => e
           response[:data] = api_call.body
-          puts "[Warning] #{e.class}: #{e}"
+          if !path.match('send_activation_email')
+            puts "[Warning] #{e.class}: #{e}"
+          end
         end
         response
       when 401
