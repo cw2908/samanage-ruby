@@ -112,6 +112,7 @@ describe Samanage::Api do
         initial_email_audits = audits_req.dig(:data,'audits').select{|audit| audit['message'].match(/was sent./) }.count
         incident_json = {
           :incident => {
+            state: 'New',
             due_at: Date.new(2019,rand(11) + 1, rand(27) + 1), # need to configure email notifications for due date change
             assignee: {email: @users.find{|u| u.dig('role','name') == 'Administrator'}.dig('email')}
           }
@@ -122,6 +123,11 @@ describe Samanage::Api do
         final_audits_req = @samanage.find_incident(id: sample_id, options: {layout: 'long'})
         final_email_audits = final_audits_req.dig(:data,'audits').select{|audit| audit['message'].match(/was sent./) }.count
         expect(initial_email_audits).to be < final_email_audits
+      end
+      it 'Finds incident origin in v2.0 layout=long header' do
+        sample_id = @samanage.get_incidents[:data].sample['id']
+        origin_req = @samanage.execute(path: "incidents/#{sample_id}.json", verbose: true, headers: {'Accept' => "application/vnd.samanage.v2.0+json?layout=long"})
+        expect(origin_req[:data]).to have_key('origin')
       end
     end
   end

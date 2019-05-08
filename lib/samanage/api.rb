@@ -74,11 +74,11 @@ module Samanage
         verbose = '?layout=long'
       end
 
-      headers = headers.merge({
+      headers = {
         'Accept' => "application/vnd.samanage.v2.1+#{self.content_type}#{verbose}",
         'Content-Type'  => "application/#{self.content_type}",
         'X-Samanage-Authorization' => 'Bearer ' + self.token
-      })
+      }.merge(headers)
       options = options.except(:verbose)
       full_path = self.base_url + path
       retries = 0

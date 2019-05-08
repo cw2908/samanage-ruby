@@ -1,5 +1,9 @@
+### 2.1.14
+- Swap header merging
+
 ### 2.1.13
 - Pass Query params separate from Body
+- Add coverage for `{add_calbacks: true}` option
 - Add Release support
 
 ### 2.1.12
