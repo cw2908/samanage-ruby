@@ -51,7 +51,7 @@ module Samanage
 
     # Create an incident given json
     def create_incident(payload: nil, options: {})
-      self.execute(path: PATHS[:incident], http_method: 'post', payload: payload)
+      self.execute(path: PATHS[:incident], http_method: 'post', payload: payload, options: options)
     end
 
     # Find incident by ID
@@ -69,8 +69,8 @@ module Samanage
       self.execute(path: path, http_method: 'put', payload: payload, options: options)
     end
 
-    def delete_incident(id: )
-      self.execute(path: "incidents/#{id}.json", http_method: 'delete')
+    def delete_incident(id: , options: {})
+      self.execute(path: "incidents/#{id}.json", http_method: 'delete', options: options)
     end
 
 

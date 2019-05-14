@@ -9,16 +9,16 @@ module Samanage
     # Samanage categories are not paginated
     # - to break into subcategories, add
     def collect_categories(options: {})
-      request = self.execute(http_method: 'get', path: "categories.json")
+      request = self.execute(http_method: 'get', path: "categories.json", options: options)
       request[:data]
     end
 
     def create_category(payload: nil, options: {})
-      self.execute(path: PATHS[:category], http_method: 'post', payload: payload)
+      self.execute(path: PATHS[:category], http_method: 'post', payload: payload, options: options)
     end
 
     def delete_category(id: )
-      self.execute(path: "categories/#{id}", http_method: 'delete')
+      self.execute(path: "categories/#{id}", http_method: 'delete', options: options)
     end
 
   alias_method :categories, :collect_categories

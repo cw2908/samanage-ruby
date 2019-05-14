@@ -1,3 +1,6 @@
+### 2.1.16
+- Use options where callbacks could be sent
+
 ### 2.1.15
 - Use options in find methods
 

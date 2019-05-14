@@ -30,7 +30,7 @@ module Samanage
 
     # Create user given JSON
     def create_user(payload: , options: {})
-      self.execute(path: PATHS[:user], http_method: 'post', payload: payload)
+      self.execute(path: PATHS[:user], http_method: 'post', payload: payload, options: options)
     end
 
     # Return user by ID
