@@ -33,9 +33,9 @@ module Samanage
     end
 
     # Find contract given id
-    def find_contract(id: )
+    def find_contract(id: , options: {})
       path = "contracts/#{id}.json"
-      self.execute(path: path)
+      self.execute(path: path, options: {})
     end
     
     # Check for contract using URL builder

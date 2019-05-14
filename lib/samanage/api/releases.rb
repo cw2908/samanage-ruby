@@ -36,9 +36,9 @@ module Samanage
 
 
     # Find release by id
-    def find_release(id: )
+    def find_release(id: , options: {})
       path = "releases/#{id}.json"
-      self.execute(path: path)
+      self.execute(path: path, options: {})
     end
 
      # Update release given json and id

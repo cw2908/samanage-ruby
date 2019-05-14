@@ -1,3 +1,6 @@
+### 2.1.15
+- Use options in find methods
+
 ### 2.1.14
 - Swap header merging
 

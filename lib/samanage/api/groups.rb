@@ -39,9 +39,9 @@ module Samanage
       end
     end
 
-    def find_group(id: )
+    def find_group(id: , options: {})
       path = "groups/#{id}.json"
-      self.execute(path: path)
+      self.execute(path: path, options: {})
     end
 
     def add_member_to_group(email: , group_id: nil, group_name: nil)

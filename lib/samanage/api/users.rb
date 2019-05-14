@@ -34,9 +34,9 @@ module Samanage
     end
 
     # Return user by ID
-    def find_user(id: )
+    def find_user(id: , options: {})
       path = "users/#{id}.json"
-      self.execute(path: path)
+      self.execute(path: path, options: {})
     end
 
     # Email is unique so compare first for exact match only. Returns nil or the id
