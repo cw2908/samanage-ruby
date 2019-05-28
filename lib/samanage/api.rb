@@ -3,8 +3,7 @@ require 'open-uri'
 module Samanage
   class Api
     include HTTParty
-    attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries
-    MAX_RETRIES = 3
+    attr_accessor :datacenter, :content_type, :base_url, :token, :custom_forms, :authorized, :admins, :max_retries, :sleep_time
     PATHS = {
       attachment: 'attachments.json',
       category: 'categories.json',
@@ -28,7 +27,7 @@ module Samanage
     }
     # Development mode forces authorization & pre-populates admins and custom forms / fields
     # datacenter should equal 'eu' or blank
-    def initialize(token: , datacenter: nil, development_mode: false, max_retries: MAX_RETRIES, content_type: 'json')
+    def initialize(token: , datacenter: nil, development_mode: false, max_retries: 3, content_type: 'json', sleep_time: 5)
       self.token = token
       if !datacenter.nil? && datacenter.to_s.downcase != 'eu'
         datacenter = nil
@@ -38,6 +37,7 @@ module Samanage
       self.content_type = content_type || 'json'
       self.admins = []
       self.max_retries = max_retries
+      self.sleep_time = sleep_time
       if development_mode
         if self.authorized? != true
           self.authorize
@@ -58,7 +58,7 @@ module Samanage
     end
 
     # Calling execute without a method defaults to GET
-    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {}, options: {})
+    def execute(http_method: 'get', path: nil, payload: nil, verbose: nil, headers: {}, options: {}, multipart: false)
       if payload.class == Hash && self.content_type == 'json'
         begin
           if path != 'attachments.json'
@@ -87,7 +87,7 @@ module Samanage
         when 'get'
           api_call = self.class.get(full_path, headers: headers, query: options)
         when 'post'
-          api_call = self.class.post(full_path, body: payload, headers: headers, query: options)
+          api_call = self.class.post(full_path, multipart: multipart,  body: payload, headers: headers, query: options)
         when 'put'
           api_call = self.class.put(full_path, body: payload, headers: headers, query: options)
         when 'delete'
@@ -95,14 +95,28 @@ module Samanage
         else
           raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
         end
-      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests, SocketError => e
-        puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
-        sleep 5
+      rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, Net::ReadTimeout, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests, SocketError => e
         retries += 1
-        retry if retries < self.max_retries
-        error = e
-        response = e.class
-        raise Samanage::InvalidRequest.new(error: error, response: response)
+        if retries < self.max_retries
+          puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
+          sleep sleep_time
+          retry
+        else
+          error = e
+          response = e.class
+          raise Samanage::InvalidRequest.new(error: error, response: response)
+        end
+      rescue => e
+        retries += 1
+        if retries < self.max_retries
+          puts "[Warning] #{e.class}: #{e} -  Retry: #{retries}/#{self.max_retries}"
+          sleep sleep_time
+          retry
+        else
+          error = e
+          response = e.class
+          raise Samanage::InvalidRequest.new(error: error, response: response)
+        end
       end
 
       response = Hash.new
@@ -138,10 +152,16 @@ module Samanage
       when 422
         response[:data] = api_call.body
         error = response[:response]
+        puts "body: #{payload}"
+        puts "headers: #{headers}"
+        puts "query: #{options}"
         raise Samanage::InvalidRequest.new(error: error, response: response)
       else
         response[:data] = api_call.body
         error = response[:response]
+        puts "body: #{payload}"
+        puts "headers: #{headers}"
+        puts "query: #{options}"
         raise Samanage::InvalidRequest.new(error: error, response: response)
       end
     end

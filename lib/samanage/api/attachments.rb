@@ -26,6 +26,8 @@ module Samanage
       req = self.execute(
         path: 'attachments.json',
         http_method: 'post',
+        multipart: true,
+
         payload: {
           'file[attachable_type]' =>  attachable_type,
           'file[attachable_id]' =>  attachable_id,

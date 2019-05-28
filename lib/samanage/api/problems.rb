@@ -19,7 +19,7 @@ module Samanage
       1.upto(total_pages) do |page|
         options[:page] = page
         
-        puts "Collecting problems page: #{page}/#{total_pages}" if options[:verbose]
+        puts "Collecting Problems page: #{page}/#{total_pages}" if options[:verbose]
         path = "problems.json?"
         request = self.execute(http_method: 'get', path: path, options: options)
         request[:data].each do |problem|

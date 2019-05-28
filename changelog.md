@@ -1,3 +1,14 @@
+### 2.1.18
+- Force multipart for attachments
+- Custom sleep time
+- Added catching all errors
+- Normalizing stout
+
+### 2.1.17
+- Retry all errors
+- Ability to configure retry count & wait time.
+- Normalize messages
+
 ### 2.1.16
 - Use options where callbacks could be sent
 

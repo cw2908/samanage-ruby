@@ -12,7 +12,7 @@ module Samanage
       1.upto(total_pages) do |page|
         options[:page] = page
         
-        puts "Collecting vendors page: #{page}/#{total_pages}" if options[:verbose]
+        puts "Collecting Vendors page: #{page}/#{total_pages}" if options[:verbose]
         path = "vendors.json?"
         self.execute(http_method: 'get', path: path, options: options)[:data].each do |vendor|
           if block_given?
