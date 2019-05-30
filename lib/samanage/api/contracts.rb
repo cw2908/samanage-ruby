@@ -15,7 +15,7 @@ module Samanage
       1.upto(total_pages) do |page|
         options[:page] = page
         
-        puts "Collecting contracts page: #{page}/#{total_pages}" if options[:verbose]
+        puts "Collecting Contracts page: #{page}/#{total_pages}" if options[:verbose]
         path = "contracts.json?"
         self.execute(path: path, options: options)[:data].each do |contract|
           if block_given?

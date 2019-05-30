@@ -34,7 +34,7 @@ module Samanage
     end
 
     # Find mobile given id
-    def find_mobile(id: nil)
+    def find_mobile(id: , options: {})
       path = "mobiles/#{id}.json"
       self.execute(path: path)
     end

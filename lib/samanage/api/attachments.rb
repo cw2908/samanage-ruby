@@ -27,18 +27,16 @@ module Samanage
         path: 'attachments.json',
         http_method: 'post',
         multipart: true,
-
         payload: {
           'file[attachable_type]' =>  attachable_type,
           'file[attachable_id]' =>  attachable_id,
-          'file[attachment]' =>  file = File.open(filepath, 'r')
+          'file[attachment]' =>  File.open(filepath, 'rb')
         },
         headers: {
           'Content-Type' => 'multipart/form-data',
           'X-Samanage-Authorization' => 'Bearer ' + self.token
         }
       )
-      file.close
       req
     end
 

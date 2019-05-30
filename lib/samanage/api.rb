@@ -152,16 +152,10 @@ module Samanage
       when 422
         response[:data] = api_call.body
         error = response[:response]
-        puts "body: #{payload}"
-        puts "headers: #{headers}"
-        puts "query: #{options}"
         raise Samanage::InvalidRequest.new(error: error, response: response)
       else
         response[:data] = api_call.body
         error = response[:response]
-        puts "body: #{payload}"
-        puts "headers: #{headers}"
-        puts "query: #{options}"
         raise Samanage::InvalidRequest.new(error: error, response: response)
       end
     end

@@ -24,6 +24,12 @@ module Samanage
       solutions
     end
 
+    def find_solution(id: , options: {})
+      path = "solutions/#{id}.json"
+      self.execute(path: path)
+    end
+
+
     def create_solution(payload: , options: {})
       self.execute(path: PATHS[:solution], http_method: 'post', payload: payload)
     end
