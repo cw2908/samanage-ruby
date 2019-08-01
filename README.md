@@ -15,50 +15,50 @@
 
 Initialize API controller
 ```ruby
-    api_controller = Samanage::Api.new(token: 'abc123')
+    samanage = Samanage::Api.new(token: 'abc123')
 ```
 
 - Create a user
 ```ruby
     user = {user: { name: 'John Doe', email: 'john.doe@example.com'}}
-    api_controller.create_user(payload: user)
+    samanage.create_user(payload: user)
 ```
 
 
 - Find a user by email
 ```ruby
-    my_user = api_controller.find_user_by_email(email: 'user@example.com')
+    my_user = samanage.find_user_by_email(email: 'user@example.com')
 ```
 
 
 - Update incident by ID
 ```ruby
     incident_data = {incident: { priority: 'Critical' }}
-    incident_update = api_controller.update_incident(id: 123, payload: incident_data)
+    incident_update = samanage.update_incident(id: 123, payload: incident_data)
 ```
 
 
 - Update hardware
 ```ruby
-hardware = {hardware: {name: 'My Computer'}}
-result = api_controller.update_hardware(id: 123, payload: hardware)
+hardware = {hardware: {name: 'Cool New Hostname'}}
+result = samanage.update_hardware(id: 123, payload: hardware)
 ```
 
 - Use Filters
 ```ruby
-    incidents_updated_today = @samanage.incidents(options: {'updated' => 1})
-    expired_hardwares = @samanage.hardwares(options: {'warranty_status[]' => 'Expired'})
+    incidents_updated_today = samanage.incidents(options: {'updated' => 1})
+    expired_hardwares = samanage.hardwares(options: {'warranty_status[]' => 'Expired'})
 ```
 
 
 ### Listing and Searching
 - Find All Users
 ```ruby
-users = api_controller.users # returns all users
+users = samanage.users # returns all users
 ```
 - Filtering Incidents matching custom field and updated in the last 7 days
 ```ruby
-incidents = api_controller.incidents(options: {'Custom Field' => 'Some Value', 'updated[]' => 7})
+incidents = samanage.incidents(options: {'Custom Field' => 'Some Value', 'updated[]' => 7})
 ```
 
 - Listing / Searching also responds to blocks
