@@ -11,7 +11,7 @@ module Samanage
         self.status_code = nil
         self.response = response
       end
-      puts "[Error] #{self.status_code}: #{self.response}" if options[:verbose]
+      puts "[Error] #{self.status_code}: #{self.response}"
       return
     end
   end

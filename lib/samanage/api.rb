@@ -66,7 +66,7 @@ module Samanage
           end
         rescue => e
           puts "Invalid JSON: #{payload.inspect}"
-          raise Samanage::Error.new(error: e, response: nil)
+          raise Samanage::Error.new(error: e, response: nil, options: options)
         end
       end
       token = token ||= self.token
@@ -93,7 +93,7 @@ module Samanage
         when 'delete'
           api_call = self.class.delete(full_path, body: payload, headers: headers, query: options)
         else
-          raise Samanage::Error.new(response: {response: 'Unknown HTTP method'})
+          raise Samanage::Error.new(response: {response: 'Unknown HTTP method'}, options: options)
         end
       rescue Errno::ECONNREFUSED, Net::OpenTimeout, Errno::ETIMEDOUT, Net::ReadTimeout, OpenSSL::SSL::SSLError, Errno::ENETDOWN, Errno::ECONNRESET, Errno::ENOENT, EOFError, Net::HTTPTooManyRequests, SocketError => e
         retries += 1
@@ -104,7 +104,7 @@ module Samanage
         else
           error = e
           response = e.class
-          raise Samanage::InvalidRequest.new(error: error, response: response)
+          raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
         end
       rescue => e
         retries += 1
@@ -115,7 +115,7 @@ module Samanage
         else
           error = e
           response = e.class
-          raise Samanage::InvalidRequest.new(error: error, response: response)
+          raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
         end
       end
 
@@ -144,19 +144,19 @@ module Samanage
         response[:data] = api_call.body
         error = response[:response]
         self.authorized = false
-        raise Samanage::AuthorizationError.new(error: error,response: response)
+        raise Samanage::AuthorizationError.new(error: error,response: response, options: options)
       when 404
         response[:data] = api_call.body
         error = response[:response]
-        raise Samanage::NotFound.new(error: error, response: response)
+        raise Samanage::NotFound.new(error: error, response: response, options: options)
       when 422
         response[:data] = api_call.body
         error = response[:response]
-        raise Samanage::InvalidRequest.new(error: error, response: response)
+        raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
       else
         response[:data] = api_call.body
         error = response[:response]
-        raise Samanage::InvalidRequest.new(error: error, response: response)
+        raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
       end
     end
 

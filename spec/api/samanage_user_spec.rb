@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'samanage'
 require 'faker'
 
@@ -12,20 +14,20 @@ describe Samanage::Api do
       it 'ensures custom field is updated' do
         val = Faker::Seinfeld.quote
         field_name = @samanage.custom_forms['user'][0]['custom_form_fields']
-          .select{|f|  f.dig('custom_field','field_type') == 1} # field_type == 1 is text
-          .sample.dig('custom_field','name')
+                              .select { |f| f.dig('custom_field', 'field_type') == 1 } # field_type == 1 is text
+                              .sample.dig('custom_field', 'name')
         payload = {
           user: {
-            custom_fields_values:{
-              custom_fields_value:[
-                { name: field_name, value: val}
+            custom_fields_values: {
+              custom_fields_value: [
+                { name: field_name, value: val }
               ]
             }
           }
         }
         user_id = @users.sample.dig('id')
         api_call = @samanage.update_user(id: user_id, payload: payload)
-        return_val = api_call.dig(:data,'custom_fields_values').select{|i| i['name'] == field_name}.first.to_h.dig('value')
+        return_val = api_call.dig(:data, 'custom_fields_values').select { |i| i['name'] == field_name }.first.to_h.dig('value')
         expect(val).to eq(return_val)
       end
       it 'get_users: it returns API call of users' do
@@ -41,12 +43,12 @@ describe Samanage::Api do
         expect(@users.size).to eq(user_count)
       end
       it 'create_user(payload: json): creates a user' do
-        user_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
+        user_name = [Faker::Simpsons.character, Faker::StarWars.character, Faker::Name.name].sample
         email = Faker::Internet.safe_email(user_name)
         json = {
-          :user => {
-            :name => user_name,
-            :email => email,
+          user: {
+            name: user_name,
+            email: email
           }
         }
         user_create = @samanage.create_user(payload: json)
@@ -58,24 +60,23 @@ describe Samanage::Api do
       it 'create_user: fails if no email' do
         user_name = Faker::Superhero.name
         json = {
-          :user => {
-            :name => user_name,
+          user: {
+            name: user_name
           }
         }
-        expect{@samanage.create_user(payload: json)}.to raise_error(Samanage::InvalidRequest)
+        expect { @samanage.create_user(payload: json) }.to raise_error(Samanage::InvalidRequest)
       end
       it 'find_user: returns a user card by known id' do
         sample_id = @users.sample['id']
         user = @samanage.find_user(id: sample_id)
-        expect(user[:data]['id']).to eq(sample_id)  # id should match found user
+        expect(user[:data]['id']).to eq(sample_id) # id should match found user
         expect(user[:data]).to have_key('email')
         expect(user[:data]).to have_key('name')
       end
 
-
       it 'find_user: returns nothing for an invalid id' do
         sample_id = (0..10).entries.sample
-        expect{@samanage.find_user(id: sample_id)}.to raise_error(Samanage::NotFound)  # id should match found user
+        expect { @samanage.find_user(id: sample_id) }.to raise_error(Samanage::NotFound) # id should match found user
       end
 
       it 'finds_user_id_by_email' do
@@ -88,7 +89,7 @@ describe Samanage::Api do
       end
 
       it 'finds group_id for user' do
-        sample_user = @users.select{|u| u['role']['name'] == 'Administrator'}.sample
+        sample_user = @users.select { |u| u['role']['name'] == 'Administrator' }.sample
         sample_user_email = sample_user['email']
         group_ids = sample_user['group_ids']
         found_id = nil
@@ -104,7 +105,6 @@ describe Samanage::Api do
         expect(function_id).to eq(found_id)
       end
 
-
       it 'returns nil for invalid find_user_group_id_by_email' do
         invalid_user_email = 'abc@123.gov'
         function_id = @samanage.find_user_group_id_by_email(email: invalid_user_email)
@@ -119,29 +119,27 @@ describe Samanage::Api do
         expect(function_id).to be(nil)
       end
 
-
-
       it 'update_user: update_user by id' do
         sample_id = @users.sample['id']
-        new_name = [Faker::Simpsons.character,Faker::StarWars.character,Faker::Name.name].sample
+        new_name = [Faker::Simpsons.character, Faker::StarWars.character, Faker::Name.name].sample
         json = {
-          :user => {
+          user: {
             name: new_name,
             title: Faker::Job.title
           }
         }
         user_update = @samanage.update_user(payload: json, id: sample_id)
-        expect(user_update[:data]["name"]).to eq(new_name)
+        expect(user_update[:data]['name']).to eq(new_name)
         expect(user_update[:code]).to eq(200).or(201)
       end
       it 'deletes a valid user' do
-        sample_user_id = @users.select{|u| !u['last_login']}.sample['id']
+        sample_user_id = @users.reject { |u| u['last_login'] }.sample['id']
         user_delete = @samanage.delete_user(id: sample_user_id)
         expect(user_delete[:code]).to eq(200).or(201)
       end
-      it 'fails to delete invalid user' do 
+      it 'fails to delete invalid user' do
         invalid_user_id = 0
-        expect{@samanage.delete_user(id: invalid_user_id)}.to raise_error(Samanage::InvalidRequest)
+        expect { @samanage.delete_user(id: invalid_user_id) }.to raise_error(Samanage::InvalidRequest)
       end
     end
   end
