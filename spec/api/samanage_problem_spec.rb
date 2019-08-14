@@ -50,7 +50,9 @@ describe Samanage::Api do
             description: "Description"
           }
         }
-        expect { @samanage.create_problem(payload: json) }.to raise_error(Samanage::InvalidRequest)
+        expect {
+          @samanage.create_problem(payload: json)
+        }.to raise_error(Samanage::InvalidRequest)
       end
       it "find_problem: returns a problem card by known id" do
         sample_id = @problems.sample["id"]
@@ -72,7 +74,10 @@ describe Samanage::Api do
       end
       it "find_problem: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_problem(id: sample_id) }.to raise_error(Samanage::NotFound)  # id should match found problem
+        # id should match found problem
+        expect {
+          @samanage.find_problem(id: sample_id)
+        }.to raise_error(Samanage::NotFound)
       end
       it "update_problem: update_problem by id" do
         sample_problem = @problems.reject { |i| ["Closed", "Resolved"].include? i["state"] }.sample

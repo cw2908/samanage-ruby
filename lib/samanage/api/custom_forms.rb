@@ -31,7 +31,9 @@ module Samanage
       custom_forms = self.collect_custom_forms
       custom_forms.map { |form| form.delete_if { |k, v| v.nil? } }
       custom_forms.map { |form| form["custom_form_fields"].map { |fields| fields.delete_if { |k, v| v == false } } }
-      custom_forms.map { |form| form["custom_form_fields"].map { |fields| fields["custom_field"].delete_if { |k, v| !v } } }
+      custom_forms.map { |form|
+        form["custom_form_fields"].map { |fields| fields["custom_field"].delete_if { |k, v| !v } }
+      }
       custom_forms.group_by { |k|
         k["module"]}.each_pair { |forms_name, forms|
           forms.each { |form|

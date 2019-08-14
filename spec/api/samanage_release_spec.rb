@@ -58,7 +58,10 @@ describe Samanage::Api do
       end
       it "find_release: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_release(id: sample_id) }.to raise_error(Samanage::NotFound)  # id should match found release
+        # id should match found release
+        expect {
+          @samanage.find_release(id: sample_id)
+        }.to raise_error(Samanage::NotFound)
       end
       it "update_release: update_release by id" do
         sample_id = @releases.sample["id"]

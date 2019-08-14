@@ -45,7 +45,9 @@ describe Samanage::Api do
             name: hardware_name,
           }
         }
-        expect { @samanage.create_hardware(payload: payload) }.to raise_error(Samanage::InvalidRequest)
+        expect {
+          @samanage.create_hardware(payload: payload)
+        }.to raise_error(Samanage::InvalidRequest)
       end
       it "find_hardware: returns a hardware card by known id" do
         sample_id = @hardwares.sample["id"]
@@ -58,7 +60,9 @@ describe Samanage::Api do
       end
       it "find_hardware: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_hardware(id: sample_id) }.to raise_error(Samanage::NotFound)  # id should match found hardware
+        expect {
+          @samanage.find_hardware(id: sample_id)
+        }.to raise_error(Samanage::NotFound)  # id should match found hardware
       end
 
       it "finds_hardwares_by_serial" do
@@ -73,11 +77,11 @@ describe Samanage::Api do
       end
       it "update_hardware: update_hardware by id" do
         sample_id = @hardwares.sample["id"]
-        new_name = [Faker::Dune.planet, Faker::ProgrammingLanguage.name].join("-")
+        new_name = [Faker::Device.manufacturer, Faker::Device.platform].join("-")
         payload = {
           hardware: {
             name: new_name,
-            tag: Faker::Dune.saying,
+            tag: Faker::Books::Dune.saying,
             asset_id: Faker::Space.moon
           }
         }

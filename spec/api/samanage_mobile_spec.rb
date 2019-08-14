@@ -58,7 +58,10 @@ describe Samanage::Api do
       end
       it "find_mobile: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_mobile(id: sample_id) }.to raise_error(Samanage::NotFound)  # id should match found mobile
+        # id should match found mobile
+        expect {
+          @samanage.find_mobile(id: sample_id)
+        }.to raise_error(Samanage::NotFound)
       end
       it "update_mobile: update_mobile by id" do
         sample_id = @mobiles.sample["id"]

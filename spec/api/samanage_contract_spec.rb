@@ -45,7 +45,9 @@ describe Samanage::Api do
             manufacturer_name: contract_name,
           }
         }
-        expect { @samanage.create_contract(payload: json) }.to raise_error(Samanage::InvalidRequest)
+        expect {
+          @samanage.create_contract(payload: json)
+        }.to raise_error(Samanage::InvalidRequest)
       end
       it "find_contract: returns a contract card by known id" do
         sample_id = @contracts.sample["id"]
@@ -58,7 +60,9 @@ describe Samanage::Api do
       end
       it "find_contract: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_contract(id: sample_id) }.to raise_error(Samanage::NotFound)  # id should match found contract
+        expect {
+          @samanage.find_contract(id: sample_id)
+        }.to raise_error(Samanage::NotFound)  # id should match found contract
       end
       it "update_contract: update_contract by id" do
         sample_id = @contracts.sample["id"]

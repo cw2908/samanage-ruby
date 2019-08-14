@@ -15,7 +15,6 @@ module Samanage
       1.upto(total_pages) do |page|
         options[:page] = page
 
-        path = "users.json?"
         puts "Collecting Users page: #{page}/#{total_pages}" if options[:verbose]
         path = "users.json?"
         self.execute(path: path, options: options)[:data].each do |user|
@@ -50,10 +49,13 @@ module Samanage
     # Returns nil if no matching group_id
     def find_user_group_id_by_email(email:)
       user = self.check_user(value: email)
-      group_ids = user[:data].select { |u| u["email"].to_s.downcase == email.to_s.downcase }.first.to_h["group_ids"].to_a
+      group_ids = user[:data]
+        .select { |u| u["email"].to_s.downcase == email.to_s.downcase }
+        .first.to_h["group_ids"].to_a
       group_ids.each do |group_id|
         group = self.find_group(id: group_id)
-        if group[:data]["is_user"] && email.to_s.downcase == group[:data]["email"].to_s.downcase
+        group_email = group[:data]["email"].to_s.downcase
+        if group[:data]["is_user"] && email.to_s.downcase == group_email
           return group_id
         end
       end

@@ -14,16 +14,15 @@ module Samanage
     def collect_incidents(options: {})
       incidents = []
       total_pages = get_incidents(options: options.except(:audit_archives, :audit_archive, :layout))[:total_pages]
-      puts "Requesting Incidents with Audit Archives (this may take a while)" if options[:audit_archives] && options[:verbose]
+      message = "Requesting Incidents with Audit Archives (this may take a while)"
+      puts message if options[:audit_archives] && options[:verbose]
       1.upto(total_pages) do |page|
         puts "Collecting Incidents page: #{page}/#{total_pages}" if options[:verbose]
         options[:page] = page
         if options[:audit_archives]
-          params = URI.encode_www_form(options.except(:audit_archives, :audit_archive, :layout)) # layout not needed as audit only on individual record
           paginated_path = "incidents.json?"
           paginated_incidents = execute(path: paginated_path, options: options)[:data]
           paginated_incidents.map do |incident|
-            params = set_params(options: options.except(:audit_archives, :audit_archive, :layout))
             archive_uri = "incidents/#{incident['id']}.json?layout=long&audit_archive=true"
             incident_with_archive = execute(path: archive_uri)[:data]
             yield incident_with_archive if block_given?

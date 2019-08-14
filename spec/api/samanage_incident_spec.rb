@@ -26,27 +26,33 @@ describe Samanage::Api do
         expect(@incidents.size).to eq(incident_count)
       end
       it "create_incident(payload: json): creates a incident" do
-        users_email = @samanage.collect_users.sample["email"]
-        incident_name = [Faker::StarWars.specie, Faker::StarWars.planet, Faker::StarWars.droid].shuffle.join(" ")
-        json = {
-          incident: {
-            requester: { email: users_email },
-            name: incident_name,
-            description: Faker::StarWars.quote
+        3.times {
+          users_email = @samanage.collect_users.sample["email"]
+          incident_name = [
+            Faker::Movies::StarWars.specie,
+            Faker::Movies::StarWars.planet,
+            Faker::Movies::StarWars.droid
+          ].shuffle.join(" ")
+          json = {
+            incident: {
+              requester: { email: users_email },
+              name: incident_name,
+              description: Faker::Movies::StarWars.quote
+            }
           }
-        }
-        incident_create = @samanage.create_incident(payload: json)
+          incident_create = @samanage.create_incident(payload: json)
 
-        expect(incident_create[:data]["id"]).to be_an(Integer)
-        expect(incident_create[:data]["name"]).to eq(incident_name)
-        expect(incident_create[:code]).to eq(200).or(201)
+          expect(incident_create[:data]["id"]).to be_an(Integer)
+          expect(incident_create[:data]["name"]).to eq(incident_name)
+          expect(incident_create[:code]).to eq(200).or(201)
+        }
       end
       it "create_incident: fails if no name/title" do
         users_email = @users.sample["email"]
         json = {
           incident: {
             requester: { email: users_email },
-            description: Faker::StarWars.quote
+            description: Faker::Movies::StarWars.quote
           }
         }
         expect { @samanage.create_incident(payload: json) }.to raise_error(Samanage::InvalidRequest)
@@ -71,12 +77,15 @@ describe Samanage::Api do
       end
       it "find_incident: returns nothing for an invalid id" do
         sample_id = (0..10).entries.sample
-        expect { @samanage.find_incident(id: sample_id) }.to raise_error(Samanage::NotFound) # id should match found incident
+        # id should match found incident
+        expect {
+          @samanage.find_incident(id: sample_id)
+        }.to raise_error(Samanage::NotFound)
       end
       it "update_incident: update_incident by id" do
         sample_incident = @incidents.reject { |i| %w[Closed Resolved].include? i["state"] }.sample
         sample_id = sample_incident["id"]
-        description = [Faker::String.random, Faker::Seinfeld.quote, Faker::Lorem.paragraph].sample
+        description = [Faker::String.random, Faker::TvShows::Seinfeld.quote, Faker::Lorem.paragraph].sample
         incident_json = {
           incident: {
             description: description
@@ -110,25 +119,34 @@ describe Samanage::Api do
       it "Sends an email if add_callbacks=true in params" do
         sample_id = @samanage.get_incidents[:data].sample["id"]
         audits_req = @samanage.find_incident(id: sample_id, options: { layout: "long" })
-
-        initial_email_audits = audits_req.dig(:data, "audits").select { |audit| audit["message"].match(/was sent./) }.count
+        user_email = @users.find { |u| u.dig("role", "name") == "Administrator" }.dig("email")
+        initial_email_audits = audits_req.dig(:data, "audits")
+          .select { |audit| audit["message"].match(/was sent./) }
+          .count
         incident_json = {
           incident: {
             state: "New",
-            due_at: Date.new(2019, rand(1..11), rand(1..27)), # need to configure email notifications for due date change
-            assignee: { email: @users.find { |u| u.dig("role", "name") == "Administrator" }.dig("email") }
+            # Must to configure email notifications for due date change
+            due_at: Date.new(2019, rand(1..11), rand(1..27)),
+            assignee: { email: user_email }
           }
         }
 
         @samanage.update_incident(payload: incident_json, id: sample_id, options: { add_callbacks: true })
         sleep 5 # Wait for email to send
         final_audits_req = @samanage.find_incident(id: sample_id, options: { layout: "long" })
-        final_email_audits = final_audits_req.dig(:data, "audits").select { |audit| audit["message"].match(/was sent./) }.count
+        final_email_audits = final_audits_req.dig(:data, "audits")
+          .select { |audit| audit["message"].match(/was sent./) }
+          .count
         expect(initial_email_audits).to be < final_email_audits
       end
       it "Finds incident origin in v2.0 layout=long header" do
         sample_id = @samanage.get_incidents[:data].sample["id"]
-        origin_req = @samanage.execute(path: "incidents/#{sample_id}.json", verbose: true, headers: { "Accept" => "application/vnd.samanage.v2.0+json?layout=long" })
+        origin_req = @samanage.execute(
+          path: "incidents/#{sample_id}.json",
+          verbose: true,
+          headers: { "Accept" => "application/vnd.samanage.v2.0+json?layout=long" }
+        )
         expect(origin_req[:data]).to have_key("origin")
       end
     end
