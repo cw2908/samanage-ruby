@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 module Samanage
   class Api
-
     # Default get releases path
     def get_releases(path: PATHS[:release], options: {})
-      
-      path = 'releases.json?'
+      path = "releases.json?"
       self.execute(path: path, options: options)
     end
 
@@ -15,7 +15,7 @@ module Samanage
       releases = []
       1.upto(total_pages) do |page|
         options[:page] = page
-        
+
         puts "Collecting Other Assets page: #{page}/#{total_pages}" if options[:verbose]
         path = "releases.json?"
         self.execute(path: path, options: options)[:data].each do |release|
@@ -30,28 +30,28 @@ module Samanage
 
 
     # Create an release given json
-    def create_release(payload: , options: {})
-      self.execute(path: PATHS[:release], http_method: 'post', payload: payload)
+    def create_release(payload:, options: {})
+      self.execute(path: PATHS[:release], http_method: "post", payload: payload)
     end
 
 
     # Find release by id
-    def find_release(id: , options: {})
+    def find_release(id:, options: {})
       path = "releases/#{id}.json"
       self.execute(path: path, options: {})
     end
 
-     # Update release given json and id
-    def update_release(payload: , id: , options: {})
+    # Update release given json and id
+    def update_release(payload:, id:, options: {})
       path = "releases/#{id}.json"
-      self.execute(path: path, http_method: 'put', payload: payload)
+      self.execute(path: path, http_method: "put", payload: payload)
     end
 
-    def delete_release(id: )
-      self.execute(path: "releases/#{id}.json", http_method: 'delete')
+    def delete_release(id:)
+      self.execute(path: "releases/#{id}.json", http_method: "delete")
     end
 
 
-  alias_method :releases, :collect_releases
+    alias_method :releases, :collect_releases
   end
 end

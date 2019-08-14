@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module Samanage
   class Api
     # Get custom forms path
     def get_custom_forms(path: PATHS[:custom_forms], options: {})
-      
       self.execute(path: path)
     end
 
@@ -12,7 +13,7 @@ module Samanage
       total_pages = self.get_custom_forms(options: options)[:total_pages]
       1.upto(total_pages) do |page|
         options[:page] = page
-        
+
         puts "Collecting Custom Forms page: #{page}/#{total_pages}" if options[:verbose]
         path = "custom_forms.json?"
         self.execute(path: path, options: options)[:data].each do |custom_form|
@@ -28,13 +29,13 @@ module Samanage
     # Set forms by type and map fields
     def organize_forms
       custom_forms = self.collect_custom_forms
-      custom_forms.map{|form| form.delete_if{|k, v| v.nil?}}
-      custom_forms.map{|form| form['custom_form_fields'].map{|fields| fields.delete_if{|k, v| v == false}}}
-      custom_forms.map{|form| form['custom_form_fields'].map{|fields| fields['custom_field'].delete_if{|k, v| !v}}}
-      custom_forms.group_by{|k|
-        k['module']}.each_pair{|forms_name, forms|
-          forms.each{|form|
-            form['custom_form_fields'].group_by{|f| f['name'] }
+      custom_forms.map { |form| form.delete_if { |k, v| v.nil? } }
+      custom_forms.map { |form| form["custom_form_fields"].map { |fields| fields.delete_if { |k, v| v == false } } }
+      custom_forms.map { |form| form["custom_form_fields"].map { |fields| fields["custom_field"].delete_if { |k, v| !v } } }
+      custom_forms.group_by { |k|
+        k["module"]}.each_pair { |forms_name, forms|
+          forms.each { |form|
+            form["custom_form_fields"].group_by { |f| f["name"] }
           }
         }
     end

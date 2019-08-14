@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -15,10 +17,10 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
-guard :rspec, cmd: 'bundle exec rspec', all_on_start: true do
+guard :rspec, cmd: "bundle exec rspec", all_on_start: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/samanage_#{m[1]}_spec.rb" }
   watch(%r{^lib/api/(.+)\.rb$})     { |m| "spec/lib/api/samanage_#{m[1]}_spec.rb" }
   watch(%r{^lib/(.+)\.rb$})
-  watch('spec/spec_helper.rb')  { "spec" }
+  watch("spec/spec_helper.rb")  { "spec" }
 end

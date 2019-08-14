@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Samanage
   class Error < StandardError
     attr_accessor :status_code, :response, :error
-    
+
     def initialize(error: nil, response: {}, options: {})
       self.error = error
       if response.class == Hash
@@ -12,7 +14,7 @@ module Samanage
         self.response = response
       end
       puts "[Error] #{self.status_code}: #{self.response}"
-      return
+      nil
     end
   end
 
@@ -24,5 +26,4 @@ module Samanage
   class InvalidRequest < SamanageError; end
 
   class NotFound < SamanageError; end
-
 end

@@ -1,64 +1,66 @@
+# frozen_string_literal: true
+
 module Samanage
   class UrlBuilder
     attr_accessor :url
-    @url = ''
+    @url = ""
 
-    def initialize(path: nil,options: nil)
-      self.url =  map_path(path: path, options: options)
-      return url
+    def initialize(path: nil, options: nil)
+      self.url = map_path(path: path, options: options)
+      url
     end
 
 
     def map_path(path: nil, options: nil)
-      url = String.new
-      parameters = String.new
+      url = ""
+      parameters = ""
       case path
       when /user/
-        url += 'users'
+        url += "users"
       when /hardware/
-        url += 'hardwares'
+        url += "hardwares"
       when /other_asset/
-        url += 'other_assets'
+        url += "other_assets"
       when /incident/
-        url += 'incidents'
+        url += "incidents"
       when /change/
-        url += 'changes'
+        url += "changes"
       when /custom_field/
-        url += 'custom_fields'
+        url += "custom_fields"
       when /custom_form/
-        url += 'custom_forms'
+        url += "custom_forms"
       when /mobile/
-        url += 'mobiles'
+        url += "mobiles"
       when /site/
-        url += 'sites'
+        url += "sites"
       when /department/
-        url += 'departments'
+        url += "departments"
       when /solution/
-        url += 'solutions'
+        url += "solutions"
       when /contract/
-        url += 'contracts'
+        url += "contracts"
       when /problem/
-        url += 'problems'
+        url += "problems"
       when /group/
-        url += 'groups'
+        url += "groups"
       end
 
-      if path.match(/(\d)+/)
+      if path.match?(/(\d)+/)
         url += "/" + path.match(/(\d)+/)[0] + ".json"
         return url
       end
 
       options.each_pair do |field, value|
-        if field.to_s == 'id' && value.to_s.match(/(\d)+/)
+        if field.to_s == "id" && value.to_s.match(/(\d)+/)
           url += "/#{value}.json"
           # Return. Filters not valid on an id
           return url
         end
         sub_param = "?#{field}=#{value}"
-        parameters += sub_param + '&'
+        parameters += sub_param + "&"
       end
       url += ".json" + parameters
-      return url
+      url
     end
   end
 end
