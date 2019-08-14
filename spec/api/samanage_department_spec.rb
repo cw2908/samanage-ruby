@@ -22,7 +22,10 @@ describe Samanage::Api do
       expect(@departments.size).to eq(department_count)
     end
     it "creates a department" do
-      department_name = Faker::Book.title
+      department_name = [
+        Faker::Internet.username,
+        Faker::Internet.domain_word
+      ].shuffle.join(' ')
       department_description = Faker::Book.author
       payload = {
         department: {
