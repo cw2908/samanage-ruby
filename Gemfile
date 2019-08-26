@@ -2,18 +2,22 @@
 
 source "https://rubygems.org"
 
-gem "rspec"
 gem "httparty", "0.16.4"
 gem "ffi", "1.9.24"
 
 group :development do
-  gem "guard-rspec", require: false
   gem "rubocop", require: false
   gem "rubocop-performance"
 end
 
 
-group :test do
+group :development, :test do
+  gem "rspec"
   gem "guard-rspec", require: false
+  gem "guard"
+  gem "dotenv"
+end
+
+group :test do
   gem "faker"
 end

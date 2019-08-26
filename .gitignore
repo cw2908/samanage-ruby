@@ -12,3 +12,5 @@ doc
 /Change/*/*
 /Problem/*/*
 .vscode
+# Ignore application configuration
+.env

@@ -78,6 +78,7 @@ module Samanage
       options = options.except(:verbose)
       full_path = base_url + path
       retries = 0
+      response = {}
       begin
         case http_method.to_s.downcase
         when "get"
@@ -114,6 +115,7 @@ module Samanage
           response = e.class
           raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
         end
+
       end
 
       response = {}
@@ -145,6 +147,10 @@ module Samanage
         error = response[:response]
         raise Samanage::NotFound.new(error: error, response: response, options: options)
       when 422
+        response[:data] = api_call.body
+        error = response[:response]
+        raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
+      when 429
         response[:data] = api_call.body
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
