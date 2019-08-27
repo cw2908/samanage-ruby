@@ -85,7 +85,6 @@ module Samanage
       begin
         case http_method.to_s.downcase
         when "get"
-          puts "Getting: #{full_path} #{options}"
           api_call = self.class.get(full_path, headers: headers, query: options)
         when "post"
           api_call = self.class.post(full_path, multipart: multipart,  body: payload, headers: headers, query: options)
