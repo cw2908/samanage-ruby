@@ -12,7 +12,10 @@ module Samanage
       category: "categories.json",
       change: "changes.json",
       contract: "contracts.json",
+      configuration_item: "configuration_items.json",
+      custom_field: "custom_fields.json",
       custom_fields: "custom_fields.json",
+      custom_form: "custom_forms.json",
       custom_forms: "custom_forms.json",
       department: "departments.json",
       group: "groups.json",
@@ -82,6 +85,7 @@ module Samanage
       begin
         case http_method.to_s.downcase
         when "get"
+          puts "Getting: #{full_path} #{options}"
           api_call = self.class.get(full_path, headers: headers, query: options)
         when "post"
           api_call = self.class.post(full_path, multipart: multipart,  body: payload, headers: headers, query: options)
@@ -169,8 +173,10 @@ module Samanage
     # Return all admins in the account
     def list_admins
       admin_role_id = execute(path: "roles.json")[:data].select { |role| role["name"] == "Administrator" }.first["id"]
+      admin_path = "users.json?role=#{admin_role_id}"
       admins.push(
-        execute(path: "users.json?role=#{admin_role_id}")[:data].map { |u| u["email"] }
+        execute(path: admin_path)[:data]
+          .map { |u| u["email"] }
       ).flatten
     end
   end
