@@ -67,11 +67,6 @@ describe Samanage::Api do
         expect(layout_long_configuration_item[:data].keys.size).to be > (layout_regular_configuration_item.keys.size)
         expect(layout_long_configuration_item[:data].keys - layout_regular_configuration_item[:data].keys).to_not be([])
       end
-      it "find_configuration_item: returns nothing for an invalid id" do
-        sample_id = (0..10).entries.sample
-        # id should match found configuration_item
-        expect { @samanage.find_configuration_item(id: sample_id) }.to raise_error(Samanage::NotFound)
-      end
       it "update_configuration_item: update_configuration_item by id" do
         sample_configuration_item = @configuration_items.reject { |i| ["Closed", "Resolved"].include? i["state"] }.sample
         sample_id = sample_configuration_item["id"]

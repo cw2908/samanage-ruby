@@ -171,7 +171,9 @@ module Samanage
 
     # Return all admins in the account
     def list_admins
-      admin_role_id = execute(path: "roles.json")[:data].select { |role| role["name"] == "Administrator" }.first["id"]
+      admin_role_id = execute(path: "roles.json")[:data]
+        .find { |role| role["name"] == "Administrator" }
+        .dig("id")
       admin_path = "users.json?role=#{admin_role_id}"
       admins.push(
         execute(path: admin_path)[:data]
