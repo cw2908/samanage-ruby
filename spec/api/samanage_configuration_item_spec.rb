@@ -55,7 +55,6 @@ describe Samanage::Api do
         configuration_item = @samanage.find_configuration_item(id: sample_id)
         expect(configuration_item[:data]["id"]).to eq(sample_id)  # id should match found configuration_item
         expect(configuration_item[:data]).to have_key("name")
-        expect(configuration_item[:data]).to have_key("requester")
         expect(configuration_item[:data]).to have_key("id")
       end
       it "find_configuration_item: returns more keys with layout=long" do
