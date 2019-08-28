@@ -25,7 +25,7 @@ describe Samanage::Api do
       department_name = [
         Faker::Internet.username,
         Faker::Internet.domain_word
-      ].shuffle.join(' ')
+      ].shuffle.join(" ")
       department_description = Faker::Book.author
       payload = {
         department: {

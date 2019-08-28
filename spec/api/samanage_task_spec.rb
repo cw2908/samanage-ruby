@@ -2,6 +2,8 @@
 
 require "samanage"
 require "faker"
+require "dotenv"
+Dotenv.load
 describe Samanage::Api do
   context "Task" do
     before(:all) do
@@ -54,8 +56,6 @@ describe Samanage::Api do
     end
     it "deletes a valid task" do
       sample_task = @tasks.sample
-      pp sample_task
-      puts "sample_task: #{sample_task.inspect}"
       sample_task_id = sample_task["id"]
       incident_id = sample_task.dig("parent", "id")
       task_delete = @samanage.delete_task(
@@ -63,6 +63,15 @@ describe Samanage::Api do
         task_id: sample_task_id
       )
       expect(task_delete[:code]).to eq(200).or(201)
+    end
+    it "collects all tasks from 90 days in demo" do
+      @samanage = Samanage::Api.new(token: ENV["DEMOTOKEN"])
+      opts = { verbose: true, 'created[]': 90 }
+      task_count = @samanage.get_tasks(options: opts)[:total_count]
+      @tasks = @samanage.tasks(options: opts)
+      expect(task_count).to be_a(Integer)
+      expect(task_count).to be > 0
+      expect(task_count).to eq(@tasks.count)
     end
   end
 end

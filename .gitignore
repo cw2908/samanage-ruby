@@ -12,4 +12,9 @@ doc
 /Change/*/*
 /Problem/*/*
 .vscode
+<<<<<<< HEAD
 .env
+=======
+# Ignore application configuration
+.env
+>>>>>>> configuration-items

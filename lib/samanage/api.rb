@@ -12,7 +12,10 @@ module Samanage
       category: "categories.json",
       change: "changes.json",
       contract: "contracts.json",
+      configuration_item: "configuration_items.json",
+      custom_field: "custom_fields.json",
       custom_fields: "custom_fields.json",
+      custom_form: "custom_forms.json",
       custom_forms: "custom_forms.json",
       department: "departments.json",
       group: "groups.json",
@@ -114,6 +117,7 @@ module Samanage
           response = e.class
           raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
         end
+
       end
 
       response = {}
@@ -148,6 +152,10 @@ module Samanage
         response[:data] = api_call.body
         error = response[:response]
         raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
+      when 429
+        response[:data] = api_call.body
+        error = response[:response]
+        raise Samanage::InvalidRequest.new(error: error, response: response, options: options)
       else
         response[:data] = api_call.body
         error = response[:response]
@@ -162,9 +170,13 @@ module Samanage
 
     # Return all admins in the account
     def list_admins
-      admin_role_id = execute(path: "roles.json")[:data].select { |role| role["name"] == "Administrator" }.first["id"]
+      admin_role_id = execute(path: "roles.json")[:data]
+        .find { |role| role["name"] == "Administrator" }
+        .dig("id")
+      admin_path = "users.json?role=#{admin_role_id}"
       admins.push(
-        execute(path: "users.json?role=#{admin_role_id}")[:data].map { |u| u["email"] }
+        execute(path: admin_path)[:data]
+          .map { |u| u["email"] }
       ).flatten
     end
   end

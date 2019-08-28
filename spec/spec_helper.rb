@@ -10,3 +10,5 @@ $LOAD_PATH.uniq!
 
 require "samanage"
 require "faker"
+require "dotenv"
+Dotenv.load
