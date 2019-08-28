@@ -56,8 +56,6 @@ describe Samanage::Api do
     end
     it "deletes a valid task" do
       sample_task = @tasks.sample
-      pp sample_task
-      puts "sample_task: #{sample_task.inspect}"
       sample_task_id = sample_task["id"]
       incident_id = sample_task.dig("parent", "id")
       task_delete = @samanage.delete_task(

@@ -81,7 +81,6 @@ module Samanage
       options = options.except(:verbose)
       full_path = base_url + path
       retries = 0
-      response = {}
       begin
         case http_method.to_s.downcase
         when "get"

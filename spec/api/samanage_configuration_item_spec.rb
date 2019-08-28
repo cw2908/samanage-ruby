@@ -67,7 +67,9 @@ describe Samanage::Api do
         expect(layout_long_configuration_item[:data].keys - layout_regular_configuration_item[:data].keys).to_not be([])
       end
       it "update_configuration_item: update_configuration_item by id" do
-        sample_configuration_item = @configuration_items.reject { |i| ["Closed", "Resolved"].include? i["state"] }.sample
+        sample_configuration_item = @configuration_items
+          .reject { |i| ["Closed", "Resolved"].include? i["state"] }
+          .sample
         sample_id = sample_configuration_item["id"]
         description = (0...500).map { ("a".."z").to_a[rand(26)] }.join
         configuration_item_json = {
