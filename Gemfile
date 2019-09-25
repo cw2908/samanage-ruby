@@ -16,6 +16,8 @@ group :development, :test do
   gem "guard-rspec", require: false
   gem "guard"
   gem "dotenv"
+  gem "pry-byebug"
+  gem "byebug"
 end
 
 group :test do

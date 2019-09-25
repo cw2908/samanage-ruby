@@ -1,3 +1,9 @@
+### 3.0
+
+### 2.1.22
+
+- Added policies
+
 ### 2.1.20
 
 - Added tasks

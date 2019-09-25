@@ -130,7 +130,7 @@ module Samanage
       response[:total_count] = api_call.headers["X-Total-Count"].to_i
 
       # Error cases
-      case response[:code]
+      case response[:code].to_i
       when 200..201
         begin
           response[:data] = JSON.parse(api_call.body)
