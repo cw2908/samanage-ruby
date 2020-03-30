@@ -20,5 +20,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "httparty", ["0.16.4"]
   s.add_development_dependency "parallel", ["1.17.0"]
   s.add_runtime_dependency "parallel", ["1.17.0"]
-  s.cert_chain  = ["certs/cwalls2908.pem"]
 end
