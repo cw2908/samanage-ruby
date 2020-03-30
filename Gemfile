@@ -21,3 +21,5 @@ end
 group :test do
   gem "faker"
 end
+
+gem "parallel", "~> 1.17"
