@@ -36,7 +36,7 @@ module Samanage
       group_api = self.execute(path: path, options: options)
       # Group names are case sensitive
       if !group_api[:data].empty? && group == group_api[:data].first["name"]
-        return group_api[:data].first["id"]
+        group_api[:data].first["id"]
       end
     end
 

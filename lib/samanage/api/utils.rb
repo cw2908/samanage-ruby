@@ -21,7 +21,7 @@ module Samanage
       begin
         self.find_group(id: group_id).to_h.dig(:data, "name")
       rescue => e
-        return "[#{e.class}]: #{e.inspect} Unable to find user for group id #{group_id}"
+        "[#{e.class}]: #{e.inspect} Unable to find user for group id #{group_id}"
       end
     end
   end
