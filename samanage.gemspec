@@ -21,5 +21,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "parallel", ["1.17.0"]
   s.add_runtime_dependency "parallel", ["1.17.0"]
   s.cert_chain  = ["certs/cwalls2908.pem"]
-  s.signing_key = File.expand_path("~/.ssh/cwalls2908-private_key.pem") if /gem\z/.match?($0)
 end
