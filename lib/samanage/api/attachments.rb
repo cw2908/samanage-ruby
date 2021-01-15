@@ -9,7 +9,8 @@ module Samanage
       filename ||= attachment["filename"]
       url = attachment["url"]
 
-      file_path = path || File.join(Dir.pwd, attachable_type, attachable_id)
+      default_path = File.join(Dir.pwd, attachable_type, attachable_id)
+      file_path = path || default_path
       FileUtils.mkpath(file_path) unless File.directory?(file_path)
 
       exact_path = File.join(file_path, filename)
