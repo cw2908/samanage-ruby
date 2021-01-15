@@ -2,6 +2,7 @@
 
 module Samanage
   class Api
+    # This takes the attachment as seen in the array found in [id].json?layout=long requests.
     def download_attachment(attachment: {}, filename: nil, path: nil)
       attachable_type = attachment["attachable_type"]
       attachable_id = attachment["attachable_id"].to_s
