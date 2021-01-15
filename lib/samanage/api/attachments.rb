@@ -19,6 +19,7 @@ module Samanage
       downloaded_attachment
     end
 
+    # send http request as multipart form-data. file[attachment] is file object
     def create_attachment(filepath:, attachable_type:, attachable_id:)
       unless File.exist?(filepath)
         puts "Cannot find filepath: '#{filepath.inspect}'"
