@@ -17,7 +17,6 @@ module Samanage
       downloaded_attachment = File.open(exact_path, "wb+") do |file|
         file << URI.parse(url).read
       end
-      downloaded_attachment
     end
 
     # send http request as multipart form-data. file[attachment] is file object
@@ -26,7 +25,7 @@ module Samanage
         puts "Cannot find filepath: '#{filepath.inspect}'"
         return
       end
-      req = execute(
+      execute(
         path: "attachments.json",
         http_method: "post",
         multipart: true,
@@ -40,7 +39,6 @@ module Samanage
           "X-Samanage-Authorization" => "Bearer " + token
         }
       )
-      req
     end
   end
 end
