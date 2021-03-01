@@ -14,3 +14,5 @@ blocks:
             - sem-version ruby 2.6.0
             - bundle install --deployment --path vendor/bundle
             - bundle exec rspec
+      secrets:
+        - name: Token
