@@ -16,3 +16,9 @@ blocks:
             - bundle exec rspec
       secrets:
         - name: Token
+  - name: 'Block #2'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - bundle rspec
