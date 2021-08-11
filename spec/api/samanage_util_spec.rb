@@ -11,6 +11,7 @@ describe Samanage::Api do
         @incidents = @samanage.incidents
       end
       it "sends an activation email" do
+        @users ||= @samanage.get_users[:data]
         valid_email = @users.select { |u| !u["disabled"] && !u["last_login"] }.sample["email"]
         send_email = @samanage.send_activation_email(email: valid_email)
         expect(send_email[:code]).to eq(200)

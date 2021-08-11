@@ -24,32 +24,35 @@ describe Samanage::Api do
         expect(@hardwares.size).to eq(hardware_count)
       end
       it "create_hardware(payload: payload): creates a hardware" do
-        hardware_name = Faker::Science.scientist
-        serial_number = Faker::Device.serial
-        payload = {
-          hardware: {
-            name: hardware_name,
-            bio: { ssn: serial_number },
+        3.times do
+          hardware_name = Faker::Science.scientist
+          serial_number = [Faker::Device.serial,Faker::Device.serial,Faker::Device.serial].join('-')
+          payload = {
+            hardware: {
+              name: hardware_name,
+              bio: { ssn: serial_number },
+            }
           }
-        }
-        hardware_create = @samanage.create_hardware(payload: payload)
+          hardware_create = @samanage.create_hardware(payload: payload)
 
-        expect(hardware_create[:data]["id"]).to be_an(Integer)
-        expect(hardware_create[:data]["name"]).to eq(hardware_name)
-        expect(hardware_create[:code]).to eq(200).or(201)
+          expect(hardware_create[:data]["id"]).to be_an(Integer)
+          expect(hardware_create[:data]["name"]).to eq(hardware_name)
+          expect(hardware_create[:code]).to eq(200).or(201)
+        end
       end
       it "create_hardware: fails if no serial" do
-        hardware_name = "samanage-ruby-#{(rand * 10**10).ceil}"
-        payload = {
-          hardware: {
-            name: hardware_name,
+          hardware_name = "samanage-ruby-#{(rand * 10**10).ceil}"
+          payload = {
+            hardware: {
+              name: hardware_name,
+            }
           }
-        }
-        expect {
-          @samanage.create_hardware(payload: payload)
-        }.to raise_error(Samanage::InvalidRequest)
+          expect {
+            @samanage.create_hardware(payload: payload)
+          }.to raise_error(Samanage::InvalidRequest)
       end
       it "find_hardware: returns a hardware card by known id" do
+        @hardwares = @samanage.get_hardwares[:data]
         sample_id = @hardwares.sample["id"]
         hardware = @samanage.find_hardware(id: sample_id)
 
@@ -66,16 +69,20 @@ describe Samanage::Api do
       end
 
       it "finds_hardwares_by_serial" do
-        sample_hardware = @hardwares.sample
+        sample_hardware = @samanage.get_hardwares[:data].sample
         sample_serial_number = sample_hardware["serial_number"]
+        puts "sample_serial_number: #{sample_serial_number}"
         found_assets = @samanage.find_hardwares_by_serial(serial_number: sample_serial_number)
         found_sample = found_assets[:data].sample
+        puts "found_sample #{found_sample.class}"
+        puts "found_sample #{found_sample.count}"
         expect(sample_serial_number).not_to be(nil)
         expect(found_sample["serial_number"]).not_to be(nil)
         expect(found_sample["serial_number"]).to eq(sample_serial_number)
         # expect(sample_id).to eq(found_assets[:data].first.dig('id'))
       end
       it "update_hardware: update_hardware by id" do
+        @hardwares = @samanage.get_hardwares[:data]
         sample_id = @hardwares.sample["id"]
         new_name = [Faker::Device.manufacturer, Faker::Device.platform].join("-")
         payload = {
@@ -90,6 +97,7 @@ describe Samanage::Api do
         expect(hardware_update[:code]).to eq(200).or(201)
       end
       it "deletes a valid hardware" do
+        @hardwares = @samanage.get_hardwares[:data]
         sample_hardware_id = @hardwares.sample["id"]
         hardware_delete = @samanage.delete_hardware(id: sample_hardware_id)
         expect(hardware_delete[:code]).to eq(200).or(201)
