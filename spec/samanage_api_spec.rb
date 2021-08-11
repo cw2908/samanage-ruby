@@ -43,7 +43,7 @@ describe Samanage do
         api_controller = Samanage::Api.new(token: TOKEN)
         admins = api_controller.list_admins
         admin_email = admins.sample.gsub("+", "%2B")
-        samanage_admin = api_controller.execute(path: "users.json", options: {email: admin_email})
+        samanage_admin = api_controller.execute(path: "users.json", options: {'email[]': admin_email})
         expect(samanage_admin[:data].first["role"]["name"]).to eq("Administrator")
       end
       
@@ -64,7 +64,7 @@ describe Samanage do
       
       it 'Paginates Configuration with options' do 
         api_controller = Samanage::Api.new(token: TOKEN)
-        _opts = {'updated[]': 7}
+        _opts = {'updated[]': 7, verbose: true}
         incident_count = api_controller.configuration_items(options: _opts).count
         paginated_incident_count = api_controller._paginator(path: 'configuration_items.json', options: _opts).count
         expect(incident_count).to eq(paginated_incident_count)

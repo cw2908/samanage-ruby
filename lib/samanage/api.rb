@@ -180,10 +180,11 @@ request_path: complete_url)
       puts "Checking #{path.split('.json').first} page #{page} options: #{options}"
       sub_path = path.split('.json').first
       puts "Collecting #{sub_path} page: #{page}/#{total_pages} options: #{options}" if options[:verbose]
-      _req = execute(path: path, options: options.merge(page: page))
+      _req = execute(path: path, options: options.merge!(page: page))
       total_pages = _req[:total_pages].to_i
       collection += _req[:data]
-      if _req[:data].count < _req.dig(:headers,"x-per-page")[0].to_i
+      
+      if page == _req[:total_pages].to_i
         return collection
       else
         self._paginator(
