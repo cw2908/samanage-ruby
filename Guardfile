@@ -17,7 +17,18 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
-guard :rspec, cmd: "bundle exec rspec", all_on_start: true do
+
+rspec_options = {
+  cmd: "bundle exec rspec",
+  all_on_start: true,
+  run_all: {
+    cmd: "bundle exec parallel_rspec -o '",
+    cmd_additional_args: "--format RspecJunitFormatter --out /tmp/junit.xml --format documentation'",
+  },
+}
+
+
+guard :rspec, rspec_options do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/samanage_#{m[1]}_spec.rb" }
   watch(%r{^lib/api/(.+)\.rb$})     { |m| "spec/lib/api/samanage_#{m[1]}_spec.rb" }
