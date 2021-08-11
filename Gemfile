@@ -7,8 +7,6 @@ gem "ffi", "1.9.24"
 
 group :development do
   gem "rspec"
-  gem "rubocop", require: false
-  gem "rubocop-performance"
 end
 
 
@@ -23,3 +21,11 @@ group :test do
 end
 
 gem "parallel", "~> 1.17"
+
+gem "rubocop", "~> 1.18"
+gem "rubocop-performance", "~> 1.4"
+gem "rubocop-rails", "~> 2.11"
+
+gem "byebug", "~> 11.1", :group => :development
+
+gem 'parallel_tests', group: %i[development test]
