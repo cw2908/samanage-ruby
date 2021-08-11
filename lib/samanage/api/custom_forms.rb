@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Samanage
   class Api
     # Get custom forms path
@@ -26,28 +25,10 @@ module Samanage
       custom_forms
     end
 
-    # Set forms by type and map fields
-    def organize_forms
-      custom_forms = self.collect_custom_forms
-      custom_forms.map { |form| form.delete_if { |k, v| v.nil? } }
-      custom_forms.map { |form| form["custom_form_fields"].map { |fields| fields.delete_if { |k, v| v == false } } }
-      custom_forms.map { |form|
-        form["custom_form_fields"].map { |fields| fields["custom_field"].delete_if { |k, v| !v } }
-      }
-      custom_forms.group_by { |k|
-        k["module"]}.each_pair { |forms_name, forms|
-          forms.each { |form|
-            form["custom_form_fields"].group_by { |f| f["name"] }
-          }
-        }
-    end
-
     # Get form for a specific object type
-    def form_for(object_type: nil)
-      if self.custom_forms == nil
-        self.custom_forms = self.organize_forms
-      end
-      self.custom_forms[object_type]
+    def form_for(form_name: nil)
+      cf = self.collect_custom_forms
+                .to_a.find { |form| form["name"].match?(/#{form_name}/i)}
     end
   end
 end
