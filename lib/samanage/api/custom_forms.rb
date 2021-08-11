@@ -28,7 +28,7 @@ module Samanage
     # Get form for a specific object type
     def form_for(form_name: nil)
       cf = self.collect_custom_forms
-                .to_a.take { |form| form["name"] == form_name }
+                .to_a.find { |form| form["name"].match?(/#{form_name}/i)}
     end
   end
 end

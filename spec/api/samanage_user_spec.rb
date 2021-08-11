@@ -27,23 +27,25 @@ describe Samanage::Api do
       end
 
       it "create_user(payload: json): creates a user" do
-        user_name = [
-          Faker::TvShows::Simpsons.character,
-          Faker::Movies::StarWars.character,
-          Faker::Name.name
-        ].sample
-        email = Faker::Internet.email(name: user_name, domain: '@samanage.com')
-        json = {
-          user: {
-            name: user_name,
-            email: email
+        3.times do
+          user_name = [
+            Faker::TvShows::Simpsons.character,
+            Faker::Movies::StarWars.character,
+            Faker::Name.name
+          ].shuffle.sample(2)
+          email = Faker::Internet.email(name: user_name, domain: '@samanage.com')
+          json = {
+            user: {
+              name: user_name,
+              email: email
+            }
           }
-        }
-        user_create = @samanage.create_user(payload: json)
-        expect(user_create[:data]["email"]).to eq(email)
-        expect(user_create[:data]["id"]).to be_an(Integer)
-        expect(user_create[:data]["name"]).to eq(user_name)
-        expect(user_create[:code]).to eq(200).or(201)
+          user_create = @samanage.create_user(payload: json)
+          expect(user_create[:data]["email"]).to eq(email)
+          expect(user_create[:data]["id"]).to be_an(Integer)
+          expect(user_create[:data]["name"]).to eq(user_name)
+          expect(user_create[:code]).to eq(200).or(201)
+        end
       end
 
       it "create_user: fails if no email" do
