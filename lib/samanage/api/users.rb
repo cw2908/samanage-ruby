@@ -67,8 +67,10 @@ module Samanage
       if field.to_s.downcase == "email"
         value = value.to_s.gsub("+", "%2B")
       end
-      url = "users.json?#{field}=#{value}"
-      self.execute(path: url)
+      url = "users.json"
+      _opts = {}
+      _opts[field] = value
+      self.execute(path: url, options: _opts)
     end
 
     # Update user by id
