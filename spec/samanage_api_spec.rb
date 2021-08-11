@@ -69,6 +69,13 @@ describe Samanage do
         paginated_incident_count = api_controller._paginator(path: 'configuration_items.json', options: _opts).count
         expect(incident_count).to eq(paginated_incident_count)
       end
+      it 'Paginates Users with options' do 
+        api_controller = Samanage::Api.new(token: TOKEN)
+        _opts = {'updated[]': 7}
+        user_count = api_controller.users(options: _opts).count
+        paginated_user_count = api_controller._paginator(path: 'users.json', options: _opts).count
+        expect(user_count).to eq(paginated_user_count)
+      end
 
       it "sets eu datacenter" do
         api_controller = Samanage::Api.new(token: "token", datacenter: "eu")

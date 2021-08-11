@@ -29,3 +29,4 @@ gem "rubocop-rails", "~> 2.11"
 gem "byebug", "~> 11.1", :group => :development
 
 gem 'parallel_tests', group: %i[development test]
+gem "rspec_junit_formatter", :group => [:test]

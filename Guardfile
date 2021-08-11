@@ -23,7 +23,7 @@ rspec_options = {
   all_on_start: true,
   run_all: {
     cmd: "bundle exec parallel_rspec -o '",
-    cmd_additional_args: "'",
+    cmd_additional_args: "--format RspecJunitFormatter --out /tmp/junit.xml --format documentation'",
   },
 }
 
