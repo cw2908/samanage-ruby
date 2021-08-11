@@ -90,9 +90,8 @@ describe Samanage::Api do
 
         group_ids.each do |group_id|
           group = @samanage.find_group(id: group_id)[:data]
-          puts "Group Data: #{{id: group['id'], name: group['name'], is_user: group['is_user'], email: group['email']}}"
-          if group["is_user"] && sample_user_email == group["email"]
-            found_id ||= group_id
+          if group["is_user"] && sample_user_email.downcase == group["email"].to_s.downcase
+            found_id = group_id
           end
         end
         function_id = @samanage.find_user_group_id_by_email(email: sample_user_email)
