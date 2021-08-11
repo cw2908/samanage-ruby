@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require "samanage"
 require "faker"
 
@@ -10,27 +9,9 @@ describe Samanage::Api do
       @samanage = Samanage::Api.new(token: TOKEN, development_mode: true)
       @users = @samanage.users
     end
+
     describe "API Functions" do
-      it "ensures custom field is updated" do
-        val = Faker::TvShows::Seinfeld.quote
-        field_name = @samanage.custom_forms["user"][0]["custom_form_fields"]
-                              .select { |f| f.dig("custom_field", "field_type") == 1 } # field_type == 1 is text
-                              .sample.dig("custom_field", "name")
-        payload = {
-          user: {
-            custom_fields_values: {
-              custom_fields_value: [
-                { name: field_name, value: val }
-              ]
-            }
-          }
-        }
-        user_id = @users.sample.dig("id")
-        api_call = @samanage.update_user(id: user_id, payload: payload)
-        return_val = api_call.dig(:data, "custom_fields_values")
-          .select { |i| i["name"] == field_name }.first.to_h.dig("value")
-        expect(val).to eq(return_val)
-      end
+
       it "get_users: it returns API call of users" do
         api_call = @samanage.get_users
         expect(api_call).to be_a(Hash)
@@ -38,30 +19,35 @@ describe Samanage::Api do
         expect(api_call).to have_key(:response)
         expect(api_call).to have_key(:code)
       end
+
       it "collect_users: collects array of users" do
         user_count = @samanage.get_users[:total_count]
         expect(@users).to be_an(Array)
         expect(@users.size).to eq(user_count)
       end
+
       it "create_user(payload: json): creates a user" do
-        user_name = [
-          Faker::TvShows::Simpsons.character,
-          Faker::Movies::StarWars.character,
-          Faker::Name.name
-        ].sample
-        email = Faker::Internet.safe_email(name: user_name)
-        json = {
-          user: {
-            name: user_name,
-            email: email
+        3.times do
+          user_name = [
+            Faker::TvShows::Simpsons.character,
+            Faker::Movies::StarWars.character,
+            Faker::Name.name
+          ].shuffle.sample(2)
+          email = Faker::Internet.email(name: user_name, domain: '@samanage.com')
+          json = {
+            user: {
+              name: user_name,
+              email: email
+            }
           }
-        }
-        user_create = @samanage.create_user(payload: json)
-        expect(user_create[:data]["email"]).to eq(email)
-        expect(user_create[:data]["id"]).to be_an(Integer)
-        expect(user_create[:data]["name"]).to eq(user_name)
-        expect(user_create[:code]).to eq(200).or(201)
+          user_create = @samanage.create_user(payload: json)
+          expect(user_create[:data]["email"]).to eq(email)
+          expect(user_create[:data]["id"]).to be_an(Integer)
+          expect(user_create[:data]["name"]).to eq(user_name)
+          expect(user_create[:code]).to eq(200).or(201)
+        end
       end
+
       it "create_user: fails if no email" do
         user_name = Faker::Superhero.name
         json = {
@@ -71,6 +57,7 @@ describe Samanage::Api do
         }
         expect { @samanage.create_user(payload: json) }.to raise_error(Samanage::InvalidRequest)
       end
+
       it "find_user: returns a user card by known id" do
         sample_id = @users.sample["id"]
         user = @samanage.find_user(id: sample_id)

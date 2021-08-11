@@ -40,8 +40,9 @@ module Samanage
 
     # Find hardware given a serial number
     def find_hardwares_by_serial(serial_number:)
-      path = "hardwares.json?serial_number[]=#{serial_number}"
-      self.execute(path: path)
+      path = "hardwares.json"
+      _opts = {'serial_number[]': serial_number}
+      self.execute(path: path, options: _opts)
     end
 
 
