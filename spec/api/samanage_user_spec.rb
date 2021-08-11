@@ -32,14 +32,16 @@ describe Samanage::Api do
             Faker::TvShows::Simpsons.character,
             Faker::Movies::StarWars.character,
             Faker::Name.name
-          ].shuffle.sample(2)
-          email = Faker::Internet.email(name: user_name, domain: '@samanage.com')
+          ].shuffle.sample(2).join(' ')
+          email = Faker::Internet.email(name: user_name, domain: 'samanage.com')
           json = {
             user: {
               name: user_name,
               email: email
             }
           }
+
+          puts "JSON: #{json}"
           user_create = @samanage.create_user(payload: json)
           expect(user_create[:data]["email"]).to eq(email)
           expect(user_create[:data]["id"]).to be_an(Integer)
@@ -87,13 +89,15 @@ describe Samanage::Api do
         found_id = nil
 
         group_ids.each do |group_id|
-          group = @samanage.find_group(id: group_id)
-          if group[:data]["is_user"] && sample_user_email == group[:data]["email"]
+          group = @samanage.find_group(id: group_id)[:data]
+          puts "Group Data: #{{id: group['id'], name: group['name'], is_user: group['is_user'], email: g['email']}}"
+          if group["is_user"] && sample_user_email == group["email"]
             found_id ||= group_id
           end
         end
         function_id = @samanage.find_user_group_id_by_email(email: sample_user_email)
-
+        puts "function_id: #{function_id}"
+        puts "found_id: #{found_id}"
         expect(function_id).to eq(found_id)
       end
 

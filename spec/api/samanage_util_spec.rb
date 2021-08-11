@@ -12,10 +12,10 @@ describe Samanage::Api do
       end
       it "sends an activation email" do
         @users ||= @samanage.get_users[:data]
-        valid_email = @users.select { |u| !u["disabled"] && !u["last_login"] }.sample["email"]
+        valid_email = @users.select { |u| !u["disabled"] }.sample["email"]
         send_email = @samanage.send_activation_email(email: valid_email)
         expect(send_email[:code]).to eq(200)
-      end
+      end 
       it "fails for invalid email" do
         invalid_email = @samanage.users.sample["email"].gsub!("@", "$")
         expect { @samanage.send_activation_email(email: invalid_email) }.to raise_error(Samanage::Error)
