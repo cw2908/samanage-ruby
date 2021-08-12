@@ -83,7 +83,7 @@ describe Samanage::Api do
       end
 
       it "finds group_id for user" do
-        sample_user = @users.select { |u| u["role"]["name"] == "Administrator" }.sample
+        sample_user = @users.select { |u| u["role"]["name"] == "Administrator" && !u['email'].match?('+') }.sample
         sample_user_email = sample_user["email"]
         group_ids = sample_user["group_ids"]
         found_id = nil
