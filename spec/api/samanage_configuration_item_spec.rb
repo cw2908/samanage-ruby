@@ -9,7 +9,7 @@ describe Samanage::Api do
       before(:all) do
         TOKEN ||= ENV["SAMANAGE_TEST_API_TOKEN"]
         @samanage = Samanage::Api.new(token: TOKEN)
-        @configuration_items = @samanage.configuration_items(options: { verbose: true })
+        @configuration_items = @samanage.get_configuration_items(options: { per_page: 25,verbose: true })[:data]
         @users = @samanage.get_users[:data]
       end
       it "get_configuration_items: it returns API call of configuration_items" do
@@ -18,11 +18,6 @@ describe Samanage::Api do
         expect(api_call[:total_count]).to be_an(Integer)
         expect(api_call).to have_key(:response)
         expect(api_call).to have_key(:code)
-      end
-      it "collect_configuration_items: collects array of configuration_items" do
-        configuration_item_count = @samanage.get_configuration_items[:total_count]
-        expect(@configuration_items.size).to eq(configuration_item_count)
-        expect(@configuration_items).to be_an(Array)
       end
       it "create_configuration_item(payload: json): creates a configuration_item" do
         users_email = @users.sample["email"]
@@ -81,11 +76,7 @@ describe Samanage::Api do
         # expect(configuration_item_update[:data]['description']).to eq(description) # configuration_item bug #00044569
         expect(configuration_item_update[:code]).to eq(200).or(201)
       end
-      it 'finds more data for option[:layout] = "long"' do
-        full_layout_configuration_item_keys = @samanage.configuration_items(options: { layout: "long" }).first.keys
-        basic_configuration_item_keys = @samanage.configuration_items.sample.keys
-        expect(basic_configuration_item_keys.size).to be < full_layout_configuration_item_keys.size
-      end
+    
       it "deletes a valid configuration_item" do
         sample_configuration_item_id = @configuration_items.sample["id"]
         configuration_item_delete = @samanage.delete_configuration_item(id: sample_configuration_item_id)

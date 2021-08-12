@@ -13,17 +13,10 @@ describe Samanage::Api do
       it "collects all custom forms" do
         expect(@custom_forms).to be_an(Array)
       end
-      it "Organizes custom forms by module" do
-        api_call = @controller.organize_forms
-        expect(api_call).to be_a(Hash)
-        expect(api_call.keys).to be_an(Array)
-        # expect(api_call[api_call.keys.sample].sample).to be_a(Hash)
-      end
-      it "Finds the forms for an object_type" do
-        object_types = ["incident", "user", "other_asset", "hardware", "configuration_item"]
-        form = @controller.form_for(object_type: object_types.sample)
-        expect(form).to be_an(Array)
-        expect(form.sample.keys).to include("custom_form_fields")
+      it "Finds the forms for an form_name" do
+        form_names = ["incident", "user"]
+        form = @controller.form_for(form_name: form_names.sample)
+        expect(form).to be_a(Hash)
       end
     end
   end
