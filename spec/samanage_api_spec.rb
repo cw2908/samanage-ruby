@@ -42,8 +42,9 @@ describe Samanage do
       it "Finds Admins" do
         api_controller = Samanage::Api.new(token: TOKEN)
         admins = api_controller.list_admins
-        admin_email = admins.sample.gsub("+", "%2B")
+        admin_email = admins.sample
         samanage_admin = api_controller.execute(path: "users.json", options: {'email[]': admin_email})
+        samanage_admin[:data].first["role"]["name"] == 'Administrator'
         expect(samanage_admin[:data].first["role"]["name"]).to eq("Administrator")
       end
       
