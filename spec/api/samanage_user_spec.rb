@@ -116,7 +116,7 @@ describe Samanage::Api do
       end
 
       it "update_user: update_user by id" do
-        sample_id = @users.sample["id"]
+        sample_id = @samanage.get_users[:data].sample["id"]
         new_name = Faker::Internet.username
         json = {
           user: {
