@@ -26,7 +26,6 @@ describe Samanage::Api do
         expect(@incidents.size).to eq(incident_count)
       end
       it "create_incident(payload: json): creates a incident" do
-        3.times {
           users_email = @samanage.collect_users.sample["email"]
           incident_name = [
             Faker::Movies::StarWars.specie,
@@ -45,7 +44,6 @@ describe Samanage::Api do
           expect(incident_create[:data]["id"]).to be_an(Integer)
           expect(incident_create[:data]["name"]).to eq(incident_name)
           expect(incident_create[:code]).to eq(200).or(201)
-        }
       end
       it "create_incident: fails if no name/title" do
         users_email = @users.sample["email"]
@@ -139,15 +137,6 @@ describe Samanage::Api do
           .select { |audit| audit["message"].match(/was sent./) }
           .count
         expect(initial_email_audits).to be < final_email_audits
-      end
-      it "Finds incident origin in v2.0 layout=long header" do
-        sample_id = @samanage.get_incidents[:data].sample["id"]
-        origin_req = @samanage.execute(
-          path: "incidents/#{sample_id}.json",
-          verbose: true,
-          headers: { "Accept" => "application/vnd.samanage.v2.0+json?layout=long" }
-        )
-        expect(origin_req[:data]).to have_key("origin")
       end
     end
   end
