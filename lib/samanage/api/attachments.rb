@@ -2,7 +2,8 @@
 
 module Samanage
   class Api
-    # This takes the attachment as seen in the array found in [id].json?layout=long requests +optional filename and path for saving
+    # This takes the attachment as seen in the array found in
+    # /:id.json?layout=long requests +optional filename and path for saving
     def download_attachment(attachment: {}, filename: nil, path: nil)
       attachable_type = attachment["attachable_type"]
       attachable_id = attachment["attachable_id"].to_s
@@ -14,7 +15,7 @@ module Samanage
       FileUtils.mkpath(file_path) unless File.directory?(file_path)
 
       exact_path = File.join(file_path, filename)
-      downloaded_attachment = File.open(exact_path, "wb+") do |file|
+      File.open(exact_path, "wb+") do |file|
         file << URI.parse(url).read
       end
     end

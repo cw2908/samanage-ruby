@@ -12,9 +12,5 @@ doc
 /Change/*/*
 /Problem/*/*
 .vscode
-<<<<<<< HEAD
 .env
-=======
-# Ignore application configuration
-.env
->>>>>>> configuration-items
+.byebug_history
