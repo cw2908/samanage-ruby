@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.license                 = "MIT"
   s.require_paths           = ["lib"]
   s.required_ruby_version   = ">= 2.3"
-  s.add_development_dependency "httparty", ["0.16.4"]
-  s.add_runtime_dependency "httparty", ["0.16.4"]
+  s.add_development_dependency "httparty", "0.21.0"
+  s.add_runtime_dependency "httparty", "0.21.0"
   s.add_development_dependency "parallel", ["1.17.0"]
   s.add_runtime_dependency "parallel", ["1.17.0"]
 end

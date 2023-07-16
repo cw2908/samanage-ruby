@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "httparty", "0.16.4"
+gem "httparty", "0.21.0"
 gem "ffi", "1.9.24"
 
 group :development do
